@@ -38,14 +38,14 @@
     <string name="vpn_account">VPN账号（默认为学号和身份证后八位）</string>
     <string name="user_name">账户名</string>
     <string name="password">密码</string>
-    <string name="test">测试账户及URP地址</string>
+    <string name="test">测试配置信息</string>
     <string name="warning">警告！</string>
-    <string name="warning_message">请确保您已连接校园网或学校VPN或您处于可打开URP教务系统的环境下，否则测试将会失败（这将会消耗一些时间，请耐心等待）</string>
+    <string name="warning_message">这将会消耗一些时间，请耐心等待</string>
     <string name="start">开始</string>
     <string name="testing">测试中，请稍候</string>
     <string name="configured">（已配置，已保存的数据库不会因此而改变）</string>
     <string name="config_useful">配置有效</string>
-    <string name="config_useless">配置无效！请确保您在可连接校园网的网络环境下并保证您的账号密码正确</string>
+    <string name="config_useless">配置无效！请确认您输入的是教务帐号而不是统一通行证。请参考关于->帮助与排除->#5</string>
     <string name="address_alert">请输入完整网址，其中应包含\"http://\"或\"https://\"（请注意网址应全为英文半角字符）</string>
     <string name="table_alert">请选择你的课程表布局方式\n（您也可以稍后在设置中进行更改）</string>
     <string name="timetable_chart">每周二维图表布局</string>
@@ -66,7 +66,7 @@
     <string name="credit">学分：</string>
     <string name="grade">成绩：</string>
     <string name="attribute">属性：</string>
-    <string name="first_get_grades">首次使用请下拉刷新（请在校园网下进行）</string>
+    <string name="first_get_grades">首次使用请下拉刷新</string>
     <string name="refresh_successful">刷新成功</string>
     <string name="refresh_failed">刷新失败，请确保你的网络以及账户正确\n（您可在中心进行可用性测试）</string>
     <string name="set_first_start_page">启动时显示界面</string>
@@ -74,7 +74,7 @@
     <string name="fail_to_get_timetable">获取课程表数据失败</string>
     <string name="getting_timetable">正在获取课程表</string>
     <string name="no_timetable_sql">未找到数据库</string>
-    <string name="get_timetable_sql">是否现在获取课程表数据库？（请在校园网下进行）</string>
+    <string name="get_timetable_sql">是否现在获取课程表数据库？</string>
     <string name="later">稍后</string>
     <string name="alert">提示</string>
     <string name="refresh_timetable">刷新课程表</string>

@@ -30,7 +30,7 @@
     <string name="vpn_account">VPN Account</string>
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
-    <string name="test">Test Account And Address</string>
+    <string name="test">Test Config</string>
     <string name="warning">Warning!</string>
     <string name="warning_message">Please make sure you are under School network or you have already under the environment to open your school\'s URP system.(It will take a little longer)</string>
     <string name="start">Start</string>
