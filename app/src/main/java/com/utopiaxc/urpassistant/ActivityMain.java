@@ -191,12 +191,12 @@ public class ActivityMain extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMain.this);
                 builder.setTitle(getString(R.string.download_newversion));
                 builder.setMessage(getString(R.string.has_update));
-                builder.setPositiveButton(getText(R.string.download_newversion), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.utopiaxc.com/Version_Control/URPAssistant_release.apk"))));
+                builder.setPositiveButton(getText(R.string.download_newversion), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_debug.apk"))));
                 //设定“取消"按钮的功能
                 builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
 
                 });
-                builder.setNeutralButton(getText(R.string.goto_github), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/UtopiaXC/URPAssistant"))));
+                builder.setNeutralButton(getText(R.string.goto_github), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/UtopiaXC/DLNUAssistant"))));
                 builder.show();
             }
         }
@@ -212,7 +212,7 @@ public class ActivityMain extends AppCompatActivity {
                 String version = packInfo.versionName;
 
 
-                String latest_version = basicFunctions.getHTML("https://www.utopiaxc.com/Version_Control/URPAssistant_release.txt");
+                String latest_version = basicFunctions.getHTML("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_debug.txt");
 
 
                 if (latest_version.equals("error")) {

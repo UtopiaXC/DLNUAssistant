@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.utopiaxc.urpassistant.ActivityMain;
 import com.utopiaxc.urpassistant.R;
 
+import java.util.Objects;
+
 import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;
 
@@ -31,7 +33,7 @@ public class ActivitySettings extends AppCompatActivity {
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
 
         //预绑定
