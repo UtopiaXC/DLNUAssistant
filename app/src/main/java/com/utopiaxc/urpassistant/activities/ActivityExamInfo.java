@@ -137,10 +137,11 @@ public class ActivityExamInfo extends AppCompatActivity {
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
             SharedPreferences sharedPreferences=getSharedPreferences("user",MODE_PRIVATE);
-            String address=sharedPreferences.getString("address","");
-            String username=sharedPreferences.getString("username","");
-            String password=sharedPreferences.getString("password","");
-            if(function.setExamInfo(context,address,username,password)) {
+            String VPNName = sharedPreferences.getString("VPNName", "");
+            String VPNPass = sharedPreferences.getString("VPNPass", "");
+            String username = sharedPreferences.getString("username", "");
+            String password = sharedPreferences.getString("password", "");
+            if(function.setExamInfo(context,VPNName,VPNPass,username,password)) {
                 handerMessgae="over";
                 messageHandler.sendMessage(messageHandler.obtainMessage());
 

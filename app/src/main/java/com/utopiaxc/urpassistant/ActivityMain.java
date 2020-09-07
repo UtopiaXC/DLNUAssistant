@@ -91,7 +91,7 @@ public class ActivityMain extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         sharedPreferences =this.getSharedPreferences("user", MODE_PRIVATE);
         boolean UserIsSet=sharedPreferences.getBoolean("UserIsSet",false);
-        boolean AddressIsSet = sharedPreferences.getBoolean("AddressIsSet", false);
+        boolean AddressIsSet = sharedPreferences.getBoolean("VPNIsSet", false);
 
         //设置主fragment
         sharedPreferences = getSharedPreferences("FirstFragment", MODE_PRIVATE);

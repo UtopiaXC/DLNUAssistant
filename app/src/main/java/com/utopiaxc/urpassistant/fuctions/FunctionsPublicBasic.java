@@ -23,11 +23,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FunctionsPublicBasic {
-    private String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36";
-    private Map<String, String> Cookies = null;
-    private Document document = null;
+    private static final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36";
+    private static Map<String, String> VPNCookies = null;
+    private static String Address;
+    private static Map<String, String> EDUCookies = null;
+    private static Document document=null;
 
-    //爬取网页源码方法
     public String getHTML(String address) {
         URL url;
         int responsecode;
@@ -58,19 +59,62 @@ public class FunctionsPublicBasic {
         }
     }
 
+    private static boolean getVPNCookie(String username, String password){
+        try {
+            Connection.Response response = Jsoup.connect("http://210.30.0.110/do-login")
+                    .ignoreContentType(true)
+                    .userAgent(userAgent)
+                    .data("auth_type", "local",
+                            "username", username,
+                            "password", password)
+                    .method(Connection.Method.POST)
+                    .execute();
+            VPNCookies = response.cookies();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            System.out.println("cookies error");
+            return false;
+        }
+    }
 
+    private static boolean getAddress() {
+        try {
+            Connection.Response response = Jsoup.connect("http://210.30.0.110/")
+                    .userAgent(userAgent)
+                    .cookies(VPNCookies)
+                    .method(Connection.Method.GET)
+                    .execute();
 
+            Document doc = response.parse();
+            Elements elements=doc.getElementsByClass("vpn-content-block-panel__collect_ed");
+            for (Element element:elements){
+                if (element.toString().contains("http://zhjw.dlnu.edu.cn")){
+                    String url=element.toString().replace(" ","");
+                    url=url.replace("\n","");
+                    url=url.replace("<divclass=\"vpn-content-block-panel__collect_ed\"data-resource=\"12\"data-url=\"http://zhjw.dlnu.edu.cn\"data-redirect=\"","");
+                    url=url.replace("\"data-name=\"综合教务\"data-type=\"vpn\"data-logo=\"\"data-detail=\"zhjw.dlnu.edu.cn\"><iclass=\"layui-iconlayui-icon-rate\"></i></div>","");
+                    Address="http://210.30.0.110"+url;
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return false;
+        }
+        return false;
+    }
 
     //登录教务并获取cookie的方法
-    private boolean getCookies(String address, String username, String password) {
+    private static boolean getEDUCookies(String username, String password) {
         try {
-            Connection.Response response = Jsoup.connect(address + "/loginAction.do")
+            Connection.Response response = Jsoup.connect(Address + "/loginAction.do")
                     .userAgent(userAgent)
+                    .cookies(VPNCookies)
                     .data("zjh", username, "mm", password)
                     .method(Connection.Method.POST)
-                   // .timeout(10000)
                     .execute();
-            Cookies = response.cookies();
+            EDUCookies = response.cookies();
             return true;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -80,29 +124,33 @@ public class FunctionsPublicBasic {
     }
 
     //获取教务指定网页Doc的方法,document调用结束后请赋空
-    private boolean getDocument(String address) {
+    private static boolean getDocument(String address) {
         try {
             Connection.Response response = Jsoup.connect(address)
                     .userAgent(userAgent)
-                    .cookies(Cookies)
+                    .cookies(VPNCookies)
+                    .cookies(EDUCookies)
                     .method(Connection.Method.POST)
                     .execute();
 
-            document = response.parse();
+            document=response.parse();
             return true;
         } catch (Exception e) {
             System.out.println(e.toString());
-            document = null;
             return false;
         }
     }
 
     //测试账号密码及教务地址的方法
-    public boolean testURP(String address, String username, String password) {
+    public boolean testURP(String VPNName,String VPNPass,String username, String password) {
         try {
-            if (!getCookies(address, username, password))
+            if (!getVPNCookie(VPNName,VPNPass))
                 return false;
-            if (!getDocument(address + "/xkAction.do?actionType=17"))
+            if (!getAddress())
+                return false;
+            if (!getEDUCookies( username, password))
+                return false;
+            if (!getDocument(Address + "/xkAction.do?actionType=17"))
                 return false;
             String line = document.toString();
 
@@ -125,14 +173,16 @@ public class FunctionsPublicBasic {
     }
 
     //处理课程表的方法
-    public boolean setClassTableSQL(Context context, String address, String username, String password) {
+    public boolean setClassTableSQL(Context context,String VPNName,String VPNPass, String username, String password) {
         try {
             //判断Cookie是否正确获取
-            if (!getCookies(address, username, password))
+            if (!getVPNCookie(VPNName,VPNPass))
                 return false;
-
-            //判断网页是否正确爬取
-            if (!getDocument(address + "/xkAction.do?actionType=17"))
+            if (!getAddress())
+                return false;
+            if (!getEDUCookies( username, password))
+                return false;
+            if (!getDocument(Address + "/xkAction.do?actionType=17"))
                 return false;
 
             //寻找全部带有odd标签的课程
@@ -278,11 +328,17 @@ public class FunctionsPublicBasic {
     }
 
     //处理成绩表的方法
-    public boolean setGrades(Context context, String address, String username, String password){
-        if(!getCookies(address,username,password))
+    public boolean setGrades(Context context, String VPNName,String VPNPass, String username, String password){
+        //判断Cookie是否正确获取
+        if (!getVPNCookie(VPNName,VPNPass))
             return false;
-        if(!getDocument(address+"/gradeLnAllAction.do?type=ln&oper=sxinfo&lnsxdm=001"))
+        if (!getAddress())
             return false;
+        if (!getEDUCookies( username, password))
+            return false;
+        if (!getDocument(Address + "/gradeLnAllAction.do?type=ln&oper=sxinfo&lnsxdm=001"))
+            return false;
+
         try{
             SQLHelperGradesList sqlHelperGradesList=new SQLHelperGradesList(context,"URP_Grade",null,2);
             SQLiteDatabase sqLiteDatabase=sqlHelperGradesList.getWritableDatabase();
@@ -344,10 +400,14 @@ public class FunctionsPublicBasic {
     }
 
     //处理考试信息表的方法
-    public boolean setExamInfo(Context context, String address, String username, String password){
-        if(!getCookies(address,username,password))
+    public boolean setExamInfo(Context context,String VPNName,String VPNPass, String username, String password){
+        if (!getVPNCookie(VPNName,VPNPass))
             return false;
-        if(!getDocument(address+"/ksApCxAction.do?oper=getKsapXx"))
+        if (!getAddress())
+            return false;
+        if (!getEDUCookies( username, password))
+            return false;
+        if(!getDocument(Address+"/ksApCxAction.do?oper=getKsapXx"))
             return false;
         try{
             SQLHelperExamInfo sqlHelperExamInfo=new SQLHelperExamInfo(context,"URP_Exam",null,2);

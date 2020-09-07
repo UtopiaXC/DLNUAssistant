@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">URPAssistant</string>
+    <string name="app_name">DLNU Assistant</string>
     <string name="title_home">Home</string>
     <string name="title_table">Time Table</string>
     <string name="title_center">Center</string>
@@ -25,9 +25,9 @@
     <string name="update_log_tag">Latest Update Content</string>
     <string name="utopiaxc">UtopiaXC</string>
     <string name="user">User</string>
-    <string name="vpn_message">VPN account</string>
-    <string name="urp_adress">URP Address</string>
-    <string name="urp_account">URP Account</string>
+    <string name="vpn_message">VPN Account</string>
+    <string name="urp_user">URP Account</string>
+    <string name="vpn_account">VPN Account</string>
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
     <string name="test">Test Account And Address</string>

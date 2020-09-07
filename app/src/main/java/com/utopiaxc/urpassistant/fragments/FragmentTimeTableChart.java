@@ -663,11 +663,12 @@ public class FragmentTimeTableChart extends Fragment {
         @Override
         public void run() {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-            String address = sharedPreferences.getString("address", "");
+            String VPNName = sharedPreferences.getString("VPNName", "");
+            String VPNPass = sharedPreferences.getString("VPNPass", "");
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            if (!function.setClassTableSQL(getActivity(), address, username, password)) {
+            if (!function.setClassTableSQL(getActivity(), VPNName,VPNPass,username,password)) {
                 handlerMessage = "fail";
                 handler.sendMessage(handler.obtainMessage());
             } else {

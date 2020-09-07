@@ -153,10 +153,11 @@ public class FragmentAllCourseList extends Fragment {
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", getActivity().MODE_PRIVATE);
-            String address = sharedPreferences.getString("address", "");
+            String VPNName = sharedPreferences.getString("VPNName", "");
+            String VPNPass = sharedPreferences.getString("VPNPass", "");
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
-            if (function.setClassTableSQL(getActivity(), address, username, password)) {
+            if (function.setClassTableSQL(getActivity(), VPNName,VPNPass,username,password)) {
                 handerMessgae = "over";
                 messageHandler.sendMessage(messageHandler.obtainMessage());
 

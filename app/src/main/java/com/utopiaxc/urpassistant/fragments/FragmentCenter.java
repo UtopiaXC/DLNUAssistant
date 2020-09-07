@@ -83,9 +83,45 @@ public class FragmentCenter extends Fragment {
                         final EditText login_name = linearLayout.findViewById(R.id.login_username);
                         final EditText login_password = linearLayout.findViewById(R.id.login_password);
                         Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
-                        setAccount.setTitle(getString(R.string.urp_account));
+                        setAccount.setTitle(getString(R.string.vpn_account));
                         if (isSet.equals(true))
-                            setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_account) + getActivity().getString(R.string.configured));
+                            setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.vpn_account) + getActivity().getString(R.string.configured));
+                        setAccount.setView(linearLayout)
+                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String username = login_name.getText().toString();
+                                        String password = login_password.getText().toString();
+                                        if (!username.equals("") && !password.equals("")) {
+                                            editor.putString("VPNName", username);
+                                            editor.putString("VPNPass", password);
+                                            editor.putBoolean("VPNIsSet", true);
+                                            editor.commit();
+                                        }
+                                    }
+                                })
+                                .create()
+                                .show();
+
+                    }
+                });
+        userCenter.addMessageItem(ItemUserCard_user);
+
+        //添加地址选框
+        AboutPageMessageItem ItemUserCard_address = new AboutPageMessageItem(getActivity())
+                .setIcon(getActivity().getDrawable(R.drawable.account))
+                .setMainText(getString(R.string.urp_user))
+                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
+                    @Override
+                    public void onClick() {
+                        final AlertDialog.Builder setAccount = new AlertDialog.Builder(getActivity());
+                        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
+                        final EditText login_name = linearLayout.findViewById(R.id.login_username);
+                        final EditText login_password = linearLayout.findViewById(R.id.login_password);
+                        Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
+                        setAccount.setTitle(getString(R.string.urp_user));
+                        if (isSet.equals(true))
+                            setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_user) + getActivity().getString(R.string.configured));
                         setAccount.setView(linearLayout)
                                 .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                                     @Override
@@ -103,39 +139,6 @@ public class FragmentCenter extends Fragment {
                                 .create()
                                 .show();
 
-                    }
-                });
-        userCenter.addMessageItem(ItemUserCard_user);
-
-        //添加地址选框
-        AboutPageMessageItem ItemUserCard_address = new AboutPageMessageItem(getActivity())
-                .setIcon(getActivity().getDrawable(R.drawable.address))
-                .setMainText(getString(R.string.urp_adress))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        final AlertDialog.Builder setURP = new AlertDialog.Builder(getActivity());
-                        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_address, null);  //从另外的布局关联组件
-                        final EditText address = linearLayout.findViewById(R.id.urp_address);
-                        Boolean isSet = sharedPreferences.getBoolean("AddressIsSet", false);
-                        setURP.setTitle(getString(R.string.urp_account));
-                        if (isSet.equals(true))
-                            setURP.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_adress) + getActivity().getString(R.string.configured));
-                        setURP.setMessage(Objects.requireNonNull(getActivity()).getString(R.string.address_alert))
-                                .setView(linearLayout)
-                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String string_address = address.getText().toString();
-                                        if (!string_address.equals("")) {
-                                            editor.putString("address", string_address);
-                                            editor.putBoolean("AddressIsSet", true);
-                                            editor.commit();
-                                        }
-                                    }
-                                })
-                                .create()
-                                .show();
                     }
                 });
         userCenter.addMessageItem(ItemUserCard_address);
@@ -233,10 +236,11 @@ public class FragmentCenter extends Fragment {
 
         @Override
         public void run() {
-            String address = sharedPreferences.getString("address", "");
+            String VPNName = sharedPreferences.getString("VPNName", "");
+            String VPNPass = sharedPreferences.getString("VPNPass", "");
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
-            isUseful = functions.testURP(address, username, password);
+            isUseful = functions.testURP(VPNName,VPNPass,username,password);
             messageHandler.sendMessage(messageHandler.obtainMessage());
         }
     }
@@ -246,13 +250,13 @@ public class FragmentCenter extends Fragment {
 
         @Override
         public void run() {
-            String address = sharedPreferences.getString("address", "");
+            String VPNName = sharedPreferences.getString("VPNName", "");
+            String VPNPass = sharedPreferences.getString("VPNPass", "");
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
-            ClassIsGot=functions.setClassTableSQL(getActivity(),address,username,password);
-            ExamIsGot=functions.setExamInfo(getActivity(),address,username,password);
-            GradeIsGot=functions.setGrades(getActivity(),address,username,password);
-
+            ClassIsGot=functions.setClassTableSQL(getActivity(),VPNName,VPNPass,username,password);
+            ExamIsGot=functions.setExamInfo(getActivity(),VPNName,VPNPass,username,password);
+            GradeIsGot=functions.setGrades(getActivity(),VPNName,VPNPass,username,password);
             messageHandler_getAll.sendMessage(messageHandler_getAll.obtainMessage());
 
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">URP助理</string>
+    <string name="app_name">民大助理</string>
     <string name="title_home">主页</string>
     <string name="title_table">课程表</string>
     <string name="title_center">中心</string>
@@ -22,31 +22,20 @@
     <string name="open_source_license">开源许可证</string>
     <string name="tag_license">优秀的项目离不开开源项目的支持，感谢你们！</string>
     <string name="update_log">更新日志</string>
-    <string name="update_log_info">URPAssistant\n
-        正式版\n
-        v2.1.1\n
+    <string name="update_log_info">DLNU Assistant\n
+        内测版\n
+        v0.0.1-beta\n
         更新日志\n
-        #1 修复了点击失灵\n
-        #2 修复了更新服务器的崩溃问题\n
-        #3 修复了已知所有周计算相关的问题\n
-        #4 如果存在重合课程会在右上角显示角标但是不会同时显示\n
-        #5 2.1.1紧急更新：修复由于更新服务器开启了SSL导致无法获取更新的问题\n
-        #6 2.1.2非紧急更新：修复了一个无用的权限申请\n\n
+        #1 添加了大连民大校外资源访问VPN\n
+        #2 修复了部份bug\n
 
-        本版本是V2的最后一个发布版本，由于开发者学业繁忙，且本应用大部分功能已经堪用，下个版本将会是最后一个版本。\n\n
-        在V3中，将会推出完整的桌面小部件功能，由于开发者还在进行另外三个项目的开发，该版本最晚在2020年年底上线\n\n
-        此外，目前完全通过测试的学校只有大连民族大学，由于缺少其他学校数据所以无法进行针对性修正，且没有训练集无法支持
-        验证码，希望各位用户在使用中遇到问题及时反馈。\n\n
-        本应用将在V3版本后不再进行大版本更新，届时只会对已知问题进行修复，望周知\n
-        更多信息或提交issue请到Github\n
-        感谢您的使用\n
     </string>
     <string name="update_log_tag">最后一次更新内容</string>
     <string name="utopiaxc">UtopiaXC</string>
     <string name="user">用户</string>
-    <string name="vpn_message">VPN账号（默认为学号和身份证后八位）</string>
-    <string name="urp_adress">URP 网址</string>
-    <string name="urp_account">URP 账号</string>
+    <string name="vpn_message">VPN账号</string>
+    <string name="urp_user">URP 帐号</string>
+    <string name="vpn_account">VPN账号（默认为学号和身份证后八位）</string>
     <string name="user_name">账户名</string>
     <string name="password">密码</string>
     <string name="test">测试账户及URP地址</string>
