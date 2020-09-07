@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">URP助理</string>
+    <string name="title_home">主页</string>
+    <string name="title_table">课程表</string>
+    <string name="title_center">中心</string>
+    <string name="has_update">发现新版本，请下载或前往GitHub获取更新</string>
+    <string name="download_newversion">下载</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="goto_github">打开链接</string>
+    <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="developer">开发团队</string>
+    <string name="update_check">检查更新</string>
+    <string name="update_checking">正在检查更新，请稍等</string>
+    <string name="net_error">网络错误！请检查</string>
+    <string name="no_update">恭喜，您正在使用最新版本的应用</string>
+    <string name="congratulations">恭喜</string>
+    <string name="again_please">抱歉，请重试</string>
+    <string name="unknow_error">未知错误</string>
+    <string name="open_source_license">开源许可证</string>
+    <string name="tag_license">优秀的项目离不开开源项目的支持，感谢你们！</string>
+    <string name="update_log">更新日志</string>
+    <string name="update_log_info">URPAssistant\n
+        正式版\n
+        v2.1.1\n
+        更新日志\n
+        #1 修复了点击失灵\n
+        #2 修复了更新服务器的崩溃问题\n
+        #3 修复了已知所有周计算相关的问题\n
+        #4 如果存在重合课程会在右上角显示角标但是不会同时显示\n
+        #5 2.1.1紧急更新：修复由于更新服务器开启了SSL导致无法获取更新的问题\n
+        #6 2.1.2非紧急更新：修复了一个无用的权限申请\n\n
+
+        本版本是V2的最后一个发布版本，由于开发者学业繁忙，且本应用大部分功能已经堪用，下个版本将会是最后一个版本。\n\n
+        在V3中，将会推出完整的桌面小部件功能，由于开发者还在进行另外三个项目的开发，该版本最晚在2020年年底上线\n\n
+        此外，目前完全通过测试的学校只有大连民族大学，由于缺少其他学校数据所以无法进行针对性修正，且没有训练集无法支持
+        验证码，希望各位用户在使用中遇到问题及时反馈。\n\n
+        本应用将在V3版本后不再进行大版本更新，届时只会对已知问题进行修复，望周知\n
+        更多信息或提交issue请到Github\n
+        感谢您的使用\n
+    </string>
+    <string name="update_log_tag">最后一次更新内容</string>
+    <string name="utopiaxc">UtopiaXC</string>
+    <string name="user">用户</string>
+    <string name="vpn_message">VPN账号（默认为学号和身份证后八位）</string>
+    <string name="urp_adress">URP 网址</string>
+    <string name="urp_account">URP 账号</string>
+    <string name="user_name">账户名</string>
+    <string name="password">密码</string>
+    <string name="test">测试账户及URP地址</string>
+    <string name="warning">警告！</string>
+    <string name="warning_message">请确保您已连接校园网或学校VPN或您处于可打开URP教务系统的环境下，否则测试将会失败（这将会消耗一些时间，请耐心等待）</string>
+    <string name="start">开始</string>
+    <string name="testing">测试中，请稍候</string>
+    <string name="configured">（已配置，已保存的数据库不会因此而改变）</string>
+    <string name="config_useful">配置有效</string>
+    <string name="config_useless">配置无效！请确保您在可连接校园网的网络环境下并保证您的账号密码正确</string>
+    <string name="address_alert">请输入完整网址，其中应包含\"http://\"或\"https://\"（请注意网址应全为英文半角字符）</string>
+    <string name="table_alert">请选择你的课程表布局方式\n（您也可以稍后在设置中进行更改）</string>
+    <string name="timetable_chart">每周二维图表布局</string>
+    <string name="timetable_list">每日列表布局</string>
+    <string name="timetable_all_course_list">全部课程列表（不推荐）</string>
+    <string name="theme">主题</string>
+    <string name="timetable_layout">课程表布局</string>
+    <string name="white">白色（不推荐）</string>
+    <string name="black">黑色</string>
+    <string name="green">绿色</string>
+    <string name="yellow">黄色</string>
+    <string name="blue">蓝色</string>
+    <string name="pink">粉色</string>
+    <string name="grey">灰色</string>
+    <string name="purple">紫色（默认）</string>
+    <string name="red">红色</string>
+    <string name="grade_list">成绩单</string>
+    <string name="credit">学分：</string>
+    <string name="grade">成绩：</string>
+    <string name="attribute">属性：</string>
+    <string name="first_get_grades">首次使用请下拉刷新（请在校园网下进行）</string>
+    <string name="refresh_successful">刷新成功</string>
+    <string name="refresh_failed">刷新失败，请确保你的网络以及账户正确\n（您可在中心进行可用性测试）</string>
+    <string name="set_first_start_page">启动时显示界面</string>
+    <string name="error">错误</string>
+    <string name="fail_to_get_timetable">获取课程表数据失败</string>
+    <string name="getting_timetable">正在获取课程表</string>
+    <string name="no_timetable_sql">未找到数据库</string>
+    <string name="get_timetable_sql">是否现在获取课程表数据库？（请在校园网下进行）</string>
+    <string name="later">稍后</string>
+    <string name="alert">提示</string>
+    <string name="refresh_timetable">刷新课程表</string>
+    <string name="change_week">更改显示周数</string>
+    <string name="set_start_week">设置初始周数</string>
+    <string name="frount_week">上一周</string>
+    <string name="next_week">下一周</string>
+    <string name="back_to_now">返回本周</string>
+    <string name="course_name">课程名：</string>
+    <string name="course_id">课程号：</string>
+    <string name="course_attribute">课程属性：</string>
+    <string name="exam_attribute">考试类型：</string>
+    <string name="weeks">上课周序：</string>
+    <string name="course_time">课程节次：</string>
+    <string name="teacher">教师：</string>
+    <string name="school">校区：</string>
+    <string name="room">教室：</string>
+    <string name="edit">编辑</string>
+    <string name="exam_message">考试信息</string>
+    <string name="hint_weeks">请使用半角“,”来分隔周序</string>
+    <string name="hint_time">请使用“~”分隔上课节次</string>
+    <string name="count_of_course">持续节数：</string>
+    <string name="alert_time">一个大于0小于12的整数，请不要越界</string>
+    <string name="hint_default_unknown">默认未知（选填）</string>
+    <string name="unknown">未知</string>
+    <string name="delete">删除</string>
+    <string name="editor_error">您填写的周数或节次信息格式错误\n其他修改已保存</string>
+    <string name="blank_error">您有必填项目没有填写</string>
+    <string name="week_error">您输入的周数格式错误</string>
+    <string name="count_error">您输入的节次信息错误</string>
+    <string name="week_fast_change">显示/隐藏快速周切换</string>
+    <string name="exam_location">考试地点：</string>
+    <string name="exam_time">考试时间：</string>
+    <string name="week_day">星期序次：</string>
+    <string name="course_editor">课程编辑</string>
+    <string name="start_time">开始节数：</string>
+    <string name="end_time">结束节数：</string>
+    <string name="click_to_choose">点击来选择</string>
+    <string name="must_to_fill">（必填）</string>
+    <string name="starter">开始:</string>
+    <string name="ender">结束:</string>
+    <string name="please_to_choose_week">请选择星期</string>
+    <string name="selected_week">已选中：星期</string>
+    <string name="add_time_error">结束时间不应早于开始时间</string>
+    <string name="display_or_hide_course">显示/隐藏当周无课项</string>
+    <string name="starting_helper">
+        首先，感谢您选择URPAssistant\n\n
+        这是一个使用教程及问题排查文档，由于您是第一次看到本消息，请您务必认真阅读\n\n
+        #1 本教程仅会在您第一次启动该应用时自动出现，在您点击确认后本提醒不会再您的正常使用中出现。
+        当然，如果您想再次阅读本消息，您只需要点击在中心->关于->教程与排查的选框便可再次阅读本消息。\n\n
+        #2 使用本软件，您需要先确认您学校的教务后台使用的是URP平台，且由于缺少样本的原因，暂时不支持需要验证码的教务系统。
+        如果您亟需添加验证码验证功能，请您在Github或其他渠道联系我，并提供相应教务账号，VPN以及教务网站。\n\n
+        #3 您需要先在中心中填写您的教务账号以及教务地址信息，并确保您在校园网的环境下点击测试，如未通过则可能是您的相关信息有误，一下是几种可能的情况：\n
+        A.您的校园网账户或者密码存在错误，请您确认是否正确或在网页中登录您的校园网并查看是否存在异常。\n
+        B.您的教务网站地址可能存在错误，请确认您学校的教务地址，并确认是否以http://或https://开头,并且确认没有错误。\n
+        C.您的教务系统存在验证码，请参照信息#2。\n
+        D.您未处于校园网环境，请连接校园网或校园网VPN\n
+        E.您的学校对后台代码进行了修改，如果您确认是这种情况请联系本APP作者\n\n
+        #4 在您确认验证成功后，您可以点击中心里的获取全部教务信息，软件将会自动为您配置数据库，或者您可以在每个功能情境中单独获取数据信息，单独获取请参照接下来的功能讲解。\n\n
+        #5 关于课程表功能，您在首次使用本应用时，会让您选择以哪种方式显示课程表，您选择后该界面不会再次出现，但是您依旧可以在设置中进行更改，这里不建议您使用完全全部列表模式。
+        在您选择二维表模式后，如果您未在上一步统一获取数据库，系统会提醒您未获取数据库。
+        您可以点击右上角的三个点，这是菜单按钮，在其中您可以从教务导入课程表。列表模式下下拉刷新也可获取课程表信息。
+        获取课程表请务必处于校园网下。如果多次获取依旧报错，请联系作者。\n\n
+        #6 关于二维表，使用时建议您首先在菜单中设定好起始周数，您只需选择开学课程开始的第一周的任意一天即可。
+        此外，您也可以在菜单中打开或关闭快速日期切换栏，显示或隐藏当周无课科目。
+        关于课程的手动添加与修改，您只能在二维表模式下进行。添加课程您只需点击空白时间处后点击加号，如果加号未显示您可以多尝试点击几次。
+        修改课程您只需要点击待修改课程后点击编辑或删除。\n\n
+        #7 关于成绩单，本成绩单仅获取您的全部成绩，如果希望查询重修考试等成绩请在网页进行。使用该功能时您需要已配置好教务账户及网址并处于校园网下，首次打开请下拉刷新。\n\n
+        #8 关于考试表，考试信息为在教务上发布的考试信息，如学校未更新考试则无法显示。使用该功能时您需要已配置好教务账户及网址并处于校园网下，首次打开请下拉刷新。\n\n
+        #9 关于启动页面，您可在设置中设置默认打开的界面，软件默认打开课程表页。\n\n
+        #10 如果应用存在重大BUG，请在Github，酷安或微博联系作者。\n\n
+        最后，再次感谢使用本软件，祝您生活愉快，学业顺利。
+    </string>
+    <string name="helper_and_solution">帮助与排除</string>
+    <string name="tag_helper_and_solution">帮助信息与故障排查</string>
+    <string name="sync_all">同步全部教务信息</string>
+    <string name="syncing">正在同步</string>
+    <string name="all_successful">全部信息获取成功</string>
+    <string name="course_got_error">课程信息获取失败\n</string>
+    <string name="exam_got_error">考试信息获取失败\n</string>
+    <string name="grade_got_error">成绩信息获取失败\n</string>
+    <string name="get_all_warning_message">如果同步成功，您所有已在本地修改或添加的信息将被覆盖！\n
+    请在校园网或校园网VPN环境下进行此操作！</string>
+</resources>

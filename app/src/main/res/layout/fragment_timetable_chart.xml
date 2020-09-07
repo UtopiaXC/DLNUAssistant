@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="0dp">
+
+    <LinearLayout
+        android:id="@+id/timetable_fast_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <com.dd.processbutton.FlatButton
+            android:id="@+id/textView_frount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textStart"
+            android:layout_marginBottom="3dp"
+            android:textSize="16sp"
+            android:text="@string/frount_week"
+            app:pb_colorNormal="#FFFFFF"
+            app:pb_colorPressed="#F0F0F0"/>
+
+        <com.dd.processbutton.FlatButton
+            android:id="@+id/textView_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:text="@string/back_to_now"
+            app:pb_colorNormal="#FFFFFF"
+            app:pb_colorPressed="#F0F0F0"/>
+
+        <com.dd.processbutton.FlatButton
+            android:id="@+id/textView_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textAlignment="textEnd"
+            android:text="@string/next_week"
+            app:pb_colorNormal="#FFFFFF"
+            app:pb_colorPressed="#F0F0F0"/>
+    </LinearLayout>
+
+    <com.zhuangfei.timetable.TimetableView
+        android:id="@+id/id_timetableView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="0dp"
+        android:orientation="vertical"
+        app:nonweek_corner="5dp"
+        app:thisweek_corner="5dp">
+
+    </com.zhuangfei.timetable.TimetableView>
+</LinearLayout>

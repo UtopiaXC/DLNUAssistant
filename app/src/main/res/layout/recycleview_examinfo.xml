@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <!-- android:clickable="true"  //cardView是否可点击,默认是不可点击的 -->
+    <!-- app:cardCornerRadius="3dp" //圆角 -->
+    <!-- app:cardElevation="8dp" //阴影 -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/exam_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clickable="false"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/card_view">
+
+
+            <TextView
+                android:id="@+id/exam_card_exam_name"
+                android:layout_width="317dp"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="36dp"
+                android:text="Course Name"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/exam_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="46dp"
+                android:layout_marginBottom="7dp"
+                android:text="Location"
+                android:textColor="#505050" />
+
+
+            <TextView
+                android:id="@+id/exam_time"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="75dp"
+                android:layout_marginBottom="7dp"
+                android:text="Time"
+                android:textColor="#505050" />
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

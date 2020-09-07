@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.utopiaxc.urpassistant">
+
+    <dist:module dist:instant="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <receiver android:name=".weidgt.WeidgtChart">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.utopiaxc.urpassistant.weidgt.OnClick"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/weidgt_chart_info" />
+        </receiver>
+
+        <activity
+            android:name=".ActivityMain"
+            android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name=".activities.ActivityAbout"
+            android:label="@string/about" />
+        <activity
+            android:name=".activities.ActivityLicence"
+            android:label="@string/open_source_license" />
+        <activity
+            android:name=".activities.ActivitySettings"
+            android:label="@string/settings" />
+        <activity
+            android:name=".activities.ActivityGradeList"
+            android:label="@string/grade_list" />
+        <activity
+            android:name=".activities.ActivityExamInfo"
+            android:label="@string/exam_message" />
+        <activity
+            android:name=".activities.ActivityEditor"
+            android:label="@string/course_editor" />
+        <activity
+            android:name=".activities.ActivityUpdateEditor"
+            android:label="@string/course_editor" />
+    </application>
+
+</manifest>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/exam"
+        android:shortcutDisabledMessage="@string/exam_message"
+        android:shortcutId="static2"
+        android:shortcutLongLabel="@string/exam_message"
+        android:shortcutShortLabel="@string/exam_message">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.utopiaxc.urpassistant.activities.ActivityExamInfo"
+            android:targetPackage="com.utopiaxc.urpassistant" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/gradelist"
+        android:shortcutDisabledMessage="@string/grade_list"
+        android:shortcutId="static1"
+        android:shortcutLongLabel="@string/grade_list"
+        android:shortcutShortLabel="@string/grade_list">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.utopiaxc.urpassistant.activities.ActivityGradeList"
+            android:targetPackage="com.utopiaxc.urpassistant" />
+    </shortcut>
+</shortcuts>

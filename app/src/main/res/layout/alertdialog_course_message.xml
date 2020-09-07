@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:padding="25dp"
+    >
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NAME"
+        android:layout_marginBottom="5dp"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="ID" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_credit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="CREDIT" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_attribute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="ATTRIBUTE" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_examAttribute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="EXAMATTRIBUTE" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="WEEK" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="TIME" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="TEACHER" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_school"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:text="SCHOOL" />
+
+    <TextView
+        android:id="@+id/alertdialog_course_message_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="ROOM" />
+</LinearLayout>
