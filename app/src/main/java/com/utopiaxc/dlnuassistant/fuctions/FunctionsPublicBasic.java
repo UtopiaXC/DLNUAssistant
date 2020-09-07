@@ -1,13 +1,13 @@
-package com.utopiaxc.urpassistant.fuctions;
+package com.utopiaxc.dlnuassistant.fuctions;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.utopiaxc.urpassistant.sqlite.SQLHelperExamInfo;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperGradesList;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperTimeTable;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperExamInfo;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperGradesList;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

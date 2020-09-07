@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.fragments;
+package com.utopiaxc.dlnuassistant.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,10 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.activities.ActivityAbout;
-import com.utopiaxc.urpassistant.activities.ActivitySettings;
-import com.utopiaxc.urpassistant.fuctions.FunctionsPublicBasic;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.activities.ActivityAbout;
+import com.utopiaxc.dlnuassistant.activities.ActivitySettings;
+import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
 
 import java.util.Objects;
 

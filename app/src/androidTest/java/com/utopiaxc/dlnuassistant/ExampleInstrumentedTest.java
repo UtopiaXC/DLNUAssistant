@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant;
+package com.utopiaxc.dlnuassistant;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.utopiaxc.urpassistant", appContext.getPackageName());
+        assertEquals("com.utopiaxc.com.utopiaxc.dlnuassistant", appContext.getPackageName());
     }
 }

@@ -1,7 +1,6 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,10 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.fuctions.FunctionsPublicBasic;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperExamInfo;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperGradesList;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperExamInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

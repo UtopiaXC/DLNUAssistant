@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,8 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.fuctions.FunctionsPublicBasic;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
 import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.LogoCard;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;

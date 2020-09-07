@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,16 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.utopiaxc.urpassistant.ActivityMain;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperTimeTable;
+import com.utopiaxc.dlnuassistant.ActivityMain;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.weidgt;
+package com.utopiaxc.dlnuassistant.weidgt;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.utopiaxc.urpassistant.R;
+import com.utopiaxc.dlnuassistant.R;
 
 public class WeidgtChart extends AppWidgetProvider {
-    public static final String CLICK_ACTION = "com.utopiaxc.urpassistant.weidgt.WeidgtChart.CLICK";
+    public static final String CLICK_ACTION = "com.utopiaxc.com.utopiaxc.dlnuassistant.weidgt.WeidgtChart.CLICK";
     private static RemoteViews mRemoteViews;
 
     /**

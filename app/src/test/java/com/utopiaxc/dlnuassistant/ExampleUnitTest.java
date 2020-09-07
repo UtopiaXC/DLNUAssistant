@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant;
+package com.utopiaxc.dlnuassistant;
 
 import org.junit.Test;
 

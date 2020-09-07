@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.sqlite;
+package com.utopiaxc.dlnuassistant.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,25 +6,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-public class SQLHelperGradesList extends SQLiteOpenHelper {
+public class SQLHelperExamInfo extends SQLiteOpenHelper {
 
     private static Integer Version = 1;
 
-
-    public SQLHelperGradesList(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public SQLHelperExamInfo(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String sql = "create table if not exists grades" +
-                "(ClassId text," +
-                "ClassName text, " +
-                "Credit text," +
-                "ClassAttribute text," +
-                "Grade text)";
+        String sql = "create table if not exists exams" +
+                "(ExamName text," +
+                "ExamSchool text, " +
+                "ExamBuilding text," +
+                "ExamRoom text," +
+                "ExamData text,"+
+                "ExamTime text)";
         sqLiteDatabase.execSQL(sql);
-
     }
 
     @Override
@@ -34,3 +33,4 @@ public class SQLHelperGradesList extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 }
+

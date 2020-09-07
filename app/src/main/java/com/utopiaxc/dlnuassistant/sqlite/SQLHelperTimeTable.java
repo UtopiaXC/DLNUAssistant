@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.sqlite;
+package com.utopiaxc.dlnuassistant.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

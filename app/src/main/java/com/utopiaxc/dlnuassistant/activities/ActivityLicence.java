@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
-import com.utopiaxc.urpassistant.R;
+import com.utopiaxc.dlnuassistant.R;
 import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;
 

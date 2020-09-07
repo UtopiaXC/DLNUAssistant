@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.fragments;
+package com.utopiaxc.dlnuassistant.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,9 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dd.processbutton.FlatButton;
-import com.dd.processbutton.ProcessButton;
-import com.utopiaxc.urpassistant.ActivityMain;
-import com.utopiaxc.urpassistant.R;
+import com.utopiaxc.dlnuassistant.ActivityMain;
+import com.utopiaxc.dlnuassistant.R;
 
 public class FragmentTimeTable extends Fragment {
 

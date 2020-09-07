@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.fragments;
+package com.utopiaxc.dlnuassistant.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.activities.ActivityExamInfo;
-import com.utopiaxc.urpassistant.activities.ActivityGradeList;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.activities.ActivityExamInfo;
+import com.utopiaxc.dlnuassistant.activities.ActivityGradeList;
 import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;
 

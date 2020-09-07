@@ -10,8 +10,8 @@
         android:shortcutShortLabel="@string/exam_message">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.utopiaxc.urpassistant.activities.ActivityExamInfo"
-            android:targetPackage="com.utopiaxc.urpassistant" />
+            android:targetClass="com.utopiaxc.dlnuassistant.activities.ActivityExamInfo"
+            android:targetPackage="com.utopiaxc.dlnuassistant" />
     </shortcut>
 
     <shortcut
@@ -23,7 +23,7 @@
         android:shortcutShortLabel="@string/grade_list">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.utopiaxc.urpassistant.activities.ActivityGradeList"
-            android:targetPackage="com.utopiaxc.urpassistant" />
+            android:targetClass="com.utopiaxc.dlnuassistant.activities.ActivityGradeList"
+            android:targetPackage="com.utopiaxc.dlnuassistant" />
     </shortcut>
 </shortcuts>

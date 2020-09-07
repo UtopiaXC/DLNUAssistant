@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.utopiaxc.urpassistant.ActivityMain;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperTimeTable;
+import com.utopiaxc.dlnuassistant.ActivityMain;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;

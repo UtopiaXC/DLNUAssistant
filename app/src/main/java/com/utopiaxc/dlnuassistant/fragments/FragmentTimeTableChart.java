@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.fragments;
+package com.utopiaxc.dlnuassistant.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
@@ -32,20 +31,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.dd.processbutton.FlatButton;
-import com.utopiaxc.urpassistant.ActivityMain;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.activities.ActivityEditor;
-import com.utopiaxc.urpassistant.activities.ActivityUpdateEditor;
-import com.utopiaxc.urpassistant.fuctions.FunctionsPublicBasic;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperTimeTable;
+import com.utopiaxc.dlnuassistant.ActivityMain;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.activities.ActivityEditor;
+import com.utopiaxc.dlnuassistant.activities.ActivityUpdateEditor;
+import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
-import com.zhuangfei.timetable.listener.OnFlaglayoutClickAdapter;
-import com.zhuangfei.timetable.listener.OnSpaceItemClickAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

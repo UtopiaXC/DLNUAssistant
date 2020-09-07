@@ -1,4 +1,4 @@
-package com.utopiaxc.urpassistant.activities;
+package com.utopiaxc.dlnuassistant.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,8 +12,8 @@ import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.utopiaxc.urpassistant.ActivityMain;
-import com.utopiaxc.urpassistant.R;
+import com.utopiaxc.dlnuassistant.ActivityMain;
+import com.utopiaxc.dlnuassistant.R;
 
 import java.util.Objects;
 

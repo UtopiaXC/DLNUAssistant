@@ -1,8 +1,7 @@
-package com.utopiaxc.urpassistant.fragments;
+package com.utopiaxc.dlnuassistant.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -23,11 +22,9 @@ import androidx.fragment.app.Fragment;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
-import com.utopiaxc.urpassistant.R;
-import com.utopiaxc.urpassistant.activities.ActivityExamInfo;
-import com.utopiaxc.urpassistant.fuctions.FunctionsPublicBasic;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperExamInfo;
-import com.utopiaxc.urpassistant.sqlite.SQLHelperTimeTable;
+import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
+import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
