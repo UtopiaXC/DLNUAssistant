@@ -27,6 +27,7 @@
     <string name="user">User</string>
     <string name="vpn_message">VPN Account</string>
     <string name="urp_user">URP Account</string>
+    <string name="urp_message">URP Account</string>
     <string name="vpn_account">VPN Account</string>
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
@@ -124,4 +125,5 @@
     <string name="grade_got_error">Grades Did Not Got!\n</string>
     <string name="get_all_warning_message">If Successful,All The Information You Corrected Yourself Will Be Lost!\n
     Please Sync Under School NetWork Or Using VPN!</string>
+    <string name="label_network">School Network</string>
 </resources>

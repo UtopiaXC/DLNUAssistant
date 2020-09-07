@@ -62,6 +62,11 @@
         <activity
             android:name=".activities.ActivityUpdateEditor"
             android:label="@string/course_editor" />
+
+        <activity
+            android:name=".activities.ActivityNetwork"
+            android:label="@string/label_network" />
+
     </application>
 
 </manifest>

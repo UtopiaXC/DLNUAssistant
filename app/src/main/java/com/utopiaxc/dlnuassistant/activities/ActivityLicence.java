@@ -137,10 +137,8 @@ public class ActivityLicence extends AppCompatActivity {
 
     //返回键
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
         }
         return true;
     }

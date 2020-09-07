@@ -102,74 +102,64 @@ public class FragmentCenter extends Fragment {
                                 })
                                 .create()
                                 .show();
-
                     }
                 });
         userCenter.addMessageItem(ItemUserCard_user);
 
         //添加地址选框
         AboutPageMessageItem ItemUserCard_address = new AboutPageMessageItem(getActivity())
-                .setIcon(getActivity().getDrawable(R.drawable.account))
+                .setIcon(getActivity().getDrawable(R.drawable.urpaccount))
                 .setMainText(getString(R.string.urp_user))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        final AlertDialog.Builder setAccount = new AlertDialog.Builder(getActivity());
-                        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
-                        final EditText login_name = linearLayout.findViewById(R.id.login_username);
-                        final EditText login_password = linearLayout.findViewById(R.id.login_password);
-                        Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
-                        setAccount.setTitle(getString(R.string.urp_user));
-                        if (isSet.equals(true))
-                            setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_user) + getActivity().getString(R.string.configured));
-                        setAccount.setView(linearLayout)
-                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String username = login_name.getText().toString();
-                                        String password = login_password.getText().toString();
-                                        if (!username.equals("") && !password.equals("")) {
-                                            editor.putString("username", username);
-                                            editor.putString("password", password);
-                                            editor.putBoolean("UserIsSet", true);
-                                            editor.commit();
-                                        }
-                                    }
-                                })
-                                .create()
-                                .show();
+                .setOnItemClickListener(() -> {
+                    final AlertDialog.Builder setAccount = new AlertDialog.Builder(getActivity());
+                    LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
+                    final EditText login_name = linearLayout.findViewById(R.id.login_username);
+                    final EditText login_password = linearLayout.findViewById(R.id.login_password);
+                    Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
+                    setAccount.setTitle(getString(R.string.urp_message));
+                    if (isSet.equals(true))
+                        setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_user) + getActivity().getString(R.string.configured));
+                    setAccount.setView(linearLayout)
+                            .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                String username = login_name.getText().toString();
+                                String password = login_password.getText().toString();
+                                if (!username.equals("") && !password.equals("")) {
+                                    editor.putString("username", username);
+                                    editor.putString("password", password);
+                                    editor.putBoolean("UserIsSet", true);
+                                    editor.commit();
+                                }
+                            })
+                            .create()
+                            .show();
 
-                    }
                 });
         userCenter.addMessageItem(ItemUserCard_address);
 
 
         //添加测试选框
         AboutPageMessageItem ItemUserCard_test = new AboutPageMessageItem(getActivity())
-                .setIcon(getActivity().getDrawable(R.drawable.test))
+                .setIcon(Objects.requireNonNull(getActivity()).getDrawable(R.drawable.test))
                 .setMainText(getString(R.string.test))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder
-                                .setTitle(getActivity().getString(R.string.warning))
-                                .setMessage(getActivity().getString(R.string.warning_message))
-                                .setNeutralButton(getActivity().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        testDialog = ProgressDialog.show(getActivity(), getText(R.string.test), getString(R.string.testing), true);
-                                        new Thread(new check()).start();
-                                    }
-                                })
-                                .create()
-                                .show();
-                    }
+                .setOnItemClickListener(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))
+                            .setMessage(getActivity().getString(R.string.warning_message))
+                            .setNeutralButton(getActivity().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    testDialog = ProgressDialog.show(getActivity(), getText(R.string.test), getString(R.string.testing), true);
+                                    new Thread(new check()).start();
+                                }
+                            })
+                            .create()
+                            .show();
                 });
         userCenter.addMessageItem(ItemUserCard_test);
 
@@ -177,24 +167,21 @@ public class FragmentCenter extends Fragment {
         AboutPageMessageItem ItemUserCard_getAll = new AboutPageMessageItem(getActivity())
                 .setIcon(getActivity().getDrawable(R.drawable.sync_all))
                 .setMainText(getString(R.string.sync_all))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder
-                                .setTitle(getActivity().getString(R.string.warning))
-                                .setMessage(getActivity().getString(R.string.get_all_warning_message))
-                                .setNeutralButton(getActivity().getString(R.string.cancel), null)
-                                .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        testDialog = ProgressDialog.show(getActivity(), getText(R.string.sync_all), getString(R.string.syncing), true);
-                                        new Thread(new sync()).start();
-                                    }
-                                })
-                                .create()
-                                .show();
-                    }
+                .setOnItemClickListener(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))
+                            .setMessage(getActivity().getString(R.string.get_all_warning_message))
+                            .setNeutralButton(getActivity().getString(R.string.cancel), null)
+                            .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    testDialog = ProgressDialog.show(getActivity(), getText(R.string.sync_all), getString(R.string.syncing), true);
+                                    new Thread(new sync()).start();
+                                }
+                            })
+                            .create()
+                            .show();
                 });
         userCenter.addMessageItem(ItemUserCard_getAll);
     }
@@ -204,14 +191,14 @@ public class FragmentCenter extends Fragment {
 
         //添加设置选框
         AboutPageMessageItem ItemSelectionCenter_settings = new AboutPageMessageItem(getActivity())
-                .setIcon(getActivity().getDrawable(R.drawable.settings))
+                .setIcon(Objects.requireNonNull(getActivity()).getDrawable(R.drawable.settings))
                 .setMainText(getString(R.string.settings))
                 .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
                     @Override
                     public void onClick() {
                         Intent intent = new Intent(getActivity(), ActivitySettings.class);
                         startActivity(intent);
-                        getActivity().finish();
+                        Objects.requireNonNull(getActivity()).finish();
                     }
                 });
         selectionCenter.addMessageItem(ItemSelectionCenter_settings);
@@ -272,7 +259,7 @@ public class FragmentCenter extends Fragment {
             testDialog.dismiss();
             if (isUseful) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(getActivity().getString(R.string.config_useful))
+                        .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.config_useful))
                         .setPositiveButton(getActivity().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -282,12 +269,9 @@ public class FragmentCenter extends Fragment {
                         .create().show();
             } else {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(getActivity().getString(R.string.config_useless))
-                        .setPositiveButton(getActivity().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setMessage(Objects.requireNonNull(getActivity()).getString(R.string.config_useless))
+                        .setPositiveButton(getActivity().getString(R.string.confirm), (dialog, which) -> {
 
-                            }
                         })
                         .create().show();
             }
@@ -304,21 +288,18 @@ public class FragmentCenter extends Fragment {
             testDialog.dismiss();
             String result = "";
             if (ClassIsGot && ExamIsGot && GradeIsGot)
-                result = getActivity().getString(R.string.all_successful);
+                result = Objects.requireNonNull(getActivity()).getString(R.string.all_successful);
             if (!ClassIsGot)
-                result+=getActivity().getString(R.string.course_got_error);
+                result+= Objects.requireNonNull(getActivity()).getString(R.string.course_got_error);
             if (!ExamIsGot)
-                result+=getActivity().getString(R.string.exam_got_error);
+                result+= Objects.requireNonNull(getActivity()).getString(R.string.exam_got_error);
             if (!GradeIsGot)
-                result+=getActivity().getString(R.string.grade_got_error);
+                result+= Objects.requireNonNull(getActivity()).getString(R.string.grade_got_error);
             new AlertDialog.Builder(getActivity())
                     .setTitle(getActivity().getString(R.string.alert))
                     .setMessage(result)
-                    .setPositiveButton(getActivity().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                    .setPositiveButton(getActivity().getString(R.string.confirm), (dialog, which) -> {
 
-                        }
                     })
                     .create().show();
         }

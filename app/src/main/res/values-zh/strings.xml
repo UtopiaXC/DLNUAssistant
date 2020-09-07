@@ -35,6 +35,7 @@
     <string name="user">用户</string>
     <string name="vpn_message">VPN账号</string>
     <string name="urp_user">URP 帐号</string>
+    <string name="urp_message">URP 帐号（默认为学号和身份证后六位）</string>
     <string name="vpn_account">VPN账号（默认为学号和身份证后八位）</string>
     <string name="user_name">账户名</string>
     <string name="password">密码</string>
@@ -121,7 +122,7 @@
     <string name="add_time_error">结束时间不应早于开始时间</string>
     <string name="display_or_hide_course">显示/隐藏当周无课项</string>
     <string name="starting_helper">
-        首先，感谢您选择URPAssistant\n\n
+        首先，感谢您选择URPAssistant大连民族大学专版\n\n
         这是一个使用教程及问题排查文档，由于您是第一次看到本消息，请您务必认真阅读\n\n
         #1 本教程仅会在您第一次启动该应用时自动出现，在您点击确认后本提醒不会再您的正常使用中出现。
         当然，如果您想再次阅读本消息，您只需要点击在中心->关于->教程与排查的选框便可再次阅读本消息。\n\n
@@ -141,6 +142,7 @@
     <string name="course_got_error">课程信息获取失败\n</string>
     <string name="exam_got_error">考试信息获取失败\n</string>
     <string name="grade_got_error">成绩信息获取失败\n</string>
-    <string name="get_all_warning_message">如果同步成功，您所有已在本地修改或添加的信息将被覆盖！\n
-    请在校园网或校园网VPN环境下进行此操作！</string>
+    <string name="get_all_warning_message">如果同步成功，您所有已在本地修改或添加的信息将被覆盖！\n</string>
+    <string name="label_network">校园网</string>
+
 </resources>

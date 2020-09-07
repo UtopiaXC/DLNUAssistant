@@ -473,4 +473,11 @@ public class FunctionsPublicBasic {
 
 
     }
+
+
+    public boolean setNetwork(){
+
+        return false;
+    }
+
 }
