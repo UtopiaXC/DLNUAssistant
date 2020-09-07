@@ -3,6 +3,7 @@ package com.utopiaxc.dlnuassistant.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.utopiaxc.dlnuassistant.R;
@@ -16,7 +17,7 @@ public class ActivityNetwork extends AppCompatActivity {
         int theme=sharedPreferences.getInt("theme", R.style.AppTheme);
         setTheme(theme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_licence);
+        setContentView(R.layout.activity_network);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
 

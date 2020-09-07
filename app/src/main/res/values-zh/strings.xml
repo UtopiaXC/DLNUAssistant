@@ -23,11 +23,13 @@
     <string name="tag_license">优秀的项目离不开开源项目的支持，感谢你们！</string>
     <string name="update_log">更新日志</string>
     <string name="update_log_info">DLNU Assistant\n
-        内测版\n
-        v0.0.1-beta\n
+        测试版\n
+        v0.0.1-beta02\n
         更新日志\n
-        #1 添加了大连民大校外资源访问VPN\n
-        #2 修复了部份bug\n
+        #1 新增部分资源文件\n
+        #2 添加了校园网查询框架（尚不可用）\n
+        #3 优化了部分爬虫算法\n
+        #4 优化部分算法逻辑\n
 
     </string>
     <string name="update_log_tag">最后一次更新内容</string>
