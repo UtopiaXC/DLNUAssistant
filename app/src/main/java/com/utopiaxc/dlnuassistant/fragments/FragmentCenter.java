@@ -146,17 +146,11 @@ public class FragmentCenter extends Fragment {
                     builder
                             .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))
                             .setMessage(getActivity().getString(R.string.warning_message))
-                            .setNeutralButton(getActivity().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
+                            .setNeutralButton(getActivity().getString(R.string.cancel), (dialog, which) -> {
                             })
-                            .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    testDialog = ProgressDialog.show(getActivity(), getText(R.string.test), getString(R.string.testing), true);
-                                    new Thread(new check()).start();
-                                }
+                            .setPositiveButton(getActivity().getString(R.string.start), (dialog, which) -> {
+                                testDialog = ProgressDialog.show(getActivity(), getText(R.string.test), getString(R.string.testing), true);
+                                new Thread(new check()).start();
                             })
                             .create()
                             .show();

@@ -8,16 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperExamInfo;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperGradesList;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +31,7 @@ public class FunctionsPublicBasic {
     private static Map<String, String> VPNCookies = null;
     private static String Address;
     private static Map<String, String> EDUCookies = null;
-    private static Document document=null;
+    private static Document document = null;
 
     public String getHTML(String address) {
         URL url;
@@ -59,7 +63,7 @@ public class FunctionsPublicBasic {
         }
     }
 
-    private static boolean getVPNCookie(String username, String password){
+    private static boolean getVPNCookie(String username, String password) {
         try {
             Connection.Response response = Jsoup.connect("http://210.30.0.110/do-login")
                     .ignoreContentType(true)
@@ -70,11 +74,11 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
             VPNCookies = response.cookies();
-            return true;
+            return false;
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("cookies error");
-            return false;
+            return true;
         }
     }
 
@@ -87,22 +91,22 @@ public class FunctionsPublicBasic {
                     .execute();
 
             Document doc = response.parse();
-            Elements elements=doc.getElementsByClass("vpn-content-block-panel__collect_ed");
-            for (Element element:elements){
-                if (element.toString().contains("http://zhjw.dlnu.edu.cn")){
-                    String url=element.toString().replace(" ","");
-                    url=url.replace("\n","");
-                    url=url.replace("<divclass=\"vpn-content-block-panel__collect_ed\"data-resource=\"12\"data-url=\"http://zhjw.dlnu.edu.cn\"data-redirect=\"","");
-                    url=url.replace("\"data-name=\"综合教务\"data-type=\"vpn\"data-logo=\"\"data-detail=\"zhjw.dlnu.edu.cn\"><iclass=\"layui-iconlayui-icon-rate\"></i></div>","");
-                    Address="http://210.30.0.110"+url;
-                    return true;
+            Elements elements = doc.getElementsByClass("vpn-content-block-panel__collect_ed");
+            for (Element element : elements) {
+                if (element.toString().contains("http://zhjw.dlnu.edu.cn")) {
+                    String url = element.toString().replace(" ", "");
+                    url = url.replace("\n", "");
+                    url = url.replace("<divclass=\"vpn-content-block-panel__collect_ed\"data-resource=\"12\"data-url=\"http://zhjw.dlnu.edu.cn\"data-redirect=\"", "");
+                    url = url.replace("\"data-name=\"综合教务\"data-type=\"vpn\"data-logo=\"\"data-detail=\"zhjw.dlnu.edu.cn\"><iclass=\"layui-iconlayui-icon-rate\"></i></div>", "");
+                    Address = "http://210.30.0.110" + url;
+                    return false;
                 }
             }
         } catch (Exception e) {
             System.out.println(e.toString());
-            return false;
+            return true;
         }
-        return false;
+        return true;
     }
 
     //登录教务并获取cookie的方法
@@ -115,11 +119,11 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
             EDUCookies = response.cookies();
-            return true;
+            return false;
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("cookies error");
-            return false;
+            return true;
         }
     }
 
@@ -133,24 +137,24 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
 
-            document=response.parse();
-            return true;
+            document = response.parse();
+            return false;
         } catch (Exception e) {
             System.out.println(e.toString());
-            return false;
+            return true;
         }
     }
 
     //测试账号密码及教务地址的方法
-    public boolean testURP(String VPNName,String VPNPass,String username, String password) {
+    public boolean testURP(String VPNName, String VPNPass, String username, String password) {
         try {
-            if (!getVPNCookie(VPNName,VPNPass))
+            if (getVPNCookie(VPNName, VPNPass))
                 return false;
-            if (!getAddress())
+            if (getAddress())
                 return false;
-            if (!getEDUCookies( username, password))
+            if (getEDUCookies(username, password))
                 return false;
-            if (!getDocument(Address + "/xkAction.do?actionType=17"))
+            if (getDocument(Address + "/xkAction.do?actionType=17"))
                 return false;
             String line = document.toString();
 
@@ -173,16 +177,16 @@ public class FunctionsPublicBasic {
     }
 
     //处理课程表的方法
-    public boolean setClassTableSQL(Context context,String VPNName,String VPNPass, String username, String password) {
+    public boolean setClassTableSQL(Context context, String VPNName, String VPNPass, String username, String password) {
         try {
             //判断Cookie是否正确获取
-            if (!getVPNCookie(VPNName,VPNPass))
+            if (getVPNCookie(VPNName, VPNPass))
                 return false;
-            if (!getAddress())
+            if (getAddress())
                 return false;
-            if (!getEDUCookies( username, password))
+            if (getEDUCookies(username, password))
                 return false;
-            if (!getDocument(Address + "/xkAction.do?actionType=17"))
+            if (getDocument(Address + "/xkAction.do?actionType=17"))
                 return false;
 
             //寻找全部带有odd标签的课程
@@ -190,7 +194,7 @@ public class FunctionsPublicBasic {
             String[] messages_last = new String[30];
 
             //数据库打开
-            SQLHelperTimeTable sql = new SQLHelperTimeTable(context, "URP_timetable",null,2);
+            SQLHelperTimeTable sql = new SQLHelperTimeTable(context, "URP_timetable", null, 2);
             SQLiteDatabase sqliteDatabase = sql.getWritableDatabase();
             sqliteDatabase.execSQL("delete from classes");
 
@@ -232,29 +236,31 @@ public class FunctionsPublicBasic {
                 messages[11] = messages[11].replace("周上", "");
                 messages[11] = messages[11].replace(";", "");
 
-                if(messages[11].contains("双周")){
-                    messages[11]=messages[11].replace("双周","");
-                    String[] divide=messages[11].split("-");
-                    for(String divide_check:divide){
-                        divide_check.replace("-","");
+                if (messages[11].contains("双周")) {
+                    messages[11] = messages[11].replace("双周", "");
+                    String[] divide = messages[11].split("-");
+                    for (String divide_check : divide) {
+                        divide_check.replace("-", "");
                     }
-                    for(int i=Integer.parseInt(divide[0]);i<=Integer.parseInt(divide[1]);i++){
-                        if(i%2==0){
-                            messages[11]+=i+",";
+                    messages[11]="";
+                    for (int i = Integer.parseInt(divide[0]); i <= Integer.parseInt(divide[1]); i++) {
+                        if (i % 2 == 0) {
+                            messages[11] += i + ",";
                         }
                     }
                     messages[11] = messages[11].substring(0, messages[11].length() - 1);
                 }
 
-                if(messages[11].contains("单周")){
-                    messages[11]=messages[11].replace("单周","");
-                    String[] divide=messages[11].split("-");
-                    for(String divide_check:divide){
-                        divide_check.replace("-","");
+                if (messages[11].contains("单周")) {
+                    messages[11] = messages[11].replace("单周", "");
+                    String[] divide = messages[11].split("-");
+                    for (String divide_check : divide) {
+                        divide_check.replace("-", "");
                     }
-                    for(int i=Integer.parseInt(divide[0]);i<=Integer.parseInt(divide[1]);i++){
-                        if(i%2==1){
-                            messages[11]+=i+",";
+                    messages[11]="";
+                    for (int i = Integer.parseInt(divide[0]); i <= Integer.parseInt(divide[1]); i++) {
+                        if (i % 2 == 1) {
+                            messages[11] += i + ",";
                         }
                     }
                     messages[11] = messages[11].substring(0, messages[11].length() - 1);
@@ -288,13 +294,13 @@ public class FunctionsPublicBasic {
                 values.put("ExamAttribute", messages[6].replace(";", ""));
                 values.put("Teacher", messages[7].replace(";", ""));
                 values.put("Way", messages[9].replace(";", ""));
-                values.put("Week",messages[11]);
-                values.put("Data",messages[12].replace(";", ""));
-                values.put("Time",messages[13].replace(";", ""));
-                values.put("Count",messages[14].replace(";", ""));
-                values.put("School",messages[15].replace(";", ""));
-                values.put("Building",messages[16].replace(";", ""));
-                values.put("Room",messages[17].replace(";", ""));
+                values.put("Week", messages[11]);
+                values.put("Data", messages[12].replace(";", ""));
+                values.put("Time", messages[13].replace(";", ""));
+                values.put("Count", messages[14].replace(";", ""));
+                values.put("School", messages[15].replace(";", ""));
+                values.put("Building", messages[16].replace(";", ""));
+                values.put("Room", messages[17].replace(";", ""));
 
                 //插入数据表
                 sqliteDatabase.insert("classes", null, values);
@@ -311,9 +317,9 @@ public class FunctionsPublicBasic {
             cursor.close();
             */
 
-            SharedPreferences sharedPreferences=context.getSharedPreferences("TimeTable",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putBoolean("ClassIsGot",true);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("ClassIsGot", true);
             editor.commit();
 
             sqliteDatabase.close();
@@ -328,50 +334,50 @@ public class FunctionsPublicBasic {
     }
 
     //处理成绩表的方法
-    public boolean setGrades(Context context, String VPNName,String VPNPass, String username, String password){
+    public boolean setGrades(Context context, String VPNName, String VPNPass, String username, String password) {
         //判断Cookie是否正确获取
-        if (!getVPNCookie(VPNName,VPNPass))
+        if (getVPNCookie(VPNName, VPNPass))
             return false;
-        if (!getAddress())
+        if (getAddress())
             return false;
-        if (!getEDUCookies( username, password))
+        if (getEDUCookies(username, password))
             return false;
-        if (!getDocument(Address + "/gradeLnAllAction.do?type=ln&oper=sxinfo&lnsxdm=001"))
+        if (getDocument(Address + "/gradeLnAllAction.do?type=ln&oper=sxinfo&lnsxdm=001"))
             return false;
 
-        try{
-            SQLHelperGradesList sqlHelperGradesList=new SQLHelperGradesList(context,"URP_Grade",null,2);
-            SQLiteDatabase sqLiteDatabase=sqlHelperGradesList.getWritableDatabase();
+        try {
+            SQLHelperGradesList sqlHelperGradesList = new SQLHelperGradesList(context, "URP_Grade", null, 2);
+            SQLiteDatabase sqLiteDatabase = sqlHelperGradesList.getWritableDatabase();
             sqLiteDatabase.execSQL("delete from grades");
 
 
             Elements elements_all_course = document.getElementsByClass("odd");
-            for(Element element_single_course:elements_all_course){
-                Elements elements_single_course=element_single_course.getElementsByTag("td");
+            for (Element element_single_course : elements_all_course) {
+                Elements elements_single_course = element_single_course.getElementsByTag("td");
                 String[] messages_single_sign = new String[20];
-                int flag=0;
-                for(Element element_single_sign:elements_single_course){
-                    messages_single_sign[flag]=element_single_sign.toString();
+                int flag = 0;
+                for (Element element_single_sign : elements_single_course) {
+                    messages_single_sign[flag] = element_single_sign.toString();
                     flag++;
                 }
 
-                for(int i=0;i<flag;i++){
-                    messages_single_sign[i]=messages_single_sign[i].replace(" ","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<tdalign=\"center\">","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("</td>","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("&nbsp;","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<palign=\"center\">","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("</p>","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<td>","");
+                for (int i = 0; i < flag; i++) {
+                    messages_single_sign[i] = messages_single_sign[i].replace(" ", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<tdalign=\"center\">", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("</td>", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("&nbsp;", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<palign=\"center\">", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("</p>", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<td>", "");
                 }
-                ContentValues values=new ContentValues();
-                values.put("ClassId",messages_single_sign[0]);
-                values.put("ClassName",messages_single_sign[2]);
-                values.put("Credit",messages_single_sign[4]);
-                values.put("ClassAttribute",messages_single_sign[5]);
-                values.put("Grade",messages_single_sign[6]);
+                ContentValues values = new ContentValues();
+                values.put("ClassId", messages_single_sign[0]);
+                values.put("ClassName", messages_single_sign[2]);
+                values.put("Credit", messages_single_sign[4]);
+                values.put("ClassAttribute", messages_single_sign[5]);
+                values.put("Grade", messages_single_sign[6]);
 
-                sqLiteDatabase.insert("grades",null,values);
+                sqLiteDatabase.insert("grades", null, values);
             }
 
             //SQL测试
@@ -383,15 +389,15 @@ public class FunctionsPublicBasic {
             cursor.close();
             */
 
-            SharedPreferences sharedPreferences=context.getSharedPreferences("Grades",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putBoolean("GradeIsGot",true);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Grades", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("GradeIsGot", true);
             editor.commit();
             sqLiteDatabase.close();
 
             return true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
             return false;
         }
@@ -400,52 +406,52 @@ public class FunctionsPublicBasic {
     }
 
     //处理考试信息表的方法
-    public boolean setExamInfo(Context context,String VPNName,String VPNPass, String username, String password){
-        if (!getVPNCookie(VPNName,VPNPass))
+    public boolean setExamInfo(Context context, String VPNName, String VPNPass, String username, String password) {
+        if (getVPNCookie(VPNName, VPNPass))
             return false;
-        if (!getAddress())
+        if (getAddress())
             return false;
-        if (!getEDUCookies( username, password))
+        if (getEDUCookies(username, password))
             return false;
-        if(!getDocument(Address+"/ksApCxAction.do?oper=getKsapXx"))
+        if (getDocument(Address + "/ksApCxAction.do?oper=getKsapXx"))
             return false;
-        try{
-            SQLHelperExamInfo sqlHelperExamInfo=new SQLHelperExamInfo(context,"URP_Exam",null,2);
-            SQLiteDatabase sqLiteDatabase=sqlHelperExamInfo.getWritableDatabase();
+        try {
+            SQLHelperExamInfo sqlHelperExamInfo = new SQLHelperExamInfo(context, "URP_Exam", null, 2);
+            SQLiteDatabase sqLiteDatabase = sqlHelperExamInfo.getWritableDatabase();
             sqLiteDatabase.execSQL("delete from exams");
 
 
             Elements elements_all_course = document.getElementsByClass("odd");
-            for(Element element_single_course:elements_all_course){
-                Elements elements_single_course=element_single_course.getElementsByTag("td");
+            for (Element element_single_course : elements_all_course) {
+                Elements elements_single_course = element_single_course.getElementsByTag("td");
                 String[] messages_single_sign = new String[20];
-                int flag=0;
-                for(Element element_single_sign:elements_single_course){
-                    messages_single_sign[flag]=element_single_sign.toString();
+                int flag = 0;
+                for (Element element_single_sign : elements_single_course) {
+                    messages_single_sign[flag] = element_single_sign.toString();
                     flag++;
                 }
 
 
-                for(int i=0;i<flag;i++){
-                    messages_single_sign[i]=messages_single_sign[i].replace(" ","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<tdalign=\"center\">","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("</td>","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("&nbsp;","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<palign=\"center\">","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("</p>","");
-                    messages_single_sign[i]=messages_single_sign[i].replace("<td>","");
+                for (int i = 0; i < flag; i++) {
+                    messages_single_sign[i] = messages_single_sign[i].replace(" ", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<tdalign=\"center\">", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("</td>", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("&nbsp;", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<palign=\"center\">", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("</p>", "");
+                    messages_single_sign[i] = messages_single_sign[i].replace("<td>", "");
                 }
 
 
-                ContentValues values=new ContentValues();
-                values.put("ExamName",messages_single_sign[4]);
-                values.put("ExamSchool",messages_single_sign[1]);
-                values.put("ExamBuilding",messages_single_sign[2]);
-                values.put("ExamRoom",messages_single_sign[3]);
-                values.put("ExamData",messages_single_sign[5]);
-                values.put("ExamTime",messages_single_sign[6]);
+                ContentValues values = new ContentValues();
+                values.put("ExamName", messages_single_sign[4]);
+                values.put("ExamSchool", messages_single_sign[1]);
+                values.put("ExamBuilding", messages_single_sign[2]);
+                values.put("ExamRoom", messages_single_sign[3]);
+                values.put("ExamData", messages_single_sign[5]);
+                values.put("ExamTime", messages_single_sign[6]);
 
-                sqLiteDatabase.insert("exams",null,values);
+                sqLiteDatabase.insert("exams", null, values);
 
             }
 
@@ -458,15 +464,15 @@ public class FunctionsPublicBasic {
             cursor.close();
             */
 
-            SharedPreferences sharedPreferences=context.getSharedPreferences("ExamInfo",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putBoolean("ExamInfoIsGot",true);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("ExamInfo", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("ExamInfoIsGot", true);
             editor.commit();
             sqLiteDatabase.close();
 
             return true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
             return false;
         }
@@ -474,10 +480,166 @@ public class FunctionsPublicBasic {
 
     }
 
+    //爬取网络信息中心的方法
+    public boolean setNetwork(String VPNName, String VPNPass, String username, String password) {
+        try {
+            String NetAddress = null;
+            if (getVPNCookie(VPNName, VPNPass))
+                return false;
+            Connection.Response response = Jsoup.connect("http://210.30.0.110/")
+                    .userAgent(userAgent)
+                    .cookies(VPNCookies)
+                    .method(Connection.Method.GET)
+                    .execute();
 
-    public boolean setNetwork(){
+            Document doc = response.parse();
+            //System.out.println(response.parse().toString());
+            Elements elements = doc.getElementsByClass("vpn-content-block-panel__collect_ed");
+            for (Element element : elements) {
+                if (element.toString().contains("http://www.dlnu.edu.cn")) {
+                    String url = element.toString().replace(" ", "");
+                    url = url.replace("\n", "");
+                    url = url.replace("<divclass=\"vpn-content-block-panel__collect_ed\"data-resource=\"18\"data-url=\"http://www.dlnu.edu.cn\"data-redirect=\"", "");
+                    url = url.replace("/\"data-name=\"主页\"data-type=\"vpn\"data-logo=\"\"data-detail=\"www.dlnu.edu.cn\"><iclass=\"layui-iconlayui-icon-rate\"></i></div>", "");
+                    NetAddress = "http://210.30.0.110" + url + "/hhh/index.htm";
+                    break;
+                }
+            }
+            response = Jsoup.connect(NetAddress)
+                    .userAgent(userAgent)
+                    .cookies(VPNCookies)
+                    .method(Connection.Method.GET)
+                    .execute();
+            doc = response.parse();
+            //System.out.println(response.parse().toString());
+            elements = doc.getElementsByTag("span");
+            for (Element element : elements) {
+                if (element.toString().contains("网络与信息技术中心")) {
+                    NetAddress = element.toString().replace("<span><a href=\"", "");
+                    NetAddress = NetAddress.replace("\" target=\"_blank\">网络与信息技术中心</a></span>", "");
+                    break;
+                }
+            }
 
+            response = Jsoup.connect(NetAddress)
+                    .userAgent(userAgent)
+                    .cookies(VPNCookies)
+                    .method(Connection.Method.GET)
+                    .execute();
+            doc = response.parse();
+
+            //System.out.println(response.parse().toString());
+
+
+            elements = doc.getElementsByClass("txt-elise wow animated fadeInUp");
+            for (Element element : elements) {
+                if (element.toString().contains("上网自助服务")) {
+                    NetAddress = element.toString().split("\"")[3];
+                    break;
+                }
+            }
+
+
+            response = Jsoup.connect(NetAddress + "nav_login")
+                    .ignoreContentType(true)
+                    .userAgent(userAgent)
+                    .cookies(VPNCookies)
+                    .method(Connection.Method.GET)
+                    .execute();
+            doc = response.parse();
+            String pattern = "checkcode=\"\\d{4}\"";
+
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(doc.toString());
+            String checkcode = "";
+            if (m.find()) {
+                checkcode = m.group().replace("checkcode=\"", "");
+                checkcode = checkcode.replace("\"", "");
+            }
+
+            doGet(NetAddress + "RandomCodeAction.action");
+
+            response = Jsoup.connect(NetAddress + "LoginAction.action")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .cookies(VPNCookies)
+                    .userAgent(userAgent)
+                    .data("account", username)
+                    .data("password", md5(password))
+                    .data("code", "")
+                    .data("checkcode", checkcode)
+                    .data("Submit", "登 录")
+                    .method(Connection.Method.POST)
+                    .execute();
+
+            //System.out.println(response.parse().toString());
+
+
+//            response = Jsoup.connect(NetAddress + "nav_getUserInfo")
+//                    .cookies(VPNCookies)
+//                    .ignoreContentType(true)
+//                    .userAgent(userAgent)
+//                    .method(Connection.Method.GET)
+//                    .execute();
+//
+//            System.out.println(response.parse().toString());
+//            response = Jsoup.connect(NetAddress + "nav_offLine")
+//                    .cookies(VPNCookies)
+//                    .ignoreContentType(true)
+//                    .userAgent(userAgent)
+//                    .method(Connection.Method.GET)
+//                    .execute();
+//            doc = response.parse();
+//            elements = doc.getElementsByTag("td");
+//            String code = null;
+//            for (Element element : elements) {
+//                if (element.toString().contains("display:none"))
+//                    code = element.toString().replace("<td style=\"display:none;\">", "").replace("</td>", "");
+//            }
+
+
+//            doGet(NetAddress+"tooffline?fldsessionid="+code);
+//            Thread.sleep(1000);
+//            doGet(NetAddress+"tooffline?fldsessionid="+code);
+//            Thread.sleep(1000);
+//            doGet(NetAddress+"tooffline?fldsessionid="+code);
+//            Thread.sleep(1000);
+
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //验证登录信息的方法
+    public boolean checkNet(){
         return false;
+    }
+
+    //get爬虫方法
+    private void doGet(String address) {
+        try {
+            Jsoup.connect(address)
+                    .ignoreContentType(true)
+                    .cookies(VPNCookies)
+                    .userAgent(userAgent)
+                    .method(Connection.Method.GET)
+                    .execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //MD5信息摘要算法
+    public static String md5(String string) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(string.getBytes());
+            return new BigInteger(1, md.digest()).toString(16);
+        } catch (Exception e) {
+            return "ERROR";
+        }
     }
 
 }
