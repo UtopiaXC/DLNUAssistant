@@ -19,9 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.utopiaxc.dlnuassistant.R;
 import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
 
-
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class ActivityNetwork extends AppCompatActivity {
@@ -117,7 +115,7 @@ public class ActivityNetwork extends AppCompatActivity {
                 isLogout=true;
                 messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
             }else {
-                isLogout = true;
+                isLogout = false;
                 messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
             }
         }

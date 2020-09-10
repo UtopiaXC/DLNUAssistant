@@ -90,7 +90,7 @@ public class ActivityMain extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         sharedPreferences =this.getSharedPreferences("user", MODE_PRIVATE);
-        boolean UserIsSet=sharedPreferences.getBoolean("UserIsSet",false);
+        boolean UserIsSet=sharedPreferences.getBoolean("URPIsSet",false);
         boolean AddressIsSet = sharedPreferences.getBoolean("VPNIsSet", false);
 
         //设置主fragment

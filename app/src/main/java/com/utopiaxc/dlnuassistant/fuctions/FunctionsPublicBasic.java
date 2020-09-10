@@ -619,7 +619,7 @@ public class FunctionsPublicBasic {
 //            doGet(NetAddress+"tooffline?fldsessionid="+code);
 //            Thread.sleep(1000);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Login Network Error");
             return false;
         }
     }
@@ -694,23 +694,18 @@ public class FunctionsPublicBasic {
         }
         int onlineCode = 0;
         Document document = doGet(NetAddress + "nav_offLine");
-        Elements elements = document.getElementsByTag("td");
-        for (Element element : elements) {
-            if (element.toString().contains("style=\"display:none;\"")) {
-                try {
-                    onlineCode = Integer.parseInt(elements.toString().replace("<td style=\"display:none;\">", "")
-                            .replace("</td>", ""));
-                    break;
-                }catch (Exception e){
-
-                }
+        Elements elements=document.getElementsByTag("td");
+        for (Element element:elements){
+            try{
+                onlineCode=Integer.parseInt(element.text());
+            }catch (Exception e){
 
             }
         }
         System.out.println(onlineCode);
-
         for (int i = 0; i < 5; i++) {
             doGet(NetAddress + "tooffline?fldsessionid=" + onlineCode);
+            System.out.println("Do Logout With "+NetAddress+"tooffline?fldsessionid=" + onlineCode);
         }
         return true;
     }
@@ -726,7 +721,7 @@ public class FunctionsPublicBasic {
                     .execute();
             return response.parse();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Get Error With "+address);
             return null;
         }
     }
