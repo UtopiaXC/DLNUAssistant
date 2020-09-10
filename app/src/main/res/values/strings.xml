@@ -131,6 +131,8 @@
     <string name="vpn_not_set">Your vpn account not set!</string>
     <string name="net_user_is_correct">Sorry,your network account or vpn account is not correct!</string>
     <string name="net_user_not_correct">Success!Your network account have set.</string>
-
+    <string name="net_user_settings_title">Please input your network account</string>
+    <string name="check_network_account">Checking your account</string>
+    <string name="checking">Checking</string>
 
 </resources>
