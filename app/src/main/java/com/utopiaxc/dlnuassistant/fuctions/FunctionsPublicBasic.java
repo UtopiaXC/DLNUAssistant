@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -632,24 +633,86 @@ public class FunctionsPublicBasic {
         Document messagesDoc = doGet(NetAddress + "refreshaccount");
         JSONObject jsonObject = JSON.parseObject(messagesDoc.body().toString().replace("<body>", "").replace("</body>", ""));
 
-        messages.put("account", "账户："+jsonObject.getJSONObject("note").get("welcome"));
+        messages.put("account", "账户：" + jsonObject.getJSONObject("note").get("welcome"));
         messages.put("balance", "余额：￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
-        if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString())==1){
-            messages.put("online","状态：在线");
-        }else
-            messages.put("online","状态：离线");
-        String set=jsonObject.getJSONObject("note").get("service").toString();
+        if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
+            messages.put("online", "状态：在线");
+        } else
+            messages.put("online", "状态：离线");
+        String set = jsonObject.getJSONObject("note").get("service").toString();
         if (set.contains("30G"))
-            set=set.replace("30G","300G");
+            set = set.replace("30G", "300G");
         else if (set.contains("20G"))
-            set=set.replace("20G","200G");
+            set = set.replace("20G", "200G");
         else if (set.contains("10G"))
-            set=set.replace("10G","100G");
-        messages.put("set","套餐："+set);
+            set = set.replace("10G", "100G");
+        messages.put("set", "套餐：\n" + set);
+        messages.put("overdate", "当月" + jsonObject.getJSONObject("note").get("overdate").toString().replace("为", "：").replace("；", ""));
+
+        messagesDoc = doGet(NetAddress + "nav_getUserInfo");
+        Elements elements = messagesDoc.getElementsByTag("tr");
+        for (Element element : elements) {
+            if (element.toString().contains("本月时长")) {
+                String usedTime = element.toString().replace("\n", "")
+                        .replace(" ", "")
+                        .replace("<trclass=\"tr2\"><tdclass=\"t_l\">本月时长（分钟）</td><!--0004_PersonList.jsp=本月时长（分钟）--><tdclass=\"t_r1\">&nbsp;", "")
+                        .replace("</td><tdclass=\"t_r2\">&nbsp;</td></tr>", "");
+                DecimalFormat df = new DecimalFormat("#.00");
+                String unit = "分钟";
+                if (Integer.parseInt(usedTime) >= 60) {
+                    double usage = Integer.parseInt(usedTime) / 60.0;
+                    unit = "小时";
+                    usedTime = df.format(usage);
+                }
+                messages.put("usedtime", "当月使用时长：" + usedTime + unit);
+            }
+            if (element.toString().contains("本月流量")) {
+                double usedBand = Double.parseDouble(element.toString().replace("\n", "")
+                        .replace(" ", "")
+                        .replace("<tr><tdclass=\"t_l\">本月流量（MB）</td><!--0005_PersonList.jsp=本月流量（MB）--><tdclass=\"t_r1\">&nbsp;", "")
+                        .replace("</td><tdclass=\"t_r2\">&nbsp;</td></tr>", ""));
+                String unit = "MB";
+                DecimalFormat df = new DecimalFormat("#.00");
+                String usedBandString = df.format(usedBand);
+                if (usedBand > 1024) {
+                    double usage = usedBand / 1024.0;
+                    unit = " GB";
+                    usedBandString = df.format(usage);
+                }
+                messages.put("usedband", "当月已用流量：" + usedBandString + unit);
+            }
+        }
 
 
         return true;
 
+    }
+
+    public boolean logoutNetwork(String VPNName, String VPNPass, String username, String password) {
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return false;
+        }
+        int onlineCode = 0;
+        Document document = doGet(NetAddress + "nav_offLine");
+        Elements elements = document.getElementsByTag("td");
+        for (Element element : elements) {
+            if (element.toString().contains("style=\"display:none;\"")) {
+                try {
+                    onlineCode = Integer.parseInt(elements.toString().replace("<td style=\"display:none;\">", "")
+                            .replace("</td>", ""));
+                    break;
+                }catch (Exception e){
+
+                }
+
+            }
+        }
+        System.out.println(onlineCode);
+
+        for (int i = 0; i < 5; i++) {
+            doGet(NetAddress + "tooffline?fldsessionid=" + onlineCode);
+        }
+        return true;
     }
 
     //get爬虫方法
