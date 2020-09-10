@@ -146,5 +146,8 @@
     <string name="grade_got_error">成绩信息获取失败\n</string>
     <string name="get_all_warning_message">如果同步成功，您所有已在本地修改或添加的信息将被覆盖！\n</string>
     <string name="label_network">校园网</string>
+    <string name="success">成功</string>
+    <string name="success_get_timetable">成功获取课程表，请先在右上角菜单设置初始周数</string>
+
 
 </resources>

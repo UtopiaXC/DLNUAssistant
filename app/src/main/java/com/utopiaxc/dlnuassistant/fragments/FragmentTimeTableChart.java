@@ -192,13 +192,21 @@ public class FragmentTimeTableChart extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timetable_chart, container, false);
         System.out.println("fragmentTimeTableChart被创建");
-        SharedPreferences sharedPreferences_curWeek = getActivity().getSharedPreferences("TempWeek", getActivity().MODE_PRIVATE);
+        SharedPreferences sharedPreferences_curWeek = Objects.requireNonNull(getActivity()).getSharedPreferences("TempWeek", Context.MODE_PRIVATE);
         boolean tempWeek = sharedPreferences_curWeek.getBoolean("isCurWeek", true);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", getActivity().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
         String start = sharedPreferences.getString("StartWeek", "NULL");
         if (tempWeek) {
+            assert start != null;
             if (start.equals("NULL")) {
                 getActivity().setTitle(getString(R.string.title_table) + "-" + "第1周");
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(getString(R.string.success))
+                        .setMessage(getString(R.string.success_get_timetable))
+                        .setPositiveButton(getString(R.string.confirm), (dialogInterface, i) -> {
+                        })
+                        .create()
+                        .show();
             } else {
 
                 try {
@@ -209,14 +217,14 @@ public class FragmentTimeTableChart extends Fragment {
                     int end_week = calendar.get(Calendar.WEEK_OF_YEAR);
                     calendar.setTime(dateFormat.parse(start));
                     int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                    int start_year=calendar.get(Calendar.YEAR);
-                    calendar.setTime(dateFormat.parse(start_year+"-12-25 00:00:00"));
-                    int sum_start_year_weeks=calendar.get(Calendar.WEEK_OF_YEAR);
+                    int start_year = calendar.get(Calendar.YEAR);
+                    calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
+                    int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
                     int weeks = end_week - start_week + 1;
-                    if(weeks<1){
-                            int sum_weeks=sum_start_year_weeks-start_week+end_week+1;
-                            System.out.println(sum_weeks);
-                            getActivity().setTitle(getString(R.string.title_table) + "-" + "第" + sum_weeks + "周");
+                    if (weeks < 1) {
+                        int sum_weeks = sum_start_year_weeks - start_week + end_week + 1;
+                        System.out.println(sum_weeks);
+                        getActivity().setTitle(getString(R.string.title_table) + "-" + "第" + sum_weeks + "周");
 
                     } else {
                         getActivity().setTitle(getString(R.string.title_table) + "-" + "第" + weeks + "周");
@@ -294,10 +302,10 @@ public class FragmentTimeTableChart extends Fragment {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TempWeek", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                boolean isCurWeek=true;
-                int curWeek=timetableView.curWeek();
-                if(curWeek==1)
-                    isCurWeek=false;
+                boolean isCurWeek = true;
+                int curWeek = timetableView.curWeek();
+                if (curWeek == 1)
+                    isCurWeek = false;
 
                 editor.putBoolean("isCurWeek", false);
 
@@ -309,19 +317,19 @@ public class FragmentTimeTableChart extends Fragment {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setFirstDayOfWeek(2);
                         int end_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                        int end_year=calendar.get(Calendar.YEAR);
+                        int end_year = calendar.get(Calendar.YEAR);
                         calendar.setTime(dateFormat.parse(start));
                         int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                        int start_year=calendar.get(Calendar.YEAR);
+                        int start_year = calendar.get(Calendar.YEAR);
                         int weeks = end_week - start_week + 1;
 
-                        calendar.setTime(dateFormat.parse(start_year+"-12-25 00:00:00"));
-                        int sum_start_year_weeks=calendar.get(Calendar.WEEK_OF_YEAR);
+                        calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
+                        int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
 
 
                         if (weeks < 1)
-                            if(end_year!=start_year)
-                                editor.putInt("Week", sum_start_year_weeks-start_week+end_week);
+                            if (end_year != start_year)
+                                editor.putInt("Week", sum_start_year_weeks - start_week + end_week);
                             else
                                 editor.putInt("Week", 1);
                         else
@@ -368,7 +376,7 @@ public class FragmentTimeTableChart extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 int cur = timetableView.curWeek();
-                System.out.println("CurWeek is "+cur);
+                System.out.println("CurWeek is " + cur);
                 boolean isCurWeek = true;
                 if (cur == 1)
                     isCurWeek = false;
@@ -382,18 +390,18 @@ public class FragmentTimeTableChart extends Fragment {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setFirstDayOfWeek(2);
                         int end_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                        int end_year=calendar.get(Calendar.YEAR);
+                        int end_year = calendar.get(Calendar.YEAR);
                         calendar.setTime(dateFormat.parse(start));
                         int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                        int start_year=calendar.get(Calendar.YEAR);
+                        int start_year = calendar.get(Calendar.YEAR);
                         int weeks = end_week - start_week + 1;
 
-                        calendar.setTime(dateFormat.parse(start_year+"-12-25 00:00:00"));
-                        int sum_start_year_weeks=calendar.get(Calendar.WEEK_OF_YEAR);
+                        calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
+                        int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
 
                         if (weeks < 1)
-                            if(end_year!=start_year)
-                                editor.putInt("Week", sum_start_year_weeks-start_week+end_week+2);
+                            if (end_year != start_year)
+                                editor.putInt("Week", sum_start_year_weeks - start_week + end_week + 2);
                             else
                                 editor.putInt("Week", 1);
                         else
@@ -518,8 +526,6 @@ public class FragmentTimeTableChart extends Fragment {
                     .showView();
             return;
         }
-
-
 
 
         timetableView.curWeek(start)
@@ -664,7 +670,7 @@ public class FragmentTimeTableChart extends Fragment {
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            if (!function.setClassTableSQL(getActivity(), VPNName,VPNPass,username,password)) {
+            if (!function.setClassTableSQL(getActivity(), VPNName, VPNPass, username, password)) {
                 handlerMessage = "fail";
                 handler.sendMessage(handler.obtainMessage());
             } else {
@@ -700,7 +706,18 @@ public class FragmentTimeTableChart extends Fragment {
             } else {
                 handlerMessage = "";
                 getTimetableDialog.dismiss();
-                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_LONG);
+                SharedPreferences sharedPreferences_t = Objects.requireNonNull(getActivity()).getSharedPreferences("TempWeek", Context.MODE_PRIVATE);
+                String start = sharedPreferences_t.getString("StartWeek", "NULL");
+                assert start != null;
+                if (start.equals("NULL")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(getString(R.string.success))
+                            .setMessage(getString(R.string.success_get_timetable))
+                            .setPositiveButton(getString(R.string.confirm), (dialogInterface, i) -> {
+                            })
+                            .create()
+                            .show();
+                }
                 setTimetableView();
             }
         }

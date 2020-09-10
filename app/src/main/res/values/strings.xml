@@ -126,4 +126,6 @@
     <string name="get_all_warning_message">If Successful,All The Information You Corrected Yourself Will Be Lost!\n
     Please Sync Under School NetWork Or Using VPN!</string>
     <string name="label_network">School Network</string>
+    <string name="success">Success</string>
+    <string name="success_get_timetable">Successfully get timetable, Please set the first week at settings first.</string>
 </resources>
