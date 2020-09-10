@@ -6,10 +6,13 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperExamInfo;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperGradesList;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperTimeTable;
 
+import org.json.JSONArray;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -621,27 +624,28 @@ public class FunctionsPublicBasic {
     }
 
 
-
     //填写校园网信息方法
-    public Map getNetworkMessages(String VPNName, String VPNPass, String username, String password) {
-        Map<String,String> messages=new HashMap<>();
-        if (!loginNetwork(VPNName, VPNPass, username,password)){
-            messages.put("isSuccess","False");
-            return messages;
+    public boolean getNetworkMessages(String VPNName, String VPNPass, String username, String password, HashMap messages) {
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return false;
         }
-        Document messagesDoc=doGet(NetAddress+"nav_getUserInfo");
+        Document messagesDoc = doGet(NetAddress + "refreshaccount");
+        JSONObject jsonObject = JSON.parseObject(messagesDoc.body().toString().replace("<body>", "").replace("</body>", ""));
 
-        Elements elements=messagesDoc.getElementsByTag("tr");
-        for (Element element:elements){
-            if (element.toString().contains("余额")) {
-                String balance=element.toString().replace("\n","")
-                        .replace(" ","");
-                System.out.println(balance);
+        messages.put("account", "账户：" + jsonObject.getJSONObject("note").get("welcome"));
+        messages.put("balance", "余额：￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
+        if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
+            messages.put("online", "状态：在线");
+        } else
+            messages.put("online", "状态：离线");
+        String set = jsonObject.getJSONObject("note").get("service").toString();
+        set.replace("30G", "300G");
+        set.replace("20G", "200G");
+        set.replace("10G", "100G");
+        messages.put("set", "套餐：" + set);
 
-                messages.put("balance",balance);
-            }
-        }
-        return messages;
+
+        return true;
 
     }
 
