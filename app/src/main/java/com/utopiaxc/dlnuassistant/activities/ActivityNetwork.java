@@ -115,6 +115,8 @@ public class ActivityNetwork extends AppCompatActivity {
                 textViewCondition.setVisibility(View.VISIBLE);
                 textViewSet.setText(messages.get("set"));
                 textViewSet.setVisibility(View.VISIBLE);
+                buttonChangeSet.setVisibility(View.VISIBLE);
+                buttonChangeSet.setText("更改套餐");
             }else{
                 new AlertDialog.Builder(context)
                         .setTitle(Objects.requireNonNull(context).getString(R.string.warning))

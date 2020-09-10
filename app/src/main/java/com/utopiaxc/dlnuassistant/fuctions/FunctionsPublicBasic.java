@@ -632,17 +632,20 @@ public class FunctionsPublicBasic {
         Document messagesDoc = doGet(NetAddress + "refreshaccount");
         JSONObject jsonObject = JSON.parseObject(messagesDoc.body().toString().replace("<body>", "").replace("</body>", ""));
 
-        messages.put("account", "账户：" + jsonObject.getJSONObject("note").get("welcome"));
+        messages.put("account", "账户："+jsonObject.getJSONObject("note").get("welcome"));
         messages.put("balance", "余额：￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
-        if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
-            messages.put("online", "状态：在线");
-        } else
-            messages.put("online", "状态：离线");
-        String set = jsonObject.getJSONObject("note").get("service").toString();
-        set.replace("30G", "300G");
-        set.replace("20G", "200G");
-        set.replace("10G", "100G");
-        messages.put("set", "套餐：" + set);
+        if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString())==1){
+            messages.put("online","状态：在线");
+        }else
+            messages.put("online","状态：离线");
+        String set=jsonObject.getJSONObject("note").get("service").toString();
+        if (set.contains("30G"))
+            set=set.replace("30G","300G");
+        else if (set.contains("20G"))
+            set=set.replace("20G","200G");
+        else if (set.contains("10G"))
+            set=set.replace("10G","100G");
+        messages.put("set","套餐："+set);
 
 
         return true;
