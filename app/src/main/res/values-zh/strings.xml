@@ -148,6 +148,7 @@
     <string name="label_network">校园网</string>
     <string name="success">成功</string>
     <string name="success_get_timetable">成功获取课程表，请先在右上角菜单设置初始周数</string>
-
-
+    <string name="vpn_not_set">您的VPN账户还未设置，请前往中心进行设置！</string>
+    <string name="net_user_is_correct">抱歉，验证失败。请检查您的网络账号或VPN账号是否正确</string>
+    <string name="net_user_not_correct">成功！您的网络账号已设置！</string>
 </resources>

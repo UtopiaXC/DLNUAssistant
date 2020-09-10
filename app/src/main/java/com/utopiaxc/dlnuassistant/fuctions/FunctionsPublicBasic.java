@@ -34,6 +34,7 @@ public class FunctionsPublicBasic {
     private static Map<String, String> EDUCookies = null;
     private static Document document = null;
 
+    //获取指定网站的dom文档的方法
     public String getHTML(String address) {
         URL url;
         int responsecode;
@@ -64,6 +65,7 @@ public class FunctionsPublicBasic {
         }
     }
 
+    //获取网页VPN Cookie的方法
     private static boolean getVPNCookie(String username, String password) {
         try {
             Connection.Response response = Jsoup.connect("http://210.30.0.110/do-login")
@@ -83,6 +85,7 @@ public class FunctionsPublicBasic {
         }
     }
 
+    //获取综合教务地址的方法
     private static boolean getAddress() {
         try {
             Connection.Response response = Jsoup.connect("http://210.30.0.110/")
@@ -481,8 +484,8 @@ public class FunctionsPublicBasic {
 
     }
 
-    //爬取网络信息中心的方法
-    public boolean setNetwork(String VPNName, String VPNPass, String username, String password) {
+    //登录网络信息中心的方法
+    public boolean loginNetwork(String VPNName, String VPNPass, String username, String password) {
         try {
             String NetAddress = null;
             if (getVPNCookie(VPNName, VPNPass))
@@ -572,6 +575,11 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
 
+            if (!response.parse().toString().contains("套餐"))
+                return false;
+            else
+                return true;
+
             //System.out.println(response.parse().toString());
 
 
@@ -604,9 +612,6 @@ public class FunctionsPublicBasic {
 //            Thread.sleep(1000);
 //            doGet(NetAddress+"tooffline?fldsessionid="+code);
 //            Thread.sleep(1000);
-
-
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

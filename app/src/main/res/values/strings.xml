@@ -128,4 +128,9 @@
     <string name="label_network">School Network</string>
     <string name="success">Success</string>
     <string name="success_get_timetable">Successfully get timetable, Please set the first week at settings first.</string>
+    <string name="vpn_not_set">Your vpn account not set!</string>
+    <string name="net_user_is_correct">Sorry,your network account or vpn account is not correct!</string>
+    <string name="net_user_not_correct">Success!Your network account have set.</string>
+
+
 </resources>

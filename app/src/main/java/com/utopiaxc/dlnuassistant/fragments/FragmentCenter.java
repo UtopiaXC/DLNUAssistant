@@ -78,7 +78,7 @@ public class FragmentCenter extends Fragment {
                     LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
                     final EditText login_name = linearLayout.findViewById(R.id.login_username);
                     final EditText login_password = linearLayout.findViewById(R.id.login_password);
-                    Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
+                    Boolean isSet = sharedPreferences.getBoolean("VPNIsSet", false);
                     setAccount.setTitle(getString(R.string.vpn_account));
                     if (isSet.equals(true))
                         setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.vpn_account) + getActivity().getString(R.string.configured));
@@ -98,7 +98,7 @@ public class FragmentCenter extends Fragment {
                 });
         userCenter.addMessageItem(ItemUserCard_user);
 
-        //添加地址选框
+        //添加URP选框
         AboutPageMessageItem ItemUserCard_address = new AboutPageMessageItem(getActivity())
                 .setIcon(getActivity().getDrawable(R.drawable.urpaccount))
                 .setMainText(getString(R.string.urp_user))
@@ -107,7 +107,7 @@ public class FragmentCenter extends Fragment {
                     LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
                     final EditText login_name = linearLayout.findViewById(R.id.login_username);
                     final EditText login_password = linearLayout.findViewById(R.id.login_password);
-                    Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
+                    Boolean isSet = sharedPreferences.getBoolean("URPIsSet", false);
                     setAccount.setTitle(getString(R.string.urp_message));
                     if (isSet.equals(true))
                         setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_user) + getActivity().getString(R.string.configured));
@@ -118,7 +118,7 @@ public class FragmentCenter extends Fragment {
                                 if (!username.equals("") && !password.equals("")) {
                                     editor.putString("username", username);
                                     editor.putString("password", password);
-                                    editor.putBoolean("UserIsSet", true);
+                                    editor.putBoolean("URPIsSet", true);
                                     editor.commit();
                                 }
                             })
