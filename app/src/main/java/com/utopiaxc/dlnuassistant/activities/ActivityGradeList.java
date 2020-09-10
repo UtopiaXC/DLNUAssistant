@@ -3,7 +3,6 @@ package com.utopiaxc.dlnuassistant.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ActivityGradeList extends AppCompatActivity {
     private ListView listView;
@@ -39,7 +39,7 @@ public class ActivityGradeList extends AppCompatActivity {
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gradelist);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
 
         //预绑定
@@ -51,10 +51,7 @@ public class ActivityGradeList extends AppCompatActivity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
                     .setMessage(R.string.first_get_grades)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
+                    .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
                     })
                     .create()
                     .show();
@@ -80,7 +77,7 @@ public class ActivityGradeList extends AppCompatActivity {
     private void setListView(){
         SQLHelperGradesList sqlHelperGradesList = new SQLHelperGradesList(this,"URP_Grade",null,2);
         SQLiteDatabase sqLiteDatabase=sqlHelperGradesList.getReadableDatabase();
-        List<Map<String, Object>> listitem = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> listitem = new ArrayList<>();
 
         String[] course_name=new String[200];
         String[] credit=new String[200];
@@ -99,7 +96,7 @@ public class ActivityGradeList extends AppCompatActivity {
 
 
         for (int i = 0; i <flag; i++) {
-            Map<String, Object> showitem = new HashMap<String, Object>();
+            Map<String, Object> showitem = new HashMap<>();
 
             showitem.put("name", course_name[i]);
             showitem.put("credit", credit[i]);
@@ -127,13 +124,12 @@ public class ActivityGradeList extends AppCompatActivity {
             String password = sharedPreferences.getString("password", "");
             if(function.setGrades(context,VPNName,VPNPass,username,password)) {
                 handerMessgae="over";
-                messageHandler.sendMessage(messageHandler.obtainMessage());
 
             }
             else{
                 handerMessgae="fail";
-                messageHandler.sendMessage(messageHandler.obtainMessage());
             }
+            messageHandler.sendMessage(messageHandler.obtainMessage());
 
 
         }
@@ -156,10 +152,8 @@ public class ActivityGradeList extends AppCompatActivity {
 
     //返回键
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
         }
         return true;
     }

@@ -2,7 +2,7 @@ package com.utopiaxc.dlnuassistant.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FragmentAllCourseList extends Fragment {
     private ListView listView;
@@ -40,7 +41,7 @@ public class FragmentAllCourseList extends Fragment {
     //配置FragmentUI
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_course_list, container, false);
-        getActivity().setTitle(getString(R.string.title_table));
+        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.title_table));
 
         return view;
     }
@@ -55,15 +56,12 @@ public class FragmentAllCourseList extends Fragment {
         listView = view.findViewById(R.id.all_course_list);
         refresh = view.findViewById(R.id.all_course_refresh);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", getActivity().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
         if (!sharedPreferences.getBoolean("ClassIsGot", false))
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.warning)
                     .setMessage(R.string.first_get_grades)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
+                    .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
                     })
                     .create()
                     .show();
@@ -80,7 +78,7 @@ public class FragmentAllCourseList extends Fragment {
     public void setListView() {
         SQLHelperTimeTable sqlHelperTimeTable = new SQLHelperTimeTable(getActivity(), "URP_timetable", null, 2);
         SQLiteDatabase sqLiteDatabase = sqlHelperTimeTable.getReadableDatabase();
-        List<Map<String, Object>> listitem = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> listitem = new ArrayList<>();
 
         String[] course_name = new String[200];
         String[] attribute = new String[200];
@@ -94,7 +92,7 @@ public class FragmentAllCourseList extends Fragment {
         Cursor cursor = sqLiteDatabase.query("classes", new String[]{"ClassName", "ClassId", "Credit", "ClassAttribute", "ExamAttribute", "Teacher", "Week", "Data", "Time", "Count", "School", "Building", "Room"}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             course_name[flag] = cursor.getString(cursor.getColumnIndex("ClassName")) + "(" + cursor.getString(cursor.getColumnIndex("ClassId")) + ")";
-            attribute[flag] = getActivity().getString(R.string.attribute) + cursor.getString(cursor.getColumnIndex("ClassAttribute")) + " " + cursor.getString(cursor.getColumnIndex("ExamAttribute")) + "\t\t\t\t\t" + getActivity().getString(R.string.credit) + cursor.getString(cursor.getColumnIndex("Credit"));
+            attribute[flag] = Objects.requireNonNull(getActivity()).getString(R.string.attribute) + cursor.getString(cursor.getColumnIndex("ClassAttribute")) + " " + cursor.getString(cursor.getColumnIndex("ExamAttribute")) + "\t\t\t\t\t" + getActivity().getString(R.string.credit) + cursor.getString(cursor.getColumnIndex("Credit"));
             teacher[flag] = getActivity().getString(R.string.teacher) + cursor.getString(cursor.getColumnIndex("Teacher"));
             if (!cursor.getString(cursor.getColumnIndex("Week")).equals("^"))
                 location[flag] = getActivity().getString(R.string.room) + cursor.getString(cursor.getColumnIndex("School")) + "" + cursor.getString(cursor.getColumnIndex("Building")) + " " + cursor.getString(cursor.getColumnIndex("Room"));
@@ -116,7 +114,7 @@ public class FragmentAllCourseList extends Fragment {
 
 
         for (int i = 0; i < flag; i++) {
-            Map<String, Object> showitem = new HashMap<String, Object>();
+            Map<String, Object> showitem = new HashMap<>();
 
             showitem.put("name", course_name[i]);
             showitem.put("attribute", attribute[i]);
@@ -149,19 +147,18 @@ public class FragmentAllCourseList extends Fragment {
         public void run() {
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", getActivity().MODE_PRIVATE);
+            SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("user", Context.MODE_PRIVATE);
             String VPNName = sharedPreferences.getString("VPNName", "");
             String VPNPass = sharedPreferences.getString("VPNPass", "");
             String username = sharedPreferences.getString("username", "");
             String password = sharedPreferences.getString("password", "");
             if (function.setClassTableSQL(getActivity(), VPNName,VPNPass,username,password)) {
                 handerMessgae = "over";
-                messageHandler.sendMessage(messageHandler.obtainMessage());
 
             } else {
                 handerMessgae = "fail";
-                messageHandler.sendMessage(messageHandler.obtainMessage());
             }
+            messageHandler.sendMessage(messageHandler.obtainMessage());
         }
     }
 
@@ -170,7 +167,7 @@ public class FragmentAllCourseList extends Fragment {
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (handerMessgae.equals("fail")) {
+            if ("fail".equals(handerMessgae)) {
                 refresh.finishRefresh();
                 Toast.makeText(getActivity(), getString(R.string.refresh_failed), Toast.LENGTH_LONG).show();
             } else {

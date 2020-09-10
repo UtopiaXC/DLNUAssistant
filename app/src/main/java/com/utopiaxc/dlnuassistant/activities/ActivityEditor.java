@@ -1,9 +1,9 @@
 package com.utopiaxc.dlnuassistant.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,6 +30,7 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +59,7 @@ public class ActivityEditor extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("Theme", MODE_PRIVATE);
@@ -65,7 +67,7 @@ public class ActivityEditor extends AppCompatActivity {
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);//左侧添加一个默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         Intent intent = getIntent();
         data = intent.getIntExtra("data", 1);
@@ -97,128 +99,112 @@ public class ActivityEditor extends AppCompatActivity {
 
         Button button_weeks=findViewById(R.id.course_weeks_selector);
 
-        button_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_course_time, null);  //从另外的布局关联组件
-                AlertDialog.Builder setCourseTime = new AlertDialog.Builder(context);
-                NumberPicker numberPicker_start=linearLayout.findViewById(R.id.start_time_picker);
-                numberPicker_start.setMinValue(1);
-                numberPicker_start.setMaxValue(12);
-                numberPicker_start.setValue(start);
-                NumberPicker numberPicker_end=linearLayout.findViewById(R.id.end_time_picker);
-                numberPicker_end.setMinValue(1);
-                numberPicker_end.setMaxValue(12);
-                if(end!=0)
-                    numberPicker_end.setValue(end);
-                setCourseTime.setView(linearLayout)
-                        .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                start=numberPicker_start.getValue();
-                                end=numberPicker_end.getValue();
-                                if(end<start) {
-                                    Toast.makeText(context, getString(R.string.add_time_error), Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                button_time.setText(getString(R.string.starter)+start+" "+getString(R.string.ender)+end);
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.cancel),null)
-                        .create()
-                        .show();
-            }
+        button_time.setOnClickListener(v -> {
+            LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_course_time, null);  //从另外的布局关联组件
+            AlertDialog.Builder setCourseTime = new AlertDialog.Builder(context);
+            NumberPicker numberPicker_start=linearLayout.findViewById(R.id.start_time_picker);
+            numberPicker_start.setMinValue(1);
+            numberPicker_start.setMaxValue(12);
+            numberPicker_start.setValue(start);
+            NumberPicker numberPicker_end=linearLayout.findViewById(R.id.end_time_picker);
+            numberPicker_end.setMinValue(1);
+            numberPicker_end.setMaxValue(12);
+            if(end!=0)
+                numberPicker_end.setValue(end);
+            setCourseTime.setView(linearLayout)
+                    .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                        start=numberPicker_start.getValue();
+                        end=numberPicker_end.getValue();
+                        if(end<start) {
+                            Toast.makeText(context, getString(R.string.add_time_error), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        button_time.setText(getString(R.string.starter)+start+" "+getString(R.string.ender)+end);
+                    })
+                    .setNegativeButton(getString(R.string.cancel),null)
+                    .create()
+                    .show();
         });
 
-        button_week.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_week_selector, null);  //从另外的布局关联组件
-                AlertDialog.Builder setWeek = new AlertDialog.Builder(context);
-                SeekBar seekBar=linearLayout.findViewById(R.id.week_day_selector);
-                TextView textView=linearLayout.findViewById(R.id.week_day_display);
-                final int progress = data;
-                textView.setText(getString(R.string.selected_week)+ (progress+1));
-                seekBar.setProgress(data);
-                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        textView.setText(getString(R.string.selected_week)+(progress+1));
-                    }
+        button_week.setOnClickListener(v -> {
+            LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_week_selector, null);  //从另外的布局关联组件
+            AlertDialog.Builder setWeek = new AlertDialog.Builder(context);
+            SeekBar seekBar=linearLayout.findViewById(R.id.week_day_selector);
+            TextView textView=linearLayout.findViewById(R.id.week_day_display);
+            final int progress = data;
+            textView.setText(getString(R.string.selected_week)+ (progress+1));
+            seekBar.setProgress(data);
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    textView.setText(getString(R.string.selected_week)+(progress+1));
+                }
 
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
 
-                    }
+                }
 
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
 
-                    }
-                });
-                setWeek.setView(linearLayout)
-                        .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                data=seekBar.getProgress();
-                                button_week.setText(getString(R.string.week_day)+(data+1));
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.cancel),null)
-                        .create()
-                        .show();
-            }
+                }
+            });
+            setWeek.setView(linearLayout)
+                    .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                        data=seekBar.getProgress();
+                        button_week.setText(getString(R.string.week_day)+(data+1));
+                    })
+                    .setNegativeButton(getString(R.string.cancel),null)
+                    .create()
+                    .show();
         });
 
-        button_weeks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_weeks_selector, null);  //从另外的布局关联组件
-                AlertDialog.Builder setWeeks = new AlertDialog.Builder(context);
-                TagFlowLayout flowLayout=linearLayout.findViewById(R.id.weeks_selector);
+        button_weeks.setOnClickListener(view -> {
+            LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_weeks_selector, null);  //从另外的布局关联组件
+            AlertDialog.Builder setWeeks = new AlertDialog.Builder(context);
+            TagFlowLayout flowLayout=linearLayout.findViewById(R.id.weeks_selector);
 
-                List<String> list = new ArrayList<String>();
-                for(int i=1;i<26;i++)
-                    list.add(String.valueOf(i));
+            List<String> list = new ArrayList<>();
+            for(int i=1;i<26;i++)
+                list.add(String.valueOf(i));
 
-                TagAdapter tagAdapter = new TagAdapter(list) {
-                    @Override
-                    public View getView(FlowLayout parent, int position, Object o) {
+            @SuppressWarnings("ALL")
+            TagAdapter tagAdapter = new TagAdapter(list) {
+                @Override
+                public View getView(FlowLayout parent, int position, Object o) {
 
-                        TextView view = (TextView) View.inflate(context, R.layout.flowlayout_textview_selected, null);
-                        view.setText(list.get(position));
-                        return view;
-                    }
-                };
-                //预先设置选中
-                //tagAdapter.setSelectedList(set);
+                    TextView view = (TextView) View.inflate(context, R.layout.flowlayout_textview_selected, null);
+                    view.setText(list.get(position));
+                    return view;
+                }
+            };
+            //预先设置选中
+            //tagAdapter.setSelectedList(set);
 
-                flowLayout.setAdapter(tagAdapter);
+            flowLayout.setAdapter(tagAdapter);
 
-                //设置最大选中数
-                flowLayout.setMaxSelectCount(-1);
-
+            //设置最大选中数
+            flowLayout.setMaxSelectCount(-1);
 
 
-                setWeeks.setView(linearLayout)
-                        .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                set=flowLayout.getSelectedList();
-                                System.out.println(set);
-                                weeks="";
-                                for(int temp:set)
-                                    weeks+=(temp+1)+",";
-                                weeks=weeks.substring(0,weeks.length()-1);
-                                button_weeks.setText(weeks);
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.cancel),null)
-                        .create()
-                        .show();
+
+            setWeeks.setView(linearLayout)
+                    .setPositiveButton(getString(R.string.confirm), (dialogInterface, i) -> {
+                        set=flowLayout.getSelectedList();
+                        System.out.println(set);
+                        weeks="";
+                        for(int temp:set)
+                            //noinspection StringConcatenationInLoop
+                            weeks+=(temp+1)+",";
+                        weeks=weeks.substring(0,weeks.length()-1);
+                        button_weeks.setText(weeks);
+                    })
+                    .setNegativeButton(getString(R.string.cancel),null)
+                    .create()
+                    .show();
 
 
-            }
         });
 
     }
@@ -229,7 +215,7 @@ public class ActivityEditor extends AppCompatActivity {
         SharedPreferences sharedPreferences_toActivity = getSharedPreferences("FirstFragment", MODE_PRIVATE);
         SharedPreferences.Editor editor_toActivity = sharedPreferences_toActivity.edit();
         editor_toActivity.putInt("Start", 2);
-        editor_toActivity.commit();
+        editor_toActivity.apply();
         Intent intent = new Intent(this, ActivityMain.class);
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -343,11 +329,11 @@ public class ActivityEditor extends AppCompatActivity {
         if (isMatch || weeks.charAt(0) == ',' || weeks.charAt(weeks.length() - 1) == ',') {
             return false;
         }
-        String week[] = weeks.split(",");
+        String[] week = weeks.split(",");
         for (String week_match : week) {
             try {
                 week_match = week_match.replace(",", "");
-                int week_int = Integer.valueOf(week_match);
+                int week_int = Integer.parseInt(week_match);
                 if (week_int < 0 || week_int > 25) {
                     return false;
                 }
@@ -365,7 +351,7 @@ public class ActivityEditor extends AppCompatActivity {
         SharedPreferences sharedPreferences_toActivity = getSharedPreferences("FirstFragment", MODE_PRIVATE);
         SharedPreferences.Editor editor_toActivity = sharedPreferences_toActivity.edit();
         editor_toActivity.putInt("Start", 2);
-        editor_toActivity.commit();
+        editor_toActivity.apply();
 
         Intent intent = new Intent(this, ActivityMain.class);
         startActivity(intent);

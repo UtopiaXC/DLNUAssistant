@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 
 public class SQLHelperExamInfo extends SQLiteOpenHelper {
 
-    private static Integer Version = 1;
-
     public SQLHelperExamInfo(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }

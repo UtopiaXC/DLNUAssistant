@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,7 +37,6 @@ public class FragmentCenter extends Fragment {
     private FunctionsPublicBasic functions = new FunctionsPublicBasic();
     private boolean isUseful;
     private static ProgressDialog testDialog = null;
-    private Context context=getActivity();
     boolean ClassIsGot=false;
     boolean ExamIsGot=false;
     boolean GradeIsGot=false;
@@ -75,34 +73,28 @@ public class FragmentCenter extends Fragment {
         AboutPageMessageItem ItemUserCard_user = new AboutPageMessageItem(getActivity())
                 .setIcon(Objects.requireNonNull(getActivity()).getDrawable(R.drawable.account))
                 .setMainText(getString(R.string.vpn_message))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        final AlertDialog.Builder setAccount = new AlertDialog.Builder(getActivity());
-                        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
-                        final EditText login_name = linearLayout.findViewById(R.id.login_username);
-                        final EditText login_password = linearLayout.findViewById(R.id.login_password);
-                        Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
-                        setAccount.setTitle(getString(R.string.vpn_account));
-                        if (isSet.equals(true))
-                            setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.vpn_account) + getActivity().getString(R.string.configured));
-                        setAccount.setView(linearLayout)
-                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String username = login_name.getText().toString();
-                                        String password = login_password.getText().toString();
-                                        if (!username.equals("") && !password.equals("")) {
-                                            editor.putString("VPNName", username);
-                                            editor.putString("VPNPass", password);
-                                            editor.putBoolean("VPNIsSet", true);
-                                            editor.commit();
-                                        }
-                                    }
-                                })
-                                .create()
-                                .show();
-                    }
+                .setOnItemClickListener(() -> {
+                    final AlertDialog.Builder setAccount = new AlertDialog.Builder(getActivity());
+                    LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_account, null);  //从另外的布局关联组件
+                    final EditText login_name = linearLayout.findViewById(R.id.login_username);
+                    final EditText login_password = linearLayout.findViewById(R.id.login_password);
+                    Boolean isSet = sharedPreferences.getBoolean("UserIsSet", false);
+                    setAccount.setTitle(getString(R.string.vpn_account));
+                    if (isSet.equals(true))
+                        setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.vpn_account) + getActivity().getString(R.string.configured));
+                    setAccount.setView(linearLayout)
+                            .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                String username = login_name.getText().toString();
+                                String password = login_password.getText().toString();
+                                if (!username.equals("") && !password.equals("")) {
+                                    editor.putString("VPNName", username);
+                                    editor.putString("VPNPass", password);
+                                    editor.putBoolean("VPNIsSet", true);
+                                    editor.commit();
+                                }
+                            })
+                            .create()
+                            .show();
                 });
         userCenter.addMessageItem(ItemUserCard_user);
 
@@ -167,12 +159,9 @@ public class FragmentCenter extends Fragment {
                             .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))
                             .setMessage(getActivity().getString(R.string.get_all_warning_message))
                             .setNeutralButton(getActivity().getString(R.string.cancel), null)
-                            .setPositiveButton(getActivity().getString(R.string.start), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    testDialog = ProgressDialog.show(getActivity(), getText(R.string.sync_all), getString(R.string.syncing), true);
-                                    new Thread(new sync()).start();
-                                }
+                            .setPositiveButton(getActivity().getString(R.string.start), (dialog, which) -> {
+                                testDialog = ProgressDialog.show(getActivity(), getText(R.string.sync_all), getString(R.string.syncing), true);
+                                new Thread(new sync()).start();
                             })
                             .create()
                             .show();
@@ -187,13 +176,10 @@ public class FragmentCenter extends Fragment {
         AboutPageMessageItem ItemSelectionCenter_settings = new AboutPageMessageItem(getActivity())
                 .setIcon(Objects.requireNonNull(getActivity()).getDrawable(R.drawable.settings))
                 .setMainText(getString(R.string.settings))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        Intent intent = new Intent(getActivity(), ActivitySettings.class);
-                        startActivity(intent);
-                        Objects.requireNonNull(getActivity()).finish();
-                    }
+                .setOnItemClickListener(() -> {
+                    Intent intent = new Intent(getActivity(), ActivitySettings.class);
+                    startActivity(intent);
+                    Objects.requireNonNull(getActivity()).finish();
                 });
         selectionCenter.addMessageItem(ItemSelectionCenter_settings);
 
@@ -201,12 +187,9 @@ public class FragmentCenter extends Fragment {
         AboutPageMessageItem ItemSelectionCenter_about = new AboutPageMessageItem(getActivity())
                 .setIcon(getActivity().getDrawable(R.drawable.information))
                 .setMainText(getString(R.string.about))
-                .setOnItemClickListener(new AboutPageMessageItem.AboutPageOnItemClick() {
-                    @Override
-                    public void onClick() {
-                        Intent intent = new Intent(getActivity(), ActivityAbout.class);
-                        startActivity(intent);
-                    }
+                .setOnItemClickListener(() -> {
+                    Intent intent = new Intent(getActivity(), ActivityAbout.class);
+                    startActivity(intent);
                 });
         selectionCenter.addMessageItem(ItemSelectionCenter_about);
 
@@ -254,11 +237,8 @@ public class FragmentCenter extends Fragment {
             if (isUseful) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.config_useful))
-                        .setPositiveButton(getActivity().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setPositiveButton(getActivity().getString(R.string.confirm), (dialog, which) -> {
 
-                            }
                         })
                         .create().show();
             } else {

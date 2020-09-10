@@ -9,9 +9,10 @@ import android.widget.Toast;
 
 import com.utopiaxc.dlnuassistant.R;
 
+import java.util.Objects;
+
 public class WeidgtChart extends AppWidgetProvider {
     public static final String CLICK_ACTION = "com.utopiaxc.com.utopiaxc.dlnuassistant.weidgt.WeidgtChart.CLICK";
-    private static RemoteViews mRemoteViews;
 
     /**
      * 每删除一次窗口小部件就调用一次
@@ -49,7 +50,7 @@ public class WeidgtChart extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         //这里判断是自己的action，做自己的事情，比如小工具被点击了要干啥，这里是做来一个动画效果
-        if (intent.getAction().equals(CLICK_ACTION)) {
+        if (Objects.equals(intent.getAction(), CLICK_ACTION)) {
             Toast.makeText(context, "clicked it", Toast.LENGTH_SHORT).show();
 
         }
@@ -65,25 +66,16 @@ public class WeidgtChart extends AppWidgetProvider {
         System.out.println("onUpdate");
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        final int counter = appWidgetIds.length;
-        for (int i = 0; i < counter; i++) {
-            int appWidgetId = appWidgetIds[i];
+        for (int appWidgetId : appWidgetIds) {
             onWidgetUpdate(context, appWidgetManager, appWidgetId);
         }
 
     }
 
-    /**
-     * 窗口小部件更新
-     *
-     * @param context
-     * @param appWidgeManger
-     * @param appWidgetId
-     */
     private void onWidgetUpdate(Context context,
                                 AppWidgetManager appWidgeManger, int appWidgetId) {
 
-        mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.weidgt_chart);
+        RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.weidgt_chart);
 
         // "窗口小部件"点击事件发送的Intent广播
         Intent intentClick = new Intent();

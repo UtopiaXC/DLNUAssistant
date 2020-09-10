@@ -8,9 +8,6 @@ import androidx.annotation.Nullable;
 
 public class SQLHelperTimeTable extends SQLiteOpenHelper {
 
-    private static Integer Version = 1;
-
-
 
     public SQLHelperTimeTable(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

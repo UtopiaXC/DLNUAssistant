@@ -187,7 +187,7 @@ public class ActivityMain extends AppCompatActivity {
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (updateCheak.equals((String) getText(R.string.has_update))) {
+            if (updateCheak.contentEquals(getText(R.string.has_update))) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMain.this);
                 builder.setTitle(getString(R.string.download_newversion));
                 builder.setMessage(getString(R.string.has_update));
