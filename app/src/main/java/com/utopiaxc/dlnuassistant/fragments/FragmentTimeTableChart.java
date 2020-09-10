@@ -159,12 +159,10 @@ public class FragmentTimeTableChart extends Fragment {
                     editor1.putBoolean("HideCourse", false);
                 else
                     editor1.putBoolean("HideCourse", true);
-
                 editor1.apply();
                 Intent intent1 = new Intent(getActivity(), ActivityMain.class);
                 startActivity(intent1);
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

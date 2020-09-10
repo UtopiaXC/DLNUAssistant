@@ -24,11 +24,11 @@
     <string name="update_log">更新日志</string>
     <string name="update_log_info">DLNU Assistant\n
         测试版\n
-        v0.0.1-beta02\n
+        v0.0.1-beta03\n
         更新日志\n
-        #1 新增部分资源文件\n
-        #2 添加了校园网查询框架（尚不可用）\n
-        #3 优化了部分爬虫算法\n
+        #1 新增校园网相关功能\n
+        #2 修复了单双周课表算法\n
+        #3 优化了大量warning\n
         #4 优化部分算法逻辑\n
 
     </string>

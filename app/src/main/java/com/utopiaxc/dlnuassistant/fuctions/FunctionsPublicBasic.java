@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperExamInfo;
 import com.utopiaxc.dlnuassistant.sqlite.SQLHelperGradesList;
@@ -22,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,7 @@ public class FunctionsPublicBasic {
     private static String Address;
     private static Map<String, String> EDUCookies = null;
     private static Document document = null;
+    private static String NetAddress = null;
 
     //获取指定网站的dom文档的方法
     public String getHTML(String address) {
@@ -246,7 +249,7 @@ public class FunctionsPublicBasic {
                     for (String divide_check : divide) {
                         divide_check.replace("-", "");
                     }
-                    messages[11]="";
+                    messages[11] = "";
                     for (int i = Integer.parseInt(divide[0]); i <= Integer.parseInt(divide[1]); i++) {
                         if (i % 2 == 0) {
                             messages[11] += i + ",";
@@ -261,7 +264,7 @@ public class FunctionsPublicBasic {
                     for (String divide_check : divide) {
                         divide_check.replace("-", "");
                     }
-                    messages[11]="";
+                    messages[11] = "";
                     for (int i = Integer.parseInt(divide[0]); i <= Integer.parseInt(divide[1]); i++) {
                         if (i % 2 == 1) {
                             messages[11] += i + ",";
@@ -487,7 +490,6 @@ public class FunctionsPublicBasic {
     //登录网络信息中心的方法
     public boolean loginNetwork(String VPNName, String VPNPass, String username, String password) {
         try {
-            String NetAddress = null;
             if (getVPNCookie(VPNName, VPNPass))
                 return false;
             Connection.Response response = Jsoup.connect("http://210.30.0.110/")
@@ -618,22 +620,44 @@ public class FunctionsPublicBasic {
         }
     }
 
-    //验证登录信息的方法
-    public boolean checkNet(){
-        return false;
+
+
+    //填写校园网信息方法
+    public Map getNetworkMessages(String VPNName, String VPNPass, String username, String password) {
+        Map<String,String> messages=new HashMap<>();
+        if (!loginNetwork(VPNName, VPNPass, username,password)){
+            messages.put("isSuccess","False");
+            return messages;
+        }
+        Document messagesDoc=doGet(NetAddress+"nav_getUserInfo");
+
+        Elements elements=messagesDoc.getElementsByTag("tr");
+        for (Element element:elements){
+            if (element.toString().contains("余额")) {
+                String balance=element.toString().replace("\n","")
+                        .replace(" ","");
+                System.out.println(balance);
+
+                messages.put("balance",balance);
+            }
+        }
+        return messages;
+
     }
 
     //get爬虫方法
-    private void doGet(String address) {
+    private Document doGet(String address) {
         try {
-            Jsoup.connect(address)
+            Connection.Response response = Jsoup.connect(address)
                     .ignoreContentType(true)
                     .cookies(VPNCookies)
                     .userAgent(userAgent)
                     .method(Connection.Method.GET)
                     .execute();
+            return response.parse();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
