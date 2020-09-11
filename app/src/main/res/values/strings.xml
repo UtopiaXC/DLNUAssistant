@@ -173,5 +173,7 @@
     <string name="offline_all_device">Make all device offline</string>
     <string name="click_to_offline_all">-click to offline</string>
     <string name="no_device">No online device</string>
+    <string name="executing">Executing</string>
+    <string name="interrupt">Interrupt</string>
 
 </resources>

@@ -59,10 +59,10 @@ public class ActivityNetwork extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_progress, null);  //从另外的布局关联组件
         final TextView textView = linearLayout.findViewById(R.id.progressText);
-        textView.setText("正在操作");
-        builder.setTitle("请稍候");
+        textView.setText(getString(R.string.executing));
+        builder.setTitle(getString(R.string.please_wait));
         builder.setView(linearLayout);
-        builder.setPositiveButton("中断",listener);
+        builder.setPositiveButton(getString(R.string.interrupt),listener);
         builder.create();
         progress=builder.show();
     }

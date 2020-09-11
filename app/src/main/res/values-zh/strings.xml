@@ -194,5 +194,7 @@
     <string name="offline_all_device">确认强制下线所有设备？</string>
     <string name="click_to_offline_all">-点击下线所有设备</string>
     <string name="no_device">当前无在线设备</string>
+    <string name="executing">正在执行（中断不会撤销已执行的操作，只会中断未执行的操作）</string>
+    <string name="interrupt">中断</string>
 
 </resources>
