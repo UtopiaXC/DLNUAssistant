@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -581,6 +582,8 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
 
+            //System.out.println(response.parse().toString());
+
             if (!response.parse().toString().contains("套餐"))
                 return false;
             else
@@ -794,13 +797,23 @@ public class FunctionsPublicBasic {
 
     //MD5信息摘要算法
     public static String md5(String string) {
+        StringBuffer hexString = new StringBuffer();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(string.getBytes());
-            return new BigInteger(1, md.digest()).toString(16);
-        } catch (Exception e) {
+            byte[] hash = md.digest();
+            for (int i = 0; i < hash.length; i++) {
+                if ((0xff & hash[i]) < 0x10) {
+                    hexString.append("0" + Integer.toHexString((0xFF & hash[i])));
+                } else {
+                    hexString.append(Integer.toHexString(0xFF & hash[i]));
+                }
+            }
+        } catch (NoSuchAlgorithmException e) {
             return "ERROR";
         }
+        return hexString.toString();
+
     }
 
 }
