@@ -2,46 +2,30 @@ package com.utopiaxc.dlnuassistant.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.dd.processbutton.FlatButton;
-import com.utopiaxc.dlnuassistant.ActivityMain;
 import com.utopiaxc.dlnuassistant.R;
-import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTableChart;
 import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
-
 import java.util.HashMap;
 import java.util.Objects;
-
 import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;
 
 public class ActivityNetwork extends AppCompatActivity {
+    AlertDialog progress;
     private MessageCard messageCard;
     Context context;
-    @SuppressWarnings("deprecation")
-    private static ProgressDialog progressDialog = null;
     HashMap<String, String> messages;
     boolean messagesIsGot = false;
     boolean isLogout;
@@ -61,9 +45,26 @@ public class ActivityNetwork extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         Bind();
         context = this;
-        progressDialog = ProgressDialog.show(context, getString(R.string.getting), getString(R.string.getting_netmessage), true);
-        new Thread(new getMessages()).start();
 
+        //progressDialog = ProgressDialog.show(context, getString(R.string.getting), getString(R.string.getting_netmessage), true);
+        Thread getNetworkMessages=new Thread(new getMessages());
+        showProgress((dialogInterface, i) -> {
+            getNetworkMessages.interrupt();
+            finish();
+        });
+        getNetworkMessages.start();
+    }
+
+    public void showProgress(DialogInterface.OnClickListener listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_progress, null);  //从另外的布局关联组件
+        final TextView textView = linearLayout.findViewById(R.id.progressText);
+        textView.setText("正在操作");
+        builder.setTitle("请稍候");
+        builder.setView(linearLayout);
+        builder.setPositiveButton("中断",listener);
+        builder.create();
+        progress=builder.show();
     }
 
     @Override
@@ -227,7 +228,7 @@ public class ActivityNetwork extends AppCompatActivity {
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.cancel();
             if (messagesIsGot) {
                 AboutPageMessageItem aboutPageMessageItemAccount = new AboutPageMessageItem(context)
                         .setIcon(getDrawable(R.drawable.netuser))
@@ -299,7 +300,7 @@ public class ActivityNetwork extends AppCompatActivity {
                         .setDescriptionText(messages.get("usedband"))
                         .setOnItemClickListener(() -> new AlertDialog.Builder(context)
                                 .setTitle(getString(R.string.used_band))
-                                .setMessage("已用流量："+messages.get("usedband") + finalLeftBand)
+                                .setMessage("已用流量：" + messages.get("usedband") + finalLeftBand)
                                 .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                                 })
                                 .create().show());
@@ -334,8 +335,9 @@ public class ActivityNetwork extends AppCompatActivity {
                                         .setTitle(getString(R.string.warning))
                                         .setMessage(getString(R.string.offline_all_device))
                                         .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_ogffine), getString(R.string.please_wait), true);
-                                            new Thread(new logout()).start();
+                                            Thread makeoffline=new Thread(new logout());
+                                            showProgress((e1,e2)-> makeoffline.interrupt());
+                                            makeoffline.start();
                                         })
                                         .setNegativeButton(getString(R.string.cancel), null)
                                         .create().show();
@@ -348,38 +350,41 @@ public class ActivityNetwork extends AppCompatActivity {
                         .setMainText(getString(R.string.network_set))
                         .setDescriptionText(messages.get("set") + getString(R.string.click_to_bookset))
                         .setOnItemClickListener(() -> {
-                            progressDialog = ProgressDialog.show(context, getString(R.string.checking_book_statue), getString(R.string.please_wait), true);
-                            new Thread(new checkSet()).start();
+                            Thread checkBookSet= new Thread(new checkSet());
+                            showProgress((e1,e2)-> checkBookSet.interrupt());
+                            checkBookSet.start();
                         });
                 messageCard.addMessageItem(aboutPageMessageItemSet);
 
-                AboutPageMessageItem aboutPageMessageItemStatue = new AboutPageMessageItem(context)
-                        .setIcon(getDrawable(R.drawable.netstatue))
-                        .setMainText(getString(R.string.network_statue))
-                        .setDescriptionText(messages.get("statue") + getString(R.string.click_to_stop))
-                        .setOnItemClickListener(() -> {
-                            if (Objects.requireNonNull(messages.get("statue")).equals("停机")) {
-                                new AlertDialog.Builder(context)
-                                        .setTitle(getString(R.string.warning))
-                                        .setMessage(getString(R.string.confirm_to_reopen))
-                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_reopen), getString(R.string.please_wait), true);
-                                            new Thread(new reopenNet()).start();
-                                        })
-                                        .setNegativeButton(getString(R.string.cancel), null)
-                                        .create().show();
-                            } else {
-                                new AlertDialog.Builder(context)
-                                        .setTitle(getString(R.string.warning))
-                                        .setMessage(getString(R.string.confirm_stop_net))
-                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_stop_net), getString(R.string.please_wait), true);
-                                            new Thread(new stopNet()).start();
-                                        })
-                                        .setNegativeButton(getString(R.string.cancel), null)
-                                        .create().show();
-                            }
-                        });
+                AboutPageMessageItem aboutPageMessageItemStatue = new AboutPageMessageItem(context);
+                aboutPageMessageItemStatue.setIcon(getDrawable(R.drawable.netstatue));
+                aboutPageMessageItemStatue.setMainText(getString(R.string.network_statue));
+                aboutPageMessageItemStatue.setDescriptionText(messages.get("statue") + getString(R.string.click_to_stop));
+                aboutPageMessageItemStatue.setOnItemClickListener(() -> {
+                    if (Objects.requireNonNull(messages.get("statue")).equals("停机")) {
+                        new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.warning))
+                                .setMessage(getString(R.string.confirm_to_reopen))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                    Thread reopenNet = new Thread(new reopenNet());
+                                    showProgress((e1, e2) -> reopenNet.interrupt());
+                                    reopenNet.start();
+                                })
+                                .setNegativeButton(getString(R.string.cancel), null)
+                                .create().show();
+                    } else {
+                        new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.warning))
+                                .setMessage(getString(R.string.confirm_stop_net))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                    Thread stopNet = new Thread(new stopNet());
+                                    showProgress((e1, e2) -> stopNet.interrupt());
+                                    stopNet.start();
+                                })
+                                .setNegativeButton(getString(R.string.cancel), null)
+                                .create().show();
+                    }
+                });
                 messageCard.addMessageItem(aboutPageMessageItemStatue);
 
 
@@ -403,7 +408,7 @@ public class ActivityNetwork extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.dismiss();
             if (netFunction) {
                 new AlertDialog.Builder(context)
                         .setTitle(getString(R.string.success))
@@ -431,7 +436,7 @@ public class ActivityNetwork extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.dismiss();
             if (setCheckBack.equals("ERROR")) {
                 new AlertDialog.Builder(context)
                         .setTitle(getString(R.string.error))
@@ -462,14 +467,17 @@ public class ActivityNetwork extends AppCompatActivity {
                                     .setView(linearLayout)
                                     .setPositiveButton(getString(R.string.confirm), (dialog1, which1) -> {
                                         if (radioButtonTen.isChecked()) {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
-                                            new Thread(new bookSet(2)).start();
+                                            Thread setBookSet= new Thread(new bookSet(2));
+                                            showProgress((e1,e2)-> setBookSet.interrupt());
+                                            setBookSet.start();
                                         } else if (radioButtonTwenty.isChecked()) {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
-                                            new Thread(new bookSet(4)).start();
+                                            Thread setBookSet= new Thread(new bookSet(4));
+                                            showProgress((e1,e2)-> setBookSet.interrupt());
+                                            setBookSet.start();
                                         } else if (radioButtonThirty.isChecked()) {
-                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
-                                            new Thread(new bookSet(3)).start();
+                                            Thread setBookSet= new Thread(new bookSet(3));
+                                            showProgress((e1,e2)-> setBookSet.interrupt());
+                                            setBookSet.start();
                                         }
                                     })
                                     .create()
@@ -490,7 +498,7 @@ public class ActivityNetwork extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.dismiss();
             if (isLogout) {
                 new AlertDialog.Builder(context)
                         .setTitle(getString(R.string.success))
@@ -516,7 +524,7 @@ public class ActivityNetwork extends AppCompatActivity {
     private Handler messageHandlerBookSet = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.cancel();
             if (isBookedSet) {
                 new AlertDialog.Builder(context)
                         .setTitle(getString(R.string.success))
