@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#803FCC</color>
-    <color name="colorPrimaryDark">#601B99</color>
+    <color name="colorPrimaryDark">#803FCC</color>
     <color name="colorAccent">#803FCC</color>
 
     <color name="colorPrimary_blue">#0055FF</color>
-    <color name="colorPrimaryDark_blue">#0B0DA8</color>
+    <color name="colorPrimaryDark_blue">#0055FF</color>
     <color name="colorAccent_blue">#0055FF</color>
 
     <color name="colorPrimary_white">#FFFFFF</color>
     <color name="colorPrimaryDark_white">#D6D6D6</color>
-    <color name="colorAccent_white">#000000</color>
+    <color name="colorAccent_white">#D6D6D6</color>
 
     <color name="colorPrimary_yellow">#FFE200</color>
-    <color name="colorPrimaryDark_yellow">#D8CC4E</color>
+    <color name="colorPrimaryDark_yellow">#FFE200</color>
     <color name="colorAccent_yellow">#FFE200</color>
 
     <color name="colorPrimary_pink">#F48FB1</color>
-    <color name="colorPrimaryDark_pink">#EF9A9A</color>
+    <color name="colorPrimaryDark_pink">#F48FB1</color>
     <color name="colorAccent_pink">#F48FB1</color>
 
     <color name="colorPrimary_green">#C5E1A5</color>
-    <color name="colorPrimaryDark_green">#A5D6A7</color>
+    <color name="colorPrimaryDark_green">#C5E1A5</color>
     <color name="colorAccent_green">#C5E1A5</color>
 
     <color name="colorPrimary_black">#000000</color>
@@ -29,11 +29,11 @@
     <color name="colorAccent_black">#000000</color>
 
     <color name="colorPrimary_red">#FF0000</color>
-    <color name="colorPrimaryDark_red">#BE0000</color>
+    <color name="colorPrimaryDark_red">#FF0000</color>
     <color name="colorAccent_red">#FF0000</color>
 
     <color name="colorPrimary_grey">#777777</color>
-    <color name="colorPrimaryDark_grey">#555555</color>
+    <color name="colorPrimaryDark_grey">#777777</color>
     <color name="colorAccent_grey">#777777</color>
 
 

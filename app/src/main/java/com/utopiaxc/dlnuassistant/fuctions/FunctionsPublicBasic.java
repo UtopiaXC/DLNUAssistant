@@ -632,13 +632,13 @@ public class FunctionsPublicBasic {
         Document messagesDoc = doGet(NetAddress + "refreshaccount");
         JSONObject jsonObject = JSON.parseObject(messagesDoc.body().toString().replace("<body>", "").replace("</body>", ""));
 
-        messages.put("account", "账户：" + jsonObject.getJSONObject("note").get("welcome"));
-        messages.put("balance", "余额：￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
-        messages.put("statue","停复机状态："+jsonObject.getJSONObject("note").get("status"));
+        messages.put("account", jsonObject.getJSONObject("note").get("welcome"));
+        messages.put("balance", "￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
+        messages.put("statue",jsonObject.getJSONObject("note").get("status"));
         if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
-            messages.put("online", "状态：在线");
+            messages.put("online", "在线");
         } else
-            messages.put("online", "状态：离线");
+            messages.put("online", "离线");
         String set = jsonObject.getJSONObject("note").get("service").toString();
         if (set.contains("30G"))
             set = set.replace("30G", "300G");
@@ -646,8 +646,8 @@ public class FunctionsPublicBasic {
             set = set.replace("20G", "200G");
         else if (set.contains("10G"))
             set = set.replace("10G", "100G");
-        messages.put("set", "套餐：\n" + set);
-        messages.put("overdate", "当月" + jsonObject.getJSONObject("note").get("overdate").toString().replace("为", "：").replace("；", ""));
+        messages.put("set",  set);
+        messages.put("overdate", jsonObject.getJSONObject("note").get("overdate").toString().replace("到期日期为", "").replace("；", ""));
 
         messagesDoc = doGet(NetAddress + "nav_getUserInfo");
         Elements elements = messagesDoc.getElementsByTag("tr");
@@ -664,14 +664,14 @@ public class FunctionsPublicBasic {
                     unit = "小时";
                     usedTime = df.format(usage);
                 }
-                messages.put("usedtime", "当月使用时长：" + usedTime + unit);
+                messages.put("usedtime",  usedTime + unit);
             }
             if (element.toString().contains("本月流量")) {
                 double usedBand = Double.parseDouble(element.toString().replace("\n", "")
                         .replace(" ", "")
                         .replace("<tr><tdclass=\"t_l\">本月流量（MB）</td><!--0005_PersonList.jsp=本月流量（MB）--><tdclass=\"t_r1\">&nbsp;", "")
                         .replace("</td><tdclass=\"t_r2\">&nbsp;</td></tr>", ""));
-                String unit = "MB";
+                String unit = " MB";
                 DecimalFormat df = new DecimalFormat("#.00");
                 String usedBandString = df.format(usedBand);
                 if (usedBand > 1024) {
@@ -679,7 +679,7 @@ public class FunctionsPublicBasic {
                     unit = " GB";
                     usedBandString = df.format(usage);
                 }
-                messages.put("usedband", "当月已用流量：" + usedBandString + unit);
+                messages.put("usedband", usedBandString + unit);
             }
         }
 

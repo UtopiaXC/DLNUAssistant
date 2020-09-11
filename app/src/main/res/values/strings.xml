@@ -134,5 +134,44 @@
     <string name="net_user_settings_title">Please input your network account</string>
     <string name="check_network_account">Checking your account</string>
     <string name="checking">Checking</string>
+    <string name="logout_network">Logout Account</string>
+    <string name="refresh">Refresh</string>
+    <string name="getting">Getting</string>
+    <string name="getting_netmessage">Getting Network Messages</string>
+    <string name="confirm_logout_network">Confirm to logout network?</string>
+    <string name="account_message">Account Message</string>
+    <string name="balance">Balance</string>
+    <string name="used_time">Used Time</string>
+    <string name="used_band">Network traffic</string>
+    <string name="overdate">Overdate</string>
+    <string name="online">Online Statue</string>
+    <string name="network_set">Network Set</string>
+    <string name="network_statue">Network Statue</string>
+
+    <string name="fail_change_set">Fail to change network set</string>
+    <string name="succeed_change_set">Successfully changing network set</string>
+    <string name="fail_make_offline">Fail to request api!</string>
+    <string name="succeed_make_offline">Request API successfully</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="submitting_set">Submit your set book</string>
+    <string name="book_set">Book next month\'s set</string>
+    <string name="correct">Change</string>
+    <string name="set_your_book">The set you have booked</string>
+    <string name="cannot_check_set">Cannot get the set you have booked</string>
+    <string name="fail">Fail</string>
+    <string name="try_again">Try again</string>
+    <string name="donot_try_again">Back</string>
+    <string name="fail_to_get_network_messages">Fail To Get Getwork Messages</string>
+    <string name="confirm_stop_net">Confirm to stop network</string>
+    <string name="doing_stop_net">Doing Stop Network</string>
+    <string name="doing_reopen">Doing reopen</string>
+    <string name="confirm_to_reopen">Confirm to reopen network</string>
+    <string name="click_to_stop">-click to stop network</string>
+    <string name="click_to_bookset">-click to book set</string>
+    <string name="checking_book_statue">Checking book statue</string>
+    <string name="doing_ogffine">Doing Offline</string>
+    <string name="offline_all_device">Make all device offline</string>
+    <string name="click_to_offline_all">-click to offline</string>
+    <string name="no_device">No online device</string>
 
 </resources>

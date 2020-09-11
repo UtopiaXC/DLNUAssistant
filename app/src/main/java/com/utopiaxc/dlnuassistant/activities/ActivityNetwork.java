@@ -2,6 +2,7 @@ package com.utopiaxc.dlnuassistant.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,34 +10,36 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dd.processbutton.FlatButton;
+import com.utopiaxc.dlnuassistant.ActivityMain;
 import com.utopiaxc.dlnuassistant.R;
+import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTableChart;
 import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
 
 import java.util.HashMap;
 import java.util.Objects;
 
+import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
+import io.github.varenyzc.opensourceaboutpages.MessageCard;
+
 public class ActivityNetwork extends AppCompatActivity {
+    private MessageCard messageCard;
     Context context;
-    TextView textViewAccount;
-    TextView textViewBalance;
-    TextView textViewUsedTime;
-    TextView textViewUsedBand;
-    TextView textViewOverdate;
-    TextView textViewCondition;
-    TextView textViewSet;
-    TextView textViewNetworkStop;
-    Button buttonNetworkStop;
-    Button buttonOffline;
-    Button buttonChangeSet;
     @SuppressWarnings("deprecation")
     private static ProgressDialog progressDialog = null;
     HashMap<String, String> messages;
@@ -58,34 +61,53 @@ public class ActivityNetwork extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         Bind();
         context = this;
-        progressDialog = ProgressDialog.show(context, "正在获取", "正在获取校园网信息", true);
+        progressDialog = ProgressDialog.show(context, getString(R.string.getting), getString(R.string.getting_netmessage), true);
         new Thread(new getMessages()).start();
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_network, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.activity_network_refresh:
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+                return true;
+            case R.id.activity_network_logout:
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.warning))
+                        .setMessage(getString(R.string.confirm_logout_network))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                            SharedPreferences sharedPreferences = Objects.requireNonNull(this.getSharedPreferences("Net", MODE_PRIVATE));
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("NetName", "");
+                            editor.putString("NetPass", "");
+                            editor.putBoolean("NetIsSet", false);
+                            editor.apply();
+                            finish();
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .create().show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void Bind() {
-        textViewAccount = findViewById(R.id.textViewNetworkAccount);
-        textViewAccount.setVisibility(View.GONE);
-        textViewBalance = findViewById(R.id.textViewNetworkBalance);
-        textViewBalance.setVisibility(View.GONE);
-        textViewUsedTime = findViewById(R.id.textViewNetworkUsedTime);
-        textViewUsedTime.setVisibility(View.GONE);
-        textViewUsedBand = findViewById(R.id.textViewNetworkUsedBand);
-        textViewUsedBand.setVisibility(View.GONE);
-        textViewOverdate = findViewById(R.id.textViewNetworkOverdate);
-        textViewOverdate.setVisibility(View.GONE);
-        textViewCondition = findViewById(R.id.textViewNetworkCondition);
-        textViewCondition.setVisibility(View.GONE);
-        textViewSet = findViewById(R.id.textViewNetworkSet);
-        textViewSet.setVisibility(View.GONE);
-        textViewNetworkStop=findViewById(R.id.textViewNetworkStop);
-        textViewNetworkStop.setVisibility(View.GONE);
-        buttonOffline = findViewById(R.id.buttonOffline);
-        buttonOffline.setVisibility(View.GONE);
-        buttonChangeSet = findViewById(R.id.buttonChangeSet);
-        buttonChangeSet.setVisibility(View.GONE);
-        buttonNetworkStop=findViewById(R.id.buttonNetworkStop);
-        buttonNetworkStop.setVisibility(View.GONE);
+        messageCard = findViewById(R.id.network_card);
     }
 
     class getMessages implements Runnable {
@@ -112,7 +134,7 @@ public class ActivityNetwork extends AppCompatActivity {
         }
     }
 
-    class logout implements Runnable{
+    class logout implements Runnable {
         @Override
         public void run() {
             SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -122,13 +144,13 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetName = sharedPreferences.getString("NetName", null);
             String NetPass = sharedPreferences.getString("NetPass", null);
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            isLogout= function.logoutNetwork(VPNName, VPNPass, NetName, NetPass);
+            isLogout = function.logoutNetwork(VPNName, VPNPass, NetName, NetPass);
             messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
         }
     }
 
 
-    class checkSet implements Runnable{
+    class checkSet implements Runnable {
 
         @Override
         public void run() {
@@ -140,15 +162,16 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetPass = sharedPreferences.getString("NetPass", null);
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            setCheckBack=function.getSetCheck(VPNName, VPNPass, NetName, NetPass);
+            setCheckBack = function.getSetCheck(VPNName, VPNPass, NetName, NetPass);
             messageHandlerSetCheck.sendMessage(messageHandlerSetCheck.obtainMessage());
         }
     }
 
-    class bookSet implements Runnable{
+    class bookSet implements Runnable {
         private int setNum;
-        bookSet(int setNum){
-            this.setNum=setNum;
+
+        bookSet(int setNum) {
+            this.setNum = setNum;
         }
 
         @Override
@@ -161,12 +184,12 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetPass = sharedPreferences.getString("NetPass", null);
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            isBookedSet=function.bookSet(VPNName, VPNPass, NetName, NetPass,setNum);
+            isBookedSet = function.bookSet(VPNName, VPNPass, NetName, NetPass, setNum);
             messageHandlerBookSet.sendMessage(messageHandlerSetCheck.obtainMessage());
         }
     }
 
-    class stopNet implements  Runnable{
+    class stopNet implements Runnable {
 
         @Override
         public void run() {
@@ -178,12 +201,12 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetPass = sharedPreferences.getString("NetPass", null);
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            netFunction=function.stopNetwork(VPNName, VPNPass, NetName, NetPass);
+            netFunction = function.stopNetwork(VPNName, VPNPass, NetName, NetPass);
             messageHandlerNetFunctions.sendMessage(messageHandlerSetCheck.obtainMessage());
         }
     }
 
-    class reopenNet implements  Runnable{
+    class reopenNet implements Runnable {
 
         @Override
         public void run() {
@@ -195,7 +218,7 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetPass = sharedPreferences.getString("NetPass", null);
 
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            netFunction=function.reopenNetwork(VPNName, VPNPass, NetName, NetPass);
+            netFunction = function.reopenNetwork(VPNName, VPNPass, NetName, NetPass);
             messageHandlerNetFunctions.sendMessage(messageHandlerSetCheck.obtainMessage());
         }
     }
@@ -206,87 +229,170 @@ public class ActivityNetwork extends AppCompatActivity {
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
             if (messagesIsGot) {
-                textViewBalance.setText(messages.get("balance"));
-                textViewBalance.setVisibility(View.VISIBLE);
-                textViewAccount.setText(messages.get("account"));
-                textViewAccount.setVisibility(View.VISIBLE);
-                textViewSet.setText(messages.get("set"));
-                textViewSet.setVisibility(View.VISIBLE);
-                textViewOverdate.setText(messages.get("overdate"));
-                textViewOverdate.setVisibility(View.VISIBLE);
-                textViewUsedTime.setText(messages.get("usedtime"));
-                textViewUsedTime.setVisibility(View.VISIBLE);
-                textViewUsedBand.setText(messages.get("usedband"));
-                textViewUsedBand.setVisibility(View.VISIBLE);
-                textViewCondition.setText(messages.get("online"));
-                textViewCondition.setVisibility(View.VISIBLE);
-                textViewNetworkStop.setText(messages.get("statue"));
-                textViewNetworkStop.setVisibility(View.VISIBLE);
-                buttonOffline.setVisibility(View.VISIBLE);
-                buttonOffline.setText("强制下线");
-                buttonOffline.setOnClickListener(e -> {
-                    if (textViewCondition.getText().equals("状态：离线")){
-                        new AlertDialog.Builder(context)
-                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                                .setMessage("当前无在线设备？")
-                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                AboutPageMessageItem aboutPageMessageItemAccount = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netuser))
+                        .setMainText(getString(R.string.account_message))
+                        .setDescriptionText(messages.get("account"))
+                        .setOnItemClickListener(() -> new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.account_message))
+                                .setMessage(messages.get("account"))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                                 })
-                                .create().show();
-                    }else {
-                        new AlertDialog.Builder(context)
-                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                                .setMessage("确认强制下线所有设备？")
-                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
-                                    progressDialog = ProgressDialog.show(context, "正在离线", "请稍候", true);
-                                    new Thread(new logout()).start();
+                                .create().show());
+                messageCard.addMessageItem(aboutPageMessageItemAccount);
+
+                AboutPageMessageItem aboutPageMessageItemBalance = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netbalance))
+                        .setMainText(getString(R.string.balance))
+                        .setDescriptionText(messages.get("balance"))
+                        .setOnItemClickListener(() -> new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.balance))
+                                .setMessage(messages.get("balance"))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                                 })
-                                .setNegativeButton(context.getString(R.string.cancel), null)
-                                .create().show();
+                                .create().show());
+                messageCard.addMessageItem(aboutPageMessageItemBalance);
+
+                AboutPageMessageItem aboutPageMessageItemUsedTime = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.nettime))
+                        .setMainText(getString(R.string.used_time))
+                        .setDescriptionText(messages.get("usedtime"))
+                        .setOnItemClickListener(() -> new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.used_time))
+                                .setMessage(messages.get("usedtime"))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                })
+                                .create().show());
+                messageCard.addMessageItem(aboutPageMessageItemUsedTime);
+
+                String leftBand = "";
+                try {
+                    if (Objects.requireNonNull(messages.get("set")).contains("300G")) {
+                        if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
+                            leftBand = "\n剩余流量：" + (300 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                        else
+                            leftBand = "\n剩余流量：" + (300 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+
                     }
-                });
-                buttonChangeSet.setVisibility(View.VISIBLE);
-                buttonChangeSet.setText("预约套餐");
-                buttonChangeSet.setOnClickListener(e -> {
-                    progressDialog = ProgressDialog.show(context, "正在查询预约状态", "请稍候", true);
-                    new Thread(new checkSet()).start();
-                });
-                buttonNetworkStop.setText("停复机");
-                buttonNetworkStop.setOnClickListener(e->{
-                    if (textViewNetworkStop.getText().equals("停复机状态：停机")){
-                        new AlertDialog.Builder(context)
-                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                                .setMessage("确认复通？（停机后将开启网络使用，同时解冻流量与时长）")
-                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
-                                    progressDialog = ProgressDialog.show(context, "正在操作复通", "请稍候", true);
-                                    new Thread(new reopenNet()).start();
-                                })
-                                .setNegativeButton(context.getString(R.string.cancel),null)
-                                .create().show();
-                    }else {
-                        new AlertDialog.Builder(context)
-                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                                .setMessage("确认停机？（停机后将暂停网络使用，冻结流量与时长直至复通）")
-                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
-                                    progressDialog = ProgressDialog.show(context, "正在操作停机", "请稍候", true);
-                                    new Thread(new stopNet()).start();
-                                })
-                                .setNegativeButton(context.getString(R.string.cancel), null)
-                                .create().show();
+                    if (Objects.requireNonNull(messages.get("set")).contains("200G")) {
+                        if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
+                            leftBand = "\n剩余流量：" + (200 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                        else
+                            leftBand = "\n剩余流量：" + (200 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+
                     }
-                });
-                buttonNetworkStop.setVisibility(View.VISIBLE);
+                    if (Objects.requireNonNull(messages.get("set")).contains("100G")) {
+                        if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
+                            leftBand = "\n剩余流量：" + (100 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                        else
+                            leftBand = "\n剩余流量：" + (100 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+                    }
+                } catch (Exception e) {
+                    System.out.println("Left Error");
+                }
+
+
+                String finalLeftBand = leftBand;
+                AboutPageMessageItem aboutPageMessageItemUsedBand = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netband))
+                        .setMainText(getString(R.string.used_band))
+                        .setDescriptionText(messages.get("usedband"))
+                        .setOnItemClickListener(() -> new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.used_band))
+                                .setMessage("已用流量："+messages.get("usedband") + finalLeftBand)
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                })
+                                .create().show());
+                messageCard.addMessageItem(aboutPageMessageItemUsedBand);
+
+                AboutPageMessageItem aboutPageMessageItemOverdate = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netovertime))
+                        .setMainText(getString(R.string.overdate))
+                        .setDescriptionText(messages.get("overdate"))
+                        .setOnItemClickListener(() -> new AlertDialog.Builder(context)
+                                .setTitle(getString(R.string.overdate))
+                                .setMessage(messages.get("overdate"))
+                                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                })
+                                .create().show());
+                messageCard.addMessageItem(aboutPageMessageItemOverdate);
+
+                AboutPageMessageItem aboutPageMessageItemOffline = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netoffline))
+                        .setMainText(getString(R.string.online))
+                        .setDescriptionText(messages.get("online") + getString(R.string.click_to_offline_all))
+                        .setOnItemClickListener(() -> {
+                            if (Objects.requireNonNull(messages.get("online")).equals("离线")) {
+                                new AlertDialog.Builder(context)
+                                        .setTitle(getString(R.string.warning))
+                                        .setMessage(getString(R.string.no_device))
+                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                        })
+                                        .create().show();
+                            } else {
+                                new AlertDialog.Builder(context)
+                                        .setTitle(getString(R.string.warning))
+                                        .setMessage(getString(R.string.offline_all_device))
+                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_ogffine), getString(R.string.please_wait), true);
+                                            new Thread(new logout()).start();
+                                        })
+                                        .setNegativeButton(getString(R.string.cancel), null)
+                                        .create().show();
+                            }
+                        });
+                messageCard.addMessageItem(aboutPageMessageItemOffline);
+
+                AboutPageMessageItem aboutPageMessageItemSet = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netset))
+                        .setMainText(getString(R.string.network_set))
+                        .setDescriptionText(messages.get("set") + getString(R.string.click_to_bookset))
+                        .setOnItemClickListener(() -> {
+                            progressDialog = ProgressDialog.show(context, getString(R.string.checking_book_statue), getString(R.string.please_wait), true);
+                            new Thread(new checkSet()).start();
+                        });
+                messageCard.addMessageItem(aboutPageMessageItemSet);
+
+                AboutPageMessageItem aboutPageMessageItemStatue = new AboutPageMessageItem(context)
+                        .setIcon(getDrawable(R.drawable.netstatue))
+                        .setMainText(getString(R.string.network_statue))
+                        .setDescriptionText(messages.get("statue") + getString(R.string.click_to_stop))
+                        .setOnItemClickListener(() -> {
+                            if (Objects.requireNonNull(messages.get("statue")).equals("停机")) {
+                                new AlertDialog.Builder(context)
+                                        .setTitle(getString(R.string.warning))
+                                        .setMessage(getString(R.string.confirm_to_reopen))
+                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_reopen), getString(R.string.please_wait), true);
+                                            new Thread(new reopenNet()).start();
+                                        })
+                                        .setNegativeButton(getString(R.string.cancel), null)
+                                        .create().show();
+                            } else {
+                                new AlertDialog.Builder(context)
+                                        .setTitle(getString(R.string.warning))
+                                        .setMessage(getString(R.string.confirm_stop_net))
+                                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.doing_stop_net), getString(R.string.please_wait), true);
+                                            new Thread(new stopNet()).start();
+                                        })
+                                        .setNegativeButton(getString(R.string.cancel), null)
+                                        .create().show();
+                            }
+                        });
+                messageCard.addMessageItem(aboutPageMessageItemStatue);
 
 
             } else {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                        .setMessage("获取信息失败，受到学校土豆服务器限制，请多尝试几次。如果您的密码已修改，请点击不重试后进入页面点击右上角菜单进行注销")
-                        .setPositiveButton("重试", (dialog, which) -> {
+                        .setTitle(getString(R.string.warning))
+                        .setMessage(getString(R.string.fail_to_get_network_messages))
+                        .setPositiveButton(getString(R.string.try_again), (dialog, which) -> {
                             Intent intent = getIntent();
                             finish();
                             startActivity(intent);
                         })
-                        .setNegativeButton("不重试",null)
+                        .setNegativeButton(getString(R.string.donot_try_again), null)
                         .create().show();
             }
         }
@@ -298,21 +404,21 @@ public class ActivityNetwork extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
-            if (netFunction){
+            if (netFunction) {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.success))
-                        .setMessage("操作成功")
-                        .setPositiveButton("确认", (dialog, which) -> {
+                        .setTitle(getString(R.string.success))
+                        .setMessage(getString(R.string.success))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                             Intent intent = getIntent();
                             finish();
                             startActivity(intent);
                         })
                         .create().show();
-            }else{
+            } else {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
-                        .setMessage("操作失败")
-                        .setPositiveButton("确认", (dialog, which) -> {
+                        .setTitle(getString(R.string.error))
+                        .setMessage(getString(R.string.fail))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
 
                         })
                         .create().show();
@@ -326,27 +432,25 @@ public class ActivityNetwork extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
-            if (setCheckBack.equals("ERROR")){
+            if (setCheckBack.equals("ERROR")) {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
-                        .setMessage("网络错误")
-                        .setPositiveButton("确认", (dialog, which) -> {
+                        .setTitle(getString(R.string.error))
+                        .setMessage(getString(R.string.net_error))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();
-            }
-            else if (setCheckBack.equals("DONTHAVE")){
+            } else if (setCheckBack.equals("DONTHAVE")) {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                        .setMessage("无法查询到您的系统套餐，可能系统存在变更，目前仅支持本科生套餐修改。")
-                        .setPositiveButton("确认", (dialog, which) -> {
+                        .setTitle(getString(R.string.warning))
+                        .setMessage(getString(R.string.cannot_check_set))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();
-            }
-            else{
+            } else {
                 new AlertDialog.Builder(context)
-                        .setTitle("您预约的下周期套餐")
+                        .setTitle(getString(R.string.set_your_book))
                         .setMessage(setCheckBack)
-                        .setPositiveButton("修改", (dialog, which) -> {
+                        .setPositiveButton(getString(R.string.correct), (dialog, which) -> {
                             AlertDialog.Builder bookSet = new AlertDialog.Builder(context);
                             LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_set_selector, null);  //从另外的布局关联组件
 
@@ -354,17 +458,17 @@ public class ActivityNetwork extends AppCompatActivity {
                             final RadioButton radioButtonTwenty = linearLayout.findViewById(R.id.radioButtonTwentySet);
                             final RadioButton radioButtonThirty = linearLayout.findViewById(R.id.radioButtonThirtySet);
 
-                            bookSet.setTitle("预约套餐")
+                            bookSet.setTitle(getString(R.string.book_set))
                                     .setView(linearLayout)
                                     .setPositiveButton(getString(R.string.confirm), (dialog1, which1) -> {
                                         if (radioButtonTen.isChecked()) {
-                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
                                             new Thread(new bookSet(2)).start();
                                         } else if (radioButtonTwenty.isChecked()) {
-                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
                                             new Thread(new bookSet(4)).start();
-                                        }else if (radioButtonThirty.isChecked()){
-                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                        } else if (radioButtonThirty.isChecked()) {
+                                            progressDialog = ProgressDialog.show(context, getString(R.string.submitting_set), getString(R.string.please_wait), true);
                                             new Thread(new bookSet(3)).start();
                                         }
                                     })
@@ -372,7 +476,7 @@ public class ActivityNetwork extends AppCompatActivity {
                                     .show();
 
                         })
-                        .setNegativeButton("确认",(dialog, which) -> {
+                        .setNegativeButton(getString(R.string.confirm), (dialog, which) -> {
 
                         })
                         .create().show();
@@ -387,21 +491,21 @@ public class ActivityNetwork extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
-            if (isLogout){
+            if (isLogout) {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.success))
-                        .setMessage("已成功请求下线接口，如未下线请重新尝试")
+                        .setTitle(getString(R.string.success))
+                        .setMessage(getString(R.string.succeed_make_offline))
                         .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
                             Intent intent = getIntent();
                             finish();
                             startActivity(intent);
                         })
                         .create().show();
-            }else{
+            } else {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
-                        .setMessage("请求下线接口失败，请尝试重新下线")
-                        .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                        .setTitle(getString(R.string.error))
+                        .setMessage(getString(R.string.fail_make_offline))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();
             }
@@ -413,30 +517,21 @@ public class ActivityNetwork extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
-            if (isBookedSet){
+            if (isBookedSet) {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.success))
-                        .setMessage("套餐更改成功")
-                        .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                        .setTitle(getString(R.string.success))
+                        .setMessage(getString(R.string.succeed_change_set))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();
-            }else{
+            } else {
                 new AlertDialog.Builder(context)
-                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
-                        .setMessage("套餐更改失败")
-                        .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                        .setTitle(getString(R.string.error))
+                        .setMessage(getString(R.string.fail_change_set))
+                        .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();
             }
         }
     };
-
-
-    //返回键
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return true;
-    }
 }
