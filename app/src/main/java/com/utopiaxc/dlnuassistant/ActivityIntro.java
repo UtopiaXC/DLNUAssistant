@@ -20,6 +20,7 @@ public class ActivityIntro extends AppIntro2 {
 
         setColorTransitionsEnabled(true);
         showStatusBar(true);
+        setWizardMode(true);
 
 
         SliderPage sliderPage=new SliderPage();
