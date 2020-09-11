@@ -12,6 +12,8 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,8 @@ public class ActivityNetwork extends AppCompatActivity {
     HashMap<String, String> messages;
     boolean messagesIsGot = false;
     boolean isLogout;
+    String setCheckBack;
+    boolean isBookedSet;
 
     //Activity入口
     @Override
@@ -111,16 +115,49 @@ public class ActivityNetwork extends AppCompatActivity {
             String NetName = sharedPreferences.getString("NetName", null);
             String NetPass = sharedPreferences.getString("NetPass", null);
             FunctionsPublicBasic function = new FunctionsPublicBasic();
-            if (function.logoutNetwork(VPNName, VPNPass, NetName, NetPass)){
-                isLogout=true;
-                messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
-            }else {
-                isLogout = false;
-                messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
-            }
+            isLogout= function.logoutNetwork(VPNName, VPNPass, NetName, NetPass);
+            messageHandlerLogout.sendMessage(messageHandlerLogout.obtainMessage());
         }
     }
 
+
+    class checkSet implements Runnable{
+
+        @Override
+        public void run() {
+            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String VPNName = sharedPreferences.getString("VPNName", null);
+            String VPNPass = sharedPreferences.getString("VPNPass", null);
+            sharedPreferences = getSharedPreferences("Net", Context.MODE_PRIVATE);
+            String NetName = sharedPreferences.getString("NetName", null);
+            String NetPass = sharedPreferences.getString("NetPass", null);
+
+            FunctionsPublicBasic function = new FunctionsPublicBasic();
+            setCheckBack=function.getSetCheck(VPNName, VPNPass, NetName, NetPass);
+            messageHandlerSetCheck.sendMessage(messageHandlerSetCheck.obtainMessage());
+        }
+    }
+
+    class bookSet implements Runnable{
+        private int setNum;
+        bookSet(int setNum){
+            this.setNum=setNum;
+        }
+
+        @Override
+        public void run() {
+            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String VPNName = sharedPreferences.getString("VPNName", null);
+            String VPNPass = sharedPreferences.getString("VPNPass", null);
+            sharedPreferences = getSharedPreferences("Net", Context.MODE_PRIVATE);
+            String NetName = sharedPreferences.getString("NetName", null);
+            String NetPass = sharedPreferences.getString("NetPass", null);
+
+            FunctionsPublicBasic function = new FunctionsPublicBasic();
+            isBookedSet=function.bookSet(VPNName, VPNPass, NetName, NetPass,setNum);
+            messageHandlerBookSet.sendMessage(messageHandlerSetCheck.obtainMessage());
+        }
+    }
 
     @SuppressLint("HandlerLeak")
     private Handler messageHandler = new Handler() {
@@ -165,14 +202,10 @@ public class ActivityNetwork extends AppCompatActivity {
                     }
                 });
                 buttonChangeSet.setVisibility(View.VISIBLE);
-                buttonChangeSet.setText("更改套餐");
+                buttonChangeSet.setText("预约套餐");
                 buttonChangeSet.setOnClickListener(e -> {
-                    new AlertDialog.Builder(context)
-                            .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
-                            .setMessage("当前功能还在开发")
-                            .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
-                            })
-                            .create().show();
+                    progressDialog = ProgressDialog.show(context, "正在查询预约状态", "请稍候", true);
+                    new Thread(new checkSet()).start();
                 });
 
 
@@ -188,6 +221,67 @@ public class ActivityNetwork extends AppCompatActivity {
                         .setNegativeButton("不重试",null)
                         .create().show();
             }
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    private Handler messageHandlerSetCheck = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.dismiss();
+            if (setCheckBack.equals("ERROR")){
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
+                        .setMessage("网络错误")
+                        .setPositiveButton("确认", (dialog, which) -> {
+                        })
+                        .create().show();
+            }
+            else if (setCheckBack.equals("DONTHAVE")){
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
+                        .setMessage("无法查询到您的系统套餐，可能系统存在变更，目前仅支持本科生套餐修改。")
+                        .setPositiveButton("确认", (dialog, which) -> {
+                        })
+                        .create().show();
+            }
+            else{
+                new AlertDialog.Builder(context)
+                        .setTitle("您预约的下周期套餐")
+                        .setMessage(setCheckBack)
+                        .setPositiveButton("修改", (dialog, which) -> {
+                            AlertDialog.Builder bookSet = new AlertDialog.Builder(context);
+                            LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_set_selector, null);  //从另外的布局关联组件
+
+                            final RadioButton radioButtonTen = linearLayout.findViewById(R.id.radioButtonTenSet);
+                            final RadioButton radioButtonTwenty = linearLayout.findViewById(R.id.radioButtonTwentySet);
+                            final RadioButton radioButtonThirty = linearLayout.findViewById(R.id.radioButtonThirtySet);
+
+                            bookSet.setTitle("预约套餐")
+                                    .setView(linearLayout)
+                                    .setPositiveButton(getString(R.string.confirm), (dialog1, which1) -> {
+                                        if (radioButtonTen.isChecked()) {
+                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                            new Thread(new bookSet(2)).start();
+                                        } else if (radioButtonTwenty.isChecked()) {
+                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                            new Thread(new bookSet(4)).start();
+                                        }else if (radioButtonThirty.isChecked()){
+                                            progressDialog = ProgressDialog.show(context, "正在提交预约", "请稍候", true);
+                                            new Thread(new bookSet(3)).start();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+
+                        })
+                        .setNegativeButton("确认",(dialog, which) -> {
+
+                        })
+                        .create().show();
+            }
+
         }
     };
 
@@ -211,6 +305,29 @@ public class ActivityNetwork extends AppCompatActivity {
                 new AlertDialog.Builder(context)
                         .setTitle(Objects.requireNonNull(context).getString(R.string.error))
                         .setMessage("请求下线接口失败，请尝试重新下线")
+                        .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                        })
+                        .create().show();
+            }
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    private Handler messageHandlerBookSet = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.dismiss();
+            if (isBookedSet){
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.success))
+                        .setMessage("套餐更改成功")
+                        .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                        })
+                        .create().show();
+            }else{
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
+                        .setMessage("套餐更改失败")
                         .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
                         })
                         .create().show();

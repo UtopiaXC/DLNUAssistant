@@ -20,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -624,7 +625,6 @@ public class FunctionsPublicBasic {
         }
     }
 
-
     //填写校园网信息方法
     public boolean getNetworkMessages(String VPNName, String VPNPass, String username, String password, HashMap messages) {
         if (!loginNetwork(VPNName, VPNPass, username, password)) {
@@ -709,6 +709,49 @@ public class FunctionsPublicBasic {
         }
         return true;
     }
+
+    public String getSetCheck(String VPNName, String VPNPass, String username, String password){
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return "ERROR";
+        }
+        Document document=doGet(NetAddress+"nav_servicedefaultbook");
+        Elements elements=document.getElementsByTag("div");
+        if (document.toString().contains("[本科10元10G]"))
+            return "本科10元100G";
+        else if (document.toString().contains("[本科20元20G]"))
+            return "本科20元200G";
+        else if (document.toString().contains("[本科30元30G]"))
+            return "本科30元300G";
+        else if (document.toString().contains("[]"))
+            return "未预约下月套餐，默认与本月相同";
+        else
+            return "DONTHAVE";
+    }
+
+    public boolean bookSet(String VPNName, String VPNPass, String username, String password,int setNum){
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return false;
+        }
+
+        try {
+            Connection.Response response = Jsoup.connect(NetAddress+"selfservicebookAction")
+                    .ignoreContentType(true)
+                    .data("serid", String.valueOf(setNum))
+                    .cookies(VPNCookies)
+                    .userAgent(userAgent)
+                    .method(Connection.Method.GET)
+                    .execute();
+            Document document=response.parse();
+            if (document.toString().contains("成功/正常")||document.toString().contains("您已经预约该套餐"))
+                return true;
+            else
+                return false;
+        } catch (IOException e) {
+            System.out.println("Change set net error");
+            return false;
+        }
+    }
+
 
     //get爬虫方法
     private Document doGet(String address) {
