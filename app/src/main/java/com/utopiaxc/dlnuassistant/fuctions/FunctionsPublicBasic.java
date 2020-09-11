@@ -116,7 +116,7 @@ public class FunctionsPublicBasic {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
             return true;
         }
         return true;
@@ -147,13 +147,13 @@ public class FunctionsPublicBasic {
                     .userAgent(userAgent)
                     .cookies(VPNCookies)
                     .cookies(EDUCookies)
-                    .method(Connection.Method.POST)
+                    .method(Connection.Method.GET)
                     .execute();
 
             document = response.parse();
             return false;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
             return true;
         }
     }
