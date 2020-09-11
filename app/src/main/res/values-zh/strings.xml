@@ -24,12 +24,13 @@
     <string name="update_log">更新日志</string>
     <string name="update_log_info">DLNU Assistant\n
         测试版\n
-        v0.0.1-beta03\n
+        v0.0.1-beta04\n
         更新日志\n
-        #1 新增校园网相关功能\n
-        #2 修复了单双周课表算法\n
-        #3 优化了大量warning\n
-        #4 优化部分算法逻辑\n
+        #1 新增套餐预约与停服机功能\n
+        #2 优化了部分算法逻辑\n\n
+
+        更新预告\n
+        本版本（v0.0.1）为测试第一版的最后一个版本，下一个测试版（v0.0.2）将对校园网设置界面UI进行重新设计。
 
     </string>
     <string name="update_log_tag">最后一次更新内容</string>

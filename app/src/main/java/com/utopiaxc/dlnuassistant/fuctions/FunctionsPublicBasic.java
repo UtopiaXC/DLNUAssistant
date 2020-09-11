@@ -339,7 +339,6 @@ public class FunctionsPublicBasic {
             return true;
         } catch (Exception e) {
             System.out.println(e.toString());
-            System.out.println("????");
             document = null;
             return false;
         }
@@ -635,6 +634,7 @@ public class FunctionsPublicBasic {
 
         messages.put("account", "账户：" + jsonObject.getJSONObject("note").get("welcome"));
         messages.put("balance", "余额：￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
+        messages.put("statue","停复机状态："+jsonObject.getJSONObject("note").get("status"));
         if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
             messages.put("online", "状态：在线");
         } else
@@ -752,6 +752,29 @@ public class FunctionsPublicBasic {
         }
     }
 
+    public boolean stopNetwork(String VPNName, String VPNPass, String username, String password){
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return false;
+        }
+        Document document=doGet(NetAddress+"nav_selfstopNow");
+        if (document.toString().contains("操作状态：成功"))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean reopenNetwork(String VPNName, String VPNPass, String username, String password){
+        if (!loginNetwork(VPNName, VPNPass, username, password)) {
+            return false;
+        }
+        Document document=doGet(NetAddress+"nav_SelfReopenNow");
+        if (document.toString().contains("操作状态：成功"))
+            return true;
+        else
+            return false;
+    }
+
+    //nav_selfstopNow
 
     //get爬虫方法
     private Document doGet(String address) {

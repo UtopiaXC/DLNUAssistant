@@ -33,6 +33,8 @@ public class ActivityNetwork extends AppCompatActivity {
     TextView textViewOverdate;
     TextView textViewCondition;
     TextView textViewSet;
+    TextView textViewNetworkStop;
+    Button buttonNetworkStop;
     Button buttonOffline;
     Button buttonChangeSet;
     @SuppressWarnings("deprecation")
@@ -42,6 +44,7 @@ public class ActivityNetwork extends AppCompatActivity {
     boolean isLogout;
     String setCheckBack;
     boolean isBookedSet;
+    boolean netFunction;
 
     //Activity入口
     @Override
@@ -75,10 +78,14 @@ public class ActivityNetwork extends AppCompatActivity {
         textViewCondition.setVisibility(View.GONE);
         textViewSet = findViewById(R.id.textViewNetworkSet);
         textViewSet.setVisibility(View.GONE);
+        textViewNetworkStop=findViewById(R.id.textViewNetworkStop);
+        textViewNetworkStop.setVisibility(View.GONE);
         buttonOffline = findViewById(R.id.buttonOffline);
         buttonOffline.setVisibility(View.GONE);
         buttonChangeSet = findViewById(R.id.buttonChangeSet);
         buttonChangeSet.setVisibility(View.GONE);
+        buttonNetworkStop=findViewById(R.id.buttonNetworkStop);
+        buttonNetworkStop.setVisibility(View.GONE);
     }
 
     class getMessages implements Runnable {
@@ -159,6 +166,40 @@ public class ActivityNetwork extends AppCompatActivity {
         }
     }
 
+    class stopNet implements  Runnable{
+
+        @Override
+        public void run() {
+            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String VPNName = sharedPreferences.getString("VPNName", null);
+            String VPNPass = sharedPreferences.getString("VPNPass", null);
+            sharedPreferences = getSharedPreferences("Net", Context.MODE_PRIVATE);
+            String NetName = sharedPreferences.getString("NetName", null);
+            String NetPass = sharedPreferences.getString("NetPass", null);
+
+            FunctionsPublicBasic function = new FunctionsPublicBasic();
+            netFunction=function.stopNetwork(VPNName, VPNPass, NetName, NetPass);
+            messageHandlerNetFunctions.sendMessage(messageHandlerSetCheck.obtainMessage());
+        }
+    }
+
+    class reopenNet implements  Runnable{
+
+        @Override
+        public void run() {
+            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String VPNName = sharedPreferences.getString("VPNName", null);
+            String VPNPass = sharedPreferences.getString("VPNPass", null);
+            sharedPreferences = getSharedPreferences("Net", Context.MODE_PRIVATE);
+            String NetName = sharedPreferences.getString("NetName", null);
+            String NetPass = sharedPreferences.getString("NetPass", null);
+
+            FunctionsPublicBasic function = new FunctionsPublicBasic();
+            netFunction=function.reopenNetwork(VPNName, VPNPass, NetName, NetPass);
+            messageHandlerNetFunctions.sendMessage(messageHandlerSetCheck.obtainMessage());
+        }
+    }
+
     @SuppressLint("HandlerLeak")
     private Handler messageHandler = new Handler() {
         @Override
@@ -179,6 +220,8 @@ public class ActivityNetwork extends AppCompatActivity {
                 textViewUsedBand.setVisibility(View.VISIBLE);
                 textViewCondition.setText(messages.get("online"));
                 textViewCondition.setVisibility(View.VISIBLE);
+                textViewNetworkStop.setText(messages.get("statue"));
+                textViewNetworkStop.setVisibility(View.VISIBLE);
                 buttonOffline.setVisibility(View.VISIBLE);
                 buttonOffline.setText("强制下线");
                 buttonOffline.setOnClickListener(e -> {
@@ -207,6 +250,31 @@ public class ActivityNetwork extends AppCompatActivity {
                     progressDialog = ProgressDialog.show(context, "正在查询预约状态", "请稍候", true);
                     new Thread(new checkSet()).start();
                 });
+                buttonNetworkStop.setText("停复机");
+                buttonNetworkStop.setOnClickListener(e->{
+                    if (textViewNetworkStop.getText().equals("停复机状态：停机")){
+                        new AlertDialog.Builder(context)
+                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
+                                .setMessage("确认复通？（停机后将开启网络使用，同时解冻流量与时长）")
+                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                                    progressDialog = ProgressDialog.show(context, "正在操作复通", "请稍候", true);
+                                    new Thread(new reopenNet()).start();
+                                })
+                                .setNegativeButton(context.getString(R.string.cancel),null)
+                                .create().show();
+                    }else {
+                        new AlertDialog.Builder(context)
+                                .setTitle(Objects.requireNonNull(context).getString(R.string.warning))
+                                .setMessage("确认停机？（停机后将暂停网络使用，冻结流量与时长直至复通）")
+                                .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> {
+                                    progressDialog = ProgressDialog.show(context, "正在操作停机", "请稍候", true);
+                                    new Thread(new stopNet()).start();
+                                })
+                                .setNegativeButton(context.getString(R.string.cancel), null)
+                                .create().show();
+                    }
+                });
+                buttonNetworkStop.setVisibility(View.VISIBLE);
 
 
             } else {
@@ -219,6 +287,34 @@ public class ActivityNetwork extends AppCompatActivity {
                             startActivity(intent);
                         })
                         .setNegativeButton("不重试",null)
+                        .create().show();
+            }
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    private Handler messageHandlerNetFunctions = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.dismiss();
+            if (netFunction){
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.success))
+                        .setMessage("操作成功")
+                        .setPositiveButton("确认", (dialog, which) -> {
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        })
+                        .create().show();
+            }else{
+                new AlertDialog.Builder(context)
+                        .setTitle(Objects.requireNonNull(context).getString(R.string.error))
+                        .setMessage("操作失败")
+                        .setPositiveButton("确认", (dialog, which) -> {
+
+                        })
                         .create().show();
             }
         }
