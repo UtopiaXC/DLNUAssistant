@@ -24,7 +24,7 @@
     <string name="update_log">更新日志</string>
     <string name="update_log_info">DLNU Assistant\n
         测试版\n
-        v0.0.2-beta02\n\n
+        v0.0.3-pre-release-beta\n\n
         更新日志\n
         #1 校园网功能完成\n
         #2 重构校园网UI\n
@@ -194,7 +194,9 @@
     <string name="offline_all_device">确认强制下线所有设备？</string>
     <string name="click_to_offline_all">-点击下线所有设备</string>
     <string name="no_device">当前无在线设备</string>
-    <string name="executing">正在执行（中断不会撤销已执行的操作，只会中断未执行的操作）</string>
+    <string name="executing">正在执行\n（中断一定会引起不可预估的错误）</string>
     <string name="interrupt">中断</string>
+    <string name="please_use_check">请进行配置信息测试（中心页面上数第三个按钮）\n如果一直失败请参考关于->帮助与排查->#4与#5</string>
+
 
 </resources>

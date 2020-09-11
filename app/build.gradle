@@ -7,7 +7,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 26
         versionCode 8
-        versionName "0.0.2-beta02"
+        versionName "0.0.3-pre-release-beta"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -41,4 +41,5 @@ dependencies {
     implementation 'com.zhuangfei:TimetableView:2.0.6'
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'com.alibaba:fastjson:1.2.73'
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
 }

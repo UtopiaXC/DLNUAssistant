@@ -46,7 +46,6 @@ public class ActivityNetwork extends AppCompatActivity {
         Bind();
         context = this;
 
-        //progressDialog = ProgressDialog.show(context, getString(R.string.getting), getString(R.string.getting_netmessage), true);
         Thread getNetworkMessages=new Thread(new getMessages());
         showProgress((dialogInterface, i) -> {
             getNetworkMessages.interrupt();
@@ -65,6 +64,7 @@ public class ActivityNetwork extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.interrupt),listener);
         builder.create();
         progress=builder.show();
+        progress.setCanceledOnTouchOutside(false);
     }
 
     @Override

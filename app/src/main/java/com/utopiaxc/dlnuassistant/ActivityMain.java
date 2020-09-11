@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.utopiaxc.dlnuassistant.activities.ActivitySettings;
 import com.utopiaxc.dlnuassistant.fragments.FragmentAllCourseList;
 import com.utopiaxc.dlnuassistant.fragments.FragmentCenter;
 import com.utopiaxc.dlnuassistant.fragments.FragmentHome;
@@ -61,13 +62,17 @@ public class ActivityMain extends AppCompatActivity {
     //程序入口
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = new Intent(this, ActivityIntro.class);
+        startActivity(intent);
+        finish();
+
         SharedPreferences sharedPreferences = getSharedPreferences("Theme", MODE_PRIVATE);
         int theme = sharedPreferences.getInt("theme", R.style.AppTheme);
         setTheme(theme);
         getApplication().setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         sharedPreferences =this.getSharedPreferences("APP", MODE_PRIVATE);
         editor=sharedPreferences.edit();
         boolean isFirst=sharedPreferences.getBoolean("first",true);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,10 +33,10 @@ import io.github.varenyzc.opensourceaboutpages.AboutPageMessageItem;
 import io.github.varenyzc.opensourceaboutpages.MessageCard;
 
 public class FragmentHome extends Fragment {
+    AlertDialog progress;
     private MessageCard messageCard;
     private String HandlerMessage;
     @SuppressWarnings("deprecation")
-    private static ProgressDialog progressDialog = null;
     private boolean netAccountIsRight;
 
 
@@ -95,9 +97,9 @@ public class FragmentHome extends Fragment {
                                     String username = login_name.getText().toString();
                                     String password = login_password.getText().toString();
                                     if (!username.equals("") && !password.equals("")) {
-                                        //noinspection deprecation
-                                        progressDialog = ProgressDialog.show(getActivity(), getText(R.string.checking), getString(R.string.check_network_account), true);
-                                        new Thread(new checkNetUser(username, password)).start();
+                                        Thread netUserChecker = new Thread(new checkNetUser(username, password));
+                                        showProgress((e1,e2)-> netUserChecker.interrupt());
+                                        netUserChecker.start();
                                     }
                                 })
                                 .create()
@@ -108,6 +110,18 @@ public class FragmentHome extends Fragment {
                     }
                 });
         messageCard.addMessageItem(ItemHome_network);
+    }
+
+    public void showProgress(DialogInterface.OnClickListener listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_progress, null);  //从另外的布局关联组件
+        final TextView textView = linearLayout.findViewById(R.id.progressText);
+        textView.setText(getString(R.string.executing));
+        builder.setTitle(getString(R.string.please_wait));
+        builder.setView(linearLayout);
+        builder.setPositiveButton(getString(R.string.interrupt),listener);
+        builder.create();
+        progress=builder.show();
     }
 
     class checkNetUser implements Runnable {
@@ -156,7 +170,7 @@ public class FragmentHome extends Fragment {
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            progress.dismiss();
             if (!netAccountIsRight){
                 new AlertDialog.Builder(getActivity())
                         .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))

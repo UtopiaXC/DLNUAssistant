@@ -92,6 +92,13 @@ public class FragmentCenter extends Fragment {
                                     editor.putBoolean("VPNIsSet", true);
                                     editor.commit();
                                 }
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder
+                                        .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.alert))
+                                        .setMessage(getActivity().getString(R.string.please_use_check))
+                                        .setPositiveButton(getActivity().getString(R.string.confirm),null)
+                                        .create()
+                                        .show();
                             })
                             .create()
                             .show();
@@ -110,7 +117,7 @@ public class FragmentCenter extends Fragment {
                     Boolean isSet = sharedPreferences.getBoolean("URPIsSet", false);
                     setAccount.setTitle(getString(R.string.urp_message));
                     if (isSet.equals(true))
-                        setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_user) + getActivity().getString(R.string.configured));
+                        setAccount.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.urp_message) + getActivity().getString(R.string.configured));
                     setAccount.setView(linearLayout)
                             .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                                 String username = login_name.getText().toString();
@@ -121,6 +128,13 @@ public class FragmentCenter extends Fragment {
                                     editor.putBoolean("URPIsSet", true);
                                     editor.commit();
                                 }
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder
+                                        .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.alert))
+                                        .setMessage(getActivity().getString(R.string.please_use_check))
+                                        .setPositiveButton(getActivity().getString(R.string.confirm),null)
+                                        .create()
+                                        .show();
                             })
                             .create()
                             .show();
