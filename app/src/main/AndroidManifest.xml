@@ -68,8 +68,7 @@
             android:label="@string/label_network" />
 
         <activity
-            android:name="ActivityIntro"
-            android:label="" />
+            android:name="ActivityIntro"/>
 
     </application>
 

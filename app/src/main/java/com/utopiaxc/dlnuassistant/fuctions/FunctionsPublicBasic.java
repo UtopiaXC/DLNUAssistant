@@ -75,7 +75,7 @@ public class FunctionsPublicBasic {
     }
 
     //获取网页VPN Cookie的方法
-    private static boolean getVPNCookie(String username, String password) {
+    public boolean getVPNCookie(String username, String password) {
         try {
             Connection.Response response = Jsoup.connect("http://210.30.0.110/do-login")
                     .ignoreContentType(true)
@@ -86,12 +86,23 @@ public class FunctionsPublicBasic {
                     .method(Connection.Method.POST)
                     .execute();
             VPNCookies = response.cookies();
+            System.out.println(VPNCookies);
             return false;
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("cookies error");
             return true;
         }
+    }
+
+    public boolean checkVPNCookie(String username, String password){
+        if (getVPNCookie(username, password))
+            return false;
+        Document document=doGet("http://210.30.0.110/");
+        if (document.toString().contains("国资管理"))
+            return true;
+        else
+            return false;
     }
 
     //获取综合教务地址的方法
@@ -497,6 +508,7 @@ public class FunctionsPublicBasic {
         try {
             if (getVPNCookie(VPNName, VPNPass))
                 return false;
+            System.out.println(VPNCookies);
             Connection.Response response = Jsoup.connect("http://210.30.0.110/")
                     .userAgent(userAgent)
                     .cookies(VPNCookies)
@@ -504,7 +516,7 @@ public class FunctionsPublicBasic {
                     .execute();
 
             Document doc = response.parse();
-            //System.out.println(response.parse().toString());
+            //System.out.println(doc.toString());
             Elements elements = doc.getElementsByClass("vpn-content-block-panel__collect_ed");
             for (Element element : elements) {
                 if (element.toString().contains("http://www.dlnu.edu.cn")) {
@@ -516,6 +528,7 @@ public class FunctionsPublicBasic {
                     break;
                 }
             }
+            System.out.println(NetAddress);
             response = Jsoup.connect(NetAddress)
                     .userAgent(userAgent)
                     .cookies(VPNCookies)
@@ -551,6 +564,8 @@ public class FunctionsPublicBasic {
             }
 
 
+
+
             response = Jsoup.connect(NetAddress + "nav_login")
                     .ignoreContentType(true)
                     .userAgent(userAgent)
@@ -583,6 +598,7 @@ public class FunctionsPublicBasic {
                     .execute();
 
             //System.out.println(response.parse().toString());
+            //return false;
 
             if (!response.parse().toString().contains("套餐"))
                 return false;
@@ -623,6 +639,7 @@ public class FunctionsPublicBasic {
 //            Thread.sleep(1000);
         } catch (Exception e) {
             System.out.println("Login Network Error");
+            e.printStackTrace();
             return false;
         }
     }
