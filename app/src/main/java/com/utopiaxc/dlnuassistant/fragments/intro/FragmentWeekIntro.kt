@@ -47,6 +47,8 @@ class FragmentWeekIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
             editor.putBoolean("FastChange", true)
             editor.apply()
             isFirstSet=true
+
+            fatherWeekContext.goNext()
         }
     }
 

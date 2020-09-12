@@ -46,7 +46,7 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
         buttonNetHelp = view.findViewById(R.id.intro_net_help)
         usernameNet = view.findViewById(R.id.editTextIntroNetUsername)
         passwordNet = view.findViewById(R.id.editTextIntroNetPassword)
-        usernameNet.focusable
+        usernameNet.requestFocus()
 
         buttonNetCheck.setOnClickListener {
             hideKeyboard(view)

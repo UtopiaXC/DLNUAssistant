@@ -44,6 +44,7 @@ class FragmentVPNIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
         buttonHelp = view.findViewById(R.id.intro_vpn_help)
         username = view.findViewById(R.id.editTextIntroVPNUsername)
         password = view.findViewById(R.id.editTextIntroVPNPassword)
+        username.requestFocus()
 
         buttonCheck.setOnClickListener {
             hideKeyboard(view)
