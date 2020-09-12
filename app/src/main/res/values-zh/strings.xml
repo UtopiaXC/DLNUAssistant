@@ -27,10 +27,13 @@
         v0.0.3-pre-release-beta\n\n
         更新日志\n
         #1 校园网功能完成\n
-        #2 重构校园网UI\n
-        #3 优化算法结构\n
+        #2 增加新用户引导功能\n
+        #3 修复一个由于MD5算法引起的BUG\n
         #4 优化主题颜色沉浸\n
-        #5 添加剩余流量显示\n
+        #5 添加加载中断功能（尽量不要中断，可能会引起致命错误。\n
+        #6 本版本为正式版发行前的最后一版技术测试版（beta），在使用中如果存在任何问题请积极反馈，如果无大问题正式版将在近期发布\n\n
+        提示\n
+        如果您之前已经设置过相关账户并已经可用，则不必重新载入引导程序，如果您之前的信息不可用，则建议您重新载入引导。\n
     </string>
     <string name="update_log_tag">最后一次更新内容</string>
     <string name="utopiaxc">UtopiaXC</string>
@@ -194,9 +197,8 @@
     <string name="offline_all_device">确认强制下线所有设备？</string>
     <string name="click_to_offline_all">-点击下线所有设备</string>
     <string name="no_device">当前无在线设备</string>
-    <string name="executing">正在执行\n（中断一定会引起不可预估的错误）</string>
+    <string name="executing">正在执行\n（尽量不要中断）</string>
     <string name="interrupt">中断</string>
     <string name="please_use_check">请进行配置信息测试（中心页面上数第三个按钮）\n如果一直失败请参考关于->帮助与排查->#4与#5</string>
-
 
 </resources>

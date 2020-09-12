@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <DatePicker
-        android:id="@+id/date_picker"
+        android:id="@+id/date_picker_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"

@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
 import com.github.appintro.AppIntroPageTransformerType
-import com.utopiaxc.dlnuassistant.fragments.intro.FragmentNetIntro
-import com.utopiaxc.dlnuassistant.fragments.intro.FragmentURPIntro
-import com.utopiaxc.dlnuassistant.fragments.intro.FragmentVPNIntro
+import com.utopiaxc.dlnuassistant.fragments.intro.*
 
 class ActivityIntro : AppIntro2() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +22,10 @@ class ActivityIntro : AppIntro2() {
         addSlide(AppIntroFragment.newInstance(
                 title = "欢迎使用民大助手",
                 description = "©UtopiaXC 2020 All Rights Reserved.",
-                backgroundColor = Color.parseColor("#7c4dff")
+                backgroundColor = Color.parseColor("#7c4dff"),
+                imageDrawable = R.drawable.logo
         ))
+
 
         addSlide(FragmentVPNIntro.newInstance(this))
 
@@ -33,11 +33,17 @@ class ActivityIntro : AppIntro2() {
 
         addSlide(FragmentURPIntro.newInstance(this))
 
+        addSlide(FragmentSyncIntro.newInstance(this))
+
+        addSlide(FragmentWeekIntro.newInstance(this))
+
+
 
         addSlide(AppIntroFragment.newInstance(
                 title = "配置完成！",
                 description = "即刻开启民大校园生活",
-                backgroundColor = Color.parseColor("#7c4dff")
+                backgroundColor = Color.parseColor("#7c4dff"),
+                imageDrawable = R.drawable.logo
         ))
     }
 

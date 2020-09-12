@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.utopiaxc.dlnuassistant.ActivityMain;
 import com.utopiaxc.dlnuassistant.R;
 import com.utopiaxc.dlnuassistant.activities.ActivityAbout;
 import com.utopiaxc.dlnuassistant.activities.ActivitySettings;
@@ -181,6 +182,41 @@ public class FragmentCenter extends Fragment {
                             .show();
                 });
         userCenter.addMessageItem(ItemUserCard_getAll);
+
+        AboutPageMessageItem ItemUserCard_reset = new AboutPageMessageItem(getActivity())
+                .setIcon(getActivity().getDrawable(R.drawable.reset))
+                .setMainText("清除数据并重新引导")
+                .setOnItemClickListener(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setTitle(Objects.requireNonNull(getActivity()).getString(R.string.warning))
+                            .setMessage("将会清除掉您所有的数据信息（包括账号信息），并重新载入引导程序，是否继续")
+                            .setNeutralButton(getActivity().getString(R.string.cancel), null)
+                            .setPositiveButton(getActivity().getString(R.string.start), (dialog, which) -> {
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Intro", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                editor.putBoolean("isFirst",true);
+                                editor.apply();
+
+                                sharedPreferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+                                editor=sharedPreferences.edit();
+                                editor.putBoolean("URPIsSet",false);
+                                editor.putBoolean("NetIsSet",false);
+                                editor.apply();
+
+                                sharedPreferences = getActivity().getSharedPreferences("Net", Context.MODE_PRIVATE);
+                                editor=sharedPreferences.edit();
+                                editor.putBoolean("NetIsSet",false);
+                                editor.apply();
+
+                                Intent intent = new Intent(getActivity(), ActivityMain.class);
+                                startActivity(intent);
+                                getActivity().finish();
+                            })
+                            .create()
+                            .show();
+                });
+        userCenter.addMessageItem(ItemUserCard_reset);
     }
 
     //设置中心选框
@@ -239,8 +275,6 @@ public class FragmentCenter extends Fragment {
 
         }
     }
-
-
 
     //异步消息同步
     @SuppressLint("HandlerLeak")

@@ -107,7 +107,7 @@ public class FragmentTimeTableChart extends Fragment {
                 final AlertDialog.Builder setStartWeek = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_date_picker, null);
 
-                final DatePicker datePicker = linearLayout.findViewById(R.id.date_picker);
+                final DatePicker datePicker = linearLayout.findViewById(R.id.date_picker_intro);
 
                 setStartWeek
                         .setView(linearLayout)

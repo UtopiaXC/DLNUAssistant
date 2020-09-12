@@ -170,13 +170,6 @@ public class ActivityMain extends AppCompatActivity {
                 builder.setCancelable(false);
                 builder.show();
             }
-            if (isFirst) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getString(R.string.starting_helper));
-                builder.setPositiveButton(getText(R.string.confirm), null);
-                builder.setCancelable(false);
-                builder.show();
-            }
             //开启更新检查线程
             new Thread(new checkupdateRunnable()).start();
 
