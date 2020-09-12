@@ -79,8 +79,17 @@ public class ActivityMain extends AppCompatActivity {
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.warning))
                         .setMessage("检测到您已完成信息填写，是否进入初次使用引导？")
-                        .setPositiveButton("不，账号信息无误",null)
+                        .setPositiveButton("不，账号信息无误",(e1,e2)->{
+                            SharedPreferences sharedPreferencesIntro = getSharedPreferences("Intro", MODE_PRIVATE);
+                            editor=sharedPreferencesIntro.edit();
+                            editor.putBoolean("isFirst",false);
+                            editor.apply();
+                        })
                         .setNegativeButton("是，修改账号信息",(e1,e2)->{
+                            SharedPreferences sharedPreferencesIntro = getSharedPreferences("Intro", MODE_PRIVATE);
+                            editor=sharedPreferencesIntro.edit();
+                            editor.putBoolean("isFirst",true);
+                            editor.apply();
                             Intent intent = new Intent(this, ActivityIntro.class);
                             startActivity(intent);
                             finish();

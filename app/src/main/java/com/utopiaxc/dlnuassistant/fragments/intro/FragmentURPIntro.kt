@@ -42,14 +42,14 @@ class FragmentURPIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
         fatherURPContext = this.activity as ActivityIntro
         buttonURPCheck = view.findViewById(R.id.intro_urp_check)
         buttonURPHelp = view.findViewById(R.id.intro_urp_help)
-        usernameURP = view.findViewById(R.id.editTextIntroURPUsername)
+
         passwordURP = view.findViewById(R.id.editTextIntroURPPassword)
-        usernameURP.requestFocus()
+        usernameURP = view.findViewById(R.id.editTextIntroURPUsername)
 
         buttonURPCheck.setOnClickListener {
             hideKeyboard(view)
             Thread(checkURP()).start()
-            buttonURPCheck.startLoader();
+            buttonURPCheck.startLoader()
         }
 
         buttonURPHelp.setOnClickListener{
@@ -70,7 +70,7 @@ class FragmentURPIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
                     .setNegativeButton("信息门户"){ _, i->
                         run {
                             val intent = Intent(Intent.ACTION_VIEW)
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE)
                             intent.setData(Uri.parse("http://210.30.0.110/"))
                             startActivity(intent)
                         }

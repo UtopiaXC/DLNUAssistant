@@ -42,14 +42,14 @@ class FragmentVPNIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
         fatherContext = this.activity as ActivityIntro
         buttonCheck = view.findViewById(R.id.intro_vpn_check)
         buttonHelp = view.findViewById(R.id.intro_vpn_help)
-        username = view.findViewById(R.id.editTextIntroVPNUsername)
+
         password = view.findViewById(R.id.editTextIntroVPNPassword)
-        username.requestFocus()
+        username = view.findViewById(R.id.editTextIntroVPNUsername)
 
         buttonCheck.setOnClickListener {
             hideKeyboard(view)
             Thread(checkVPN()).start()
-            buttonCheck.startLoader();
+            buttonCheck.startLoader()
         }
 
         buttonHelp.setOnClickListener{
@@ -64,7 +64,7 @@ class FragmentVPNIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
                     .setNegativeButton("浏览器访问"){_,i->
                         run {
                             val intent = Intent(Intent.ACTION_VIEW)
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE)
                             intent.setData(Uri.parse("http://210.30.0.110/"))
                             startActivity(intent)
                         }

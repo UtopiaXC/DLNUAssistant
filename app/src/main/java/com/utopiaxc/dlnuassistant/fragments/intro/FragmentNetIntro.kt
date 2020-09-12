@@ -44,14 +44,15 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
 
         buttonNetCheck = view.findViewById(R.id.intro_net_check)
         buttonNetHelp = view.findViewById(R.id.intro_net_help)
-        usernameNet = view.findViewById(R.id.editTextIntroNetUsername)
+
         passwordNet = view.findViewById(R.id.editTextIntroNetPassword)
-        usernameNet.requestFocus()
+        usernameNet = view.findViewById(R.id.editTextIntroNetUsername)
+
 
         buttonNetCheck.setOnClickListener {
             hideKeyboard(view)
             Thread(checkNet()).start()
-            buttonNetCheck.startLoader();
+            buttonNetCheck.startLoader()
         }
 
         buttonNetHelp.setOnClickListener{
@@ -66,7 +67,7 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
                     .setNegativeButton("信息门户"){ _, i->
                         run {
                             val intent = Intent(Intent.ACTION_VIEW)
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE)
                             intent.setData(Uri.parse("http://210.30.0.110/"))
                             startActivity(intent)
                         }
