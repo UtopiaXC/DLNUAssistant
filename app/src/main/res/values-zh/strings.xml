@@ -168,7 +168,7 @@
 
     <string name="used_time">当月已用时长</string>
     <string name="used_band">当月已用流量</string>
-    <string name="overdate">当月到期时间</string>
+    <string name="overdate">余额可用时间</string>
     <string name="online">在线状态</string>
     <string name="network_set">套餐信息</string>
     <string name="network_statue">停复机状态</string>
