@@ -26,4 +26,17 @@
             android:targetClass="com.utopiaxc.dlnuassistant.activities.ActivityGradeList"
             android:targetPackage="com.utopiaxc.dlnuassistant" />
     </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/network"
+        android:shortcutDisabledMessage="@string/label_network"
+        android:shortcutId="static3"
+        android:shortcutLongLabel="@string/label_network"
+        android:shortcutShortLabel="@string/label_network">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.utopiaxc.dlnuassistant.activities.ActivityNetwork"
+            android:targetPackage="com.utopiaxc.dlnuassistant" />
+    </shortcut>
 </shortcuts>
