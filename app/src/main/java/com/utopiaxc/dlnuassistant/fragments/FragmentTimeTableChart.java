@@ -122,11 +122,13 @@ public class FragmentTimeTableChart extends Fragment {
                             SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
                             Calendar now = Calendar.getInstance();
                             now.set(year,month,date);
+                            System.out.println(year+""+month+""+date);
                             int weekDay = now.get(Calendar.DAY_OF_WEEK);
+                            if (year==2020&&month==8&&date==31)
+                                weekDay--;
                             weekDay=(weekDay+4)%7;
                             if(weekDay==0)
                                 weekDay=7;
-                            System.out.println(weekDay);
                             String today=year+"-"+month+"-"+date;
                             Date d=null;
                             try {
@@ -136,6 +138,7 @@ public class FragmentTimeTableChart extends Fragment {
                             }
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(d);
+                            System.out.println(weekDay);
                             calendar.add(Calendar.DATE, -weekDay+1);
                             System.out.println(sj.format(calendar.getTime()));
 
@@ -200,6 +203,7 @@ public class FragmentTimeTableChart extends Fragment {
         boolean tempWeek = sharedPreferences_curWeek.getBoolean("isCurWeek", true);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
         String start = sharedPreferences.getString("StartWeek", "NULL");
+
         if (tempWeek) {
             assert start != null;
             if (start.equals("NULL")) {
@@ -217,12 +221,12 @@ public class FragmentTimeTableChart extends Fragment {
 
                     @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//显示的时间的格式
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setFirstDayOfWeek(2);
+                    calendar.setFirstDayOfWeek(1);
                     int end_week = calendar.get(Calendar.WEEK_OF_YEAR);
                     calendar.setTime(dateFormat.parse(start));
                     int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
                     int start_year = calendar.get(Calendar.YEAR);
-                    calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
+                    calendar.setTime(dateFormat.parse(start_year + "-12-24 00:00:00"));
                     int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
                     int weeks = end_week - start_week + 1;
                     if (weeks < 1) {
@@ -510,6 +514,7 @@ public class FragmentTimeTableChart extends Fragment {
         }
 
 
+        System.out.println(start);
         timetableView.curWeek(start)
                 .showView();
 
