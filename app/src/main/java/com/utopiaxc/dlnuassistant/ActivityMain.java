@@ -237,7 +237,7 @@ public class ActivityMain extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMain.this);
                 builder.setTitle(getString(R.string.download_newversion));
                 builder.setMessage(getString(R.string.has_update));
-                builder.setPositiveButton(getText(R.string.download_newversion), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_debug.apk"))));
+                builder.setPositiveButton(getText(R.string.download_newversion), (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_release.apk"))));
                 //设定“取消"按钮的功能
                 builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
 
@@ -258,7 +258,7 @@ public class ActivityMain extends AppCompatActivity {
                 String version = packInfo.versionName;
 
 
-                String latest_version = basicFunctions.getHTML("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_debug.txt");
+                String latest_version = basicFunctions.getHTML("https://www.utopiaxc.cn/Version_Control/DLNUAssistant_release.txt");
 
 
                 if (latest_version.equals("error")) {
