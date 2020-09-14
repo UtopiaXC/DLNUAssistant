@@ -38,7 +38,7 @@ class FragmentWeekIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
 
             var sharedPreferences = fatherWeekContext.getSharedPreferences("TimeTable", Context.MODE_PRIVATE)
             var editor = sharedPreferences.edit()
-            editor.putString("StartWeek", "$year-$month-$date 12:00:00")
+            editor.putString("StartWeek", "$year-$month-$date 00:00:00")
             editor.apply()
 
 

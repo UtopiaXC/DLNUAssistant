@@ -40,9 +40,11 @@ import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.model.Schedule;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -116,9 +118,28 @@ public class FragmentTimeTableChart extends Fragment {
                             int month = datePicker.getMonth() + 1;
                             int date = datePicker.getDayOfMonth();
 
+                            SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
+                            Calendar now = Calendar.getInstance();
+                            now.setFirstDayOfWeek(Calendar.MONDAY);
+                            now.set(year,month,date);
+                            int weekDay = now.get(Calendar.DAY_OF_WEEK);
+                            System.out.println(weekDay);
+                            String today=year+"-"+month+"-"+date;
+                            Date d=null;
+                            try {
+                                d = sj.parse(today);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(d);
+                            calendar.add(Calendar.DATE, -weekDay+1);
+                            System.out.println(sj.format(calendar.getTime()));
+
+
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("StartWeek", year + "-" + month + "-" + date + " 12:00:00");
+                            editor.putString("StartWeek", year + "-" + month + "-" + date + " 00:00:00");
                             editor.apply();
                             SharedPreferences sharedPreferences_toActivity = getActivity().getSharedPreferences("FirstFragment", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor_toActivity = sharedPreferences_toActivity.edit();
