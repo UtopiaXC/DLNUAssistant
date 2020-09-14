@@ -1,7 +1,6 @@
 package com.utopiaxc.dlnuassistant;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +23,6 @@ import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTable;
 import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTableChart;
 import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 
 public class ActivityMain extends AppCompatActivity {
     private String updateCheak = "";
@@ -176,15 +170,15 @@ public class ActivityMain extends AppCompatActivity {
                     editor.putInt("Start", 1);
                     editor.commit();
                 }
-
             }
             if (isVersionFirst) {
                 sharedPreferences = getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
                 String start = sharedPreferences.getString("StartWeek", "NULL");
-                if (start!=null&&!start.equals("NULL")) {
+                if (start!=null&&!start.equals("NULL")&&start.contains(" 12:00:00")) {
                     editor.putString("StartWeek", FunctionsPublicBasic.resultMonday(start.replace(" 12:00:00", ""))+ " 00:00:00");
                     editor.apply();
                 }
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.update_log));
                 builder.setMessage(getString(R.string.update_log_info));
