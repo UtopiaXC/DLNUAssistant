@@ -226,7 +226,7 @@ public class FragmentTimeTableChart extends Fragment {
                     calendar.setTime(dateFormat.parse(start));
                     int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
                     int start_year = calendar.get(Calendar.YEAR);
-                    calendar.setTime(dateFormat.parse(start_year + "-12-24 00:00:00"));
+                    calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
                     int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
                     int weeks = end_week - start_week + 1;
                     if (weeks < 1) {
