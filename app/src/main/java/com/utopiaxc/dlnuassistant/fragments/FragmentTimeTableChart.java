@@ -118,11 +118,14 @@ public class FragmentTimeTableChart extends Fragment {
                             int month = datePicker.getMonth() + 1;
                             int date = datePicker.getDayOfMonth();
 
+                            @SuppressLint("SimpleDateFormat")
                             SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
                             Calendar now = Calendar.getInstance();
-                            now.setFirstDayOfWeek(Calendar.MONDAY);
                             now.set(year,month,date);
                             int weekDay = now.get(Calendar.DAY_OF_WEEK);
+                            weekDay=(weekDay+4)%7;
+                            if(weekDay==0)
+                                weekDay=7;
                             System.out.println(weekDay);
                             String today=year+"-"+month+"-"+date;
                             Date d=null;
@@ -139,7 +142,7 @@ public class FragmentTimeTableChart extends Fragment {
 
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("StartWeek", year + "-" + month + "-" + date + " 00:00:00");
+                            editor.putString("StartWeek", sj.format(calendar.getTime())+ " 00:00:00");
                             editor.apply();
                             SharedPreferences sharedPreferences_toActivity = getActivity().getSharedPreferences("FirstFragment", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor_toActivity = sharedPreferences_toActivity.edit();

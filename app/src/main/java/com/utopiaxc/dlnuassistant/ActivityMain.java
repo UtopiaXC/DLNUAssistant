@@ -3,6 +3,7 @@ package com.utopiaxc.dlnuassistant;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -22,6 +23,12 @@ import com.utopiaxc.dlnuassistant.fragments.FragmentHome;
 import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTable;
 import com.utopiaxc.dlnuassistant.fragments.FragmentTimeTableChart;
 import com.utopiaxc.dlnuassistant.fuctions.FunctionsPublicBasic;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class ActivityMain extends AppCompatActivity {
     private String updateCheak = "";
@@ -172,6 +179,39 @@ public class ActivityMain extends AppCompatActivity {
 
             }
             if (isVersionFirst) {
+                sharedPreferences = getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
+                String start = sharedPreferences.getString("StartWeek", "NULL");
+                if (start!=null&&!start.equals("NULL")) {
+                    start = Objects.requireNonNull(start).replace("12:00:00", "00:00:00");
+                    String date=start.replace(" 00:00:00","");
+                    String[] dateMessage=date.split("-");
+                    int[] temp = new int[3];
+                    int i=0;
+                    for(String a:dateMessage)
+                        temp[i++]=Integer.parseInt(a.replace("-",""));
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar now = Calendar.getInstance();
+                    now.set(temp[0],temp[1],temp[2]);
+                    int weekDay = now.get(Calendar.DAY_OF_WEEK);
+                    weekDay=(weekDay+4)%7;
+                    if(weekDay==0)
+                        weekDay=7;
+                    System.out.println(weekDay);
+                    String today=temp[0]+"-"+temp[1]+"-"+temp[2];
+                    Date d=null;
+                    try {
+                        d = sj.parse(today);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(d);
+                    calendar.add(Calendar.DATE, -weekDay+1);
+                    System.out.println(sj.format(calendar.getTime()));
+                    editor.putString("StartWeek", sj.format(calendar.getTime())+ " 00:00:00");
+                    editor.apply();
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.update_log));
                 builder.setMessage(getString(R.string.update_log_info));
