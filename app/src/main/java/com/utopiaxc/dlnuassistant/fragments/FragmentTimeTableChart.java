@@ -117,35 +117,10 @@ public class FragmentTimeTableChart extends Fragment {
                             int year = datePicker.getYear();
                             int month = datePicker.getMonth() + 1;
                             int date = datePicker.getDayOfMonth();
-
-                            @SuppressLint("SimpleDateFormat")
-                            SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
-                            Calendar now = Calendar.getInstance();
-                            now.set(year,month,date);
-                            System.out.println(year+""+month+""+date);
-                            int weekDay = now.get(Calendar.DAY_OF_WEEK);
-                            if (year==2020&&month==8&&date==31)
-                                weekDay--;
-                            weekDay=(weekDay+4)%7;
-                            if(weekDay==0)
-                                weekDay=7;
-                            String today=year+"-"+month+"-"+date;
-                            Date d=null;
-                            try {
-                                d = sj.parse(today);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(d);
-                            System.out.println(weekDay);
-                            calendar.add(Calendar.DATE, -weekDay+1);
-                            System.out.println(sj.format(calendar.getTime()));
-
-
+                            String start=FunctionsPublicBasic.resultMonday(year+"-"+month+"-"+date);
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("StartWeek", sj.format(calendar.getTime())+ " 00:00:00");
+                            editor.putString("StartWeek", start+ " 00:00:00");
                             editor.apply();
                             SharedPreferences sharedPreferences_toActivity = getActivity().getSharedPreferences("FirstFragment", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor_toActivity = sharedPreferences_toActivity.edit();
@@ -218,21 +193,9 @@ public class FragmentTimeTableChart extends Fragment {
             } else {
 
                 try {
-
-                    @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//显示的时间的格式
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setFirstDayOfWeek(1);
-                    int end_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                    calendar.setTime(dateFormat.parse(start));
-                    int start_week = calendar.get(Calendar.WEEK_OF_YEAR);
-                    int start_year = calendar.get(Calendar.YEAR);
-                    calendar.setTime(dateFormat.parse(start_year + "-12-25 00:00:00"));
-                    int sum_start_year_weeks = calendar.get(Calendar.WEEK_OF_YEAR);
-                    int weeks = end_week - start_week + 1;
+                    int weeks=FunctionsPublicBasic.resultWeeks(start);
                     if (weeks < 1) {
-                        int sum_weeks = sum_start_year_weeks - start_week + end_week + 1;
-                        System.out.println(sum_weeks);
-                        getActivity().setTitle(getString(R.string.title_table) + "-" + "第" + sum_weeks + "周");
+                        getActivity().setTitle(getString(R.string.title_table) + "-" + "第1周");
 
                     } else {
                         getActivity().setTitle(getString(R.string.title_table) + "-" + "第" + weeks + "周");
@@ -515,7 +478,7 @@ public class FragmentTimeTableChart extends Fragment {
 
 
         System.out.println(start);
-        timetableView.curWeek(start)
+        timetableView.curWeek(FunctionsPublicBasic.resultWeeks(start))
                 .showView();
 
         if (!curWeek) {

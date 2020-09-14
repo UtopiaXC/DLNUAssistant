@@ -29,6 +29,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -95,10 +98,10 @@ public class FunctionsPublicBasic {
         }
     }
 
-    public boolean checkVPNCookie(String username, String password){
+    public boolean checkVPNCookie(String username, String password) {
         if (getVPNCookie(username, password))
             return false;
-        Document document=doGet("http://210.30.0.110/");
+        Document document = doGet("http://210.30.0.110/");
         if (document.toString().contains("国资管理"))
             return true;
         else
@@ -564,8 +567,6 @@ public class FunctionsPublicBasic {
             }
 
 
-
-
             response = Jsoup.connect(NetAddress + "nav_login")
                     .ignoreContentType(true)
                     .userAgent(userAgent)
@@ -654,7 +655,7 @@ public class FunctionsPublicBasic {
 
         messages.put("account", jsonObject.getJSONObject("note").get("welcome"));
         messages.put("balance", "￥" + jsonObject.getJSONObject("note").get("leftmoeny"));
-        messages.put("statue",jsonObject.getJSONObject("note").get("status"));
+        messages.put("statue", jsonObject.getJSONObject("note").get("status"));
         if (Integer.parseInt(jsonObject.getJSONObject("note").get("onlinestate").toString()) == 1) {
             messages.put("online", "在线");
         } else
@@ -666,7 +667,7 @@ public class FunctionsPublicBasic {
             set = set.replace("20G", "200G");
         else if (set.contains("10G"))
             set = set.replace("10G", "100G");
-        messages.put("set",  set);
+        messages.put("set", set);
         messages.put("overdate", jsonObject.getJSONObject("note").get("overdate").toString().replace("到期日期为", "").replace("；", ""));
 
         messagesDoc = doGet(NetAddress + "nav_getUserInfo");
@@ -684,7 +685,7 @@ public class FunctionsPublicBasic {
                     unit = "小时";
                     usedTime = df.format(usage);
                 }
-                messages.put("usedtime",  usedTime + unit);
+                messages.put("usedtime", usedTime + unit);
             }
             if (element.toString().contains("本月流量")) {
                 double usedBand = Double.parseDouble(element.toString().replace("\n", "")
@@ -714,28 +715,28 @@ public class FunctionsPublicBasic {
         }
         int onlineCode = 0;
         Document document = doGet(NetAddress + "nav_offLine");
-        Elements elements=document.getElementsByTag("td");
-        for (Element element:elements){
-            try{
-                onlineCode=Integer.parseInt(element.text());
-            }catch (Exception e){
+        Elements elements = document.getElementsByTag("td");
+        for (Element element : elements) {
+            try {
+                onlineCode = Integer.parseInt(element.text());
+            } catch (Exception e) {
 
             }
         }
         System.out.println(onlineCode);
         for (int i = 0; i < 5; i++) {
             doGet(NetAddress + "tooffline?fldsessionid=" + onlineCode);
-            System.out.println("Do Logout With "+NetAddress+"tooffline?fldsessionid=" + onlineCode);
+            System.out.println("Do Logout With " + NetAddress + "tooffline?fldsessionid=" + onlineCode);
         }
         return true;
     }
 
-    public String getSetCheck(String VPNName, String VPNPass, String username, String password){
+    public String getSetCheck(String VPNName, String VPNPass, String username, String password) {
         if (!loginNetwork(VPNName, VPNPass, username, password)) {
             return "ERROR";
         }
-        Document document=doGet(NetAddress+"nav_servicedefaultbook");
-        Elements elements=document.getElementsByTag("div");
+        Document document = doGet(NetAddress + "nav_servicedefaultbook");
+        Elements elements = document.getElementsByTag("div");
         if (document.toString().contains("[本科10元10G]"))
             return "本科10元100G";
         else if (document.toString().contains("[本科20元20G]"))
@@ -748,21 +749,21 @@ public class FunctionsPublicBasic {
             return "DONTHAVE";
     }
 
-    public boolean bookSet(String VPNName, String VPNPass, String username, String password,int setNum){
+    public boolean bookSet(String VPNName, String VPNPass, String username, String password, int setNum) {
         if (!loginNetwork(VPNName, VPNPass, username, password)) {
             return false;
         }
 
         try {
-            Connection.Response response = Jsoup.connect(NetAddress+"selfservicebookAction")
+            Connection.Response response = Jsoup.connect(NetAddress + "selfservicebookAction")
                     .ignoreContentType(true)
                     .data("serid", String.valueOf(setNum))
                     .cookies(VPNCookies)
                     .userAgent(userAgent)
                     .method(Connection.Method.GET)
                     .execute();
-            Document document=response.parse();
-            if (document.toString().contains("成功/正常")||document.toString().contains("您已经预约该套餐"))
+            Document document = response.parse();
+            if (document.toString().contains("成功/正常") || document.toString().contains("您已经预约该套餐"))
                 return true;
             else
                 return false;
@@ -772,22 +773,22 @@ public class FunctionsPublicBasic {
         }
     }
 
-    public boolean stopNetwork(String VPNName, String VPNPass, String username, String password){
+    public boolean stopNetwork(String VPNName, String VPNPass, String username, String password) {
         if (!loginNetwork(VPNName, VPNPass, username, password)) {
             return false;
         }
-        Document document=doGet(NetAddress+"nav_selfstopNow");
+        Document document = doGet(NetAddress + "nav_selfstopNow");
         if (document.toString().contains("操作状态：成功"))
             return true;
         else
             return false;
     }
 
-    public boolean reopenNetwork(String VPNName, String VPNPass, String username, String password){
+    public boolean reopenNetwork(String VPNName, String VPNPass, String username, String password) {
         if (!loginNetwork(VPNName, VPNPass, username, password)) {
             return false;
         }
-        Document document=doGet(NetAddress+"nav_SelfReopenNow");
+        Document document = doGet(NetAddress + "nav_SelfReopenNow");
         if (document.toString().contains("操作状态：成功"))
             return true;
         else
@@ -807,7 +808,7 @@ public class FunctionsPublicBasic {
                     .execute();
             return response.parse();
         } catch (Exception e) {
-            System.out.println("Get Error With "+address);
+            System.out.println("Get Error With " + address);
             return null;
         }
     }
@@ -830,7 +831,43 @@ public class FunctionsPublicBasic {
             return "ERROR";
         }
         return hexString.toString();
+    }
 
+    public static String resultMonday(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            Date time = sdf.parse(date);
+            cal.setTime(time);
+            int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+            if (1 == dayWeek) {
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+            }
+            cal.setFirstDayOfWeek(Calendar.MONDAY);
+            int day = cal.get(Calendar.DAY_OF_WEEK);
+            cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
+            return sdf.format(cal.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static int resultWeeks(String date){
+        try {
+            SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            /*天数差*/
+            Date fromDate1 = simpleFormat.parse(date);
+            Date toDate1 = simpleFormat.parse(simpleFormat.format(System.currentTimeMillis()));
+            long from1 = fromDate1.getTime();
+            long to1 = toDate1.getTime();
+            int days = (int) ((to1 - from1) / (1000 * 60 * 60 * 24));
+            return days/7+1;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

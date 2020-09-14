@@ -182,34 +182,7 @@ public class ActivityMain extends AppCompatActivity {
                 sharedPreferences = getSharedPreferences("TimeTable", Context.MODE_PRIVATE);
                 String start = sharedPreferences.getString("StartWeek", "NULL");
                 if (start!=null&&!start.equals("NULL")) {
-                    start = Objects.requireNonNull(start).replace("12:00:00", "00:00:00");
-                    String date=start.replace(" 00:00:00","");
-                    String[] dateMessage=date.split("-");
-                    int[] temp = new int[3];
-                    int i=0;
-                    for(String a:dateMessage)
-                        temp[i++]=Integer.parseInt(a.replace("-",""));
-                    @SuppressLint("SimpleDateFormat")
-                    SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
-                    Calendar now = Calendar.getInstance();
-                    now.set(temp[0],temp[1],temp[2]);
-                    int weekDay = now.get(Calendar.DAY_OF_WEEK);
-                    weekDay=(weekDay+4)%7;
-                    if(weekDay==0)
-                        weekDay=7;
-                    System.out.println(weekDay);
-                    String today=temp[0]+"-"+temp[1]+"-"+temp[2];
-                    Date d=null;
-                    try {
-                        d = sj.parse(today);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(d);
-                    calendar.add(Calendar.DATE, -weekDay+1);
-                    System.out.println(sj.format(calendar.getTime()));
-                    editor.putString("StartWeek", sj.format(calendar.getTime())+ " 00:00:00");
+                    editor.putString("StartWeek", FunctionsPublicBasic.resultMonday(start.replace(" 12:00:00", ""))+ " 00:00:00");
                     editor.apply();
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
