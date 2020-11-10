@@ -268,25 +268,25 @@ public class ActivityNetwork extends AppCompatActivity {
 
                 String leftBand = "";
                 try {
-                    if (Objects.requireNonNull(messages.get("set")).contains("300G")) {
+                    if (Objects.requireNonNull(messages.get("set")).contains("180G")) {
                         if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
-                            leftBand = "\n剩余流量：" + (300 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                            leftBand = "\n剩余流量：" + (180 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
                         else
-                            leftBand = "\n剩余流量：" + (300 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+                            leftBand = "\n剩余流量：" + (180 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
 
                     }
-                    if (Objects.requireNonNull(messages.get("set")).contains("200G")) {
+                    if (Objects.requireNonNull(messages.get("set")).contains("140G")) {
                         if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
-                            leftBand = "\n剩余流量：" + (200 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                            leftBand = "\n剩余流量：" + (140 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
                         else
-                            leftBand = "\n剩余流量：" + (200 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+                            leftBand = "\n剩余流量：" + (140 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
 
                     }
-                    if (Objects.requireNonNull(messages.get("set")).contains("100G")) {
+                    if (Objects.requireNonNull(messages.get("set")).contains("80G")) {
                         if (Objects.requireNonNull(messages.get("usedband")).contains("GB"))
-                            leftBand = "\n剩余流量：" + (100 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
+                            leftBand = "\n剩余流量：" + (80 - Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" GB", ""))) + " GB";
                         else
-                            leftBand = "\n剩余流量：" + (100 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
+                            leftBand = "\n剩余流量：" + (80 - (Double.parseDouble(Objects.requireNonNull(messages.get("usedband")).replace(" MB", ""))) / 1024.0) + " GB";
                     }
                 } catch (Exception e) {
                     System.out.println("Left Error");

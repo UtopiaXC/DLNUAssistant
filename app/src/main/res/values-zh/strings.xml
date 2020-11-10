@@ -24,11 +24,9 @@
     <string name="update_log">更新日志</string>
     <string name="update_log_info">DLNU Assistant\n
         正式版\n
-        v1.0.1\n\n
-        正式版发布\n
-        #1 完整支持民大教务系统\n
-        #2 完整适配民大校园网系统\n
-        #3 完整适配民大VPN\n
+        v1.0.2\n\n
+        #1 更新套餐额度\n
+        #2 修复由安卓9以上网络安全权限引起的无法联网\n
     </string>
     <string name="update_log_tag">最后一次更新内容</string>
     <string name="utopiaxc">UtopiaXC</string>

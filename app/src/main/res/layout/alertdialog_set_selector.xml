@@ -19,15 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:textSize="20sp"
-            android:text="10元100G" />
+            android:text="10元80G"
+            android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/radioButtonTwentySet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="20元200G"
+            android:text="20元140G"
             android:textSize="20sp" />
 
         <RadioButton
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:textSize="20sp"
-            android:text="30元300G" />
+            android:text="30元180G"
+            android:textSize="20sp" />
     </RadioGroup>
 </LinearLayout>

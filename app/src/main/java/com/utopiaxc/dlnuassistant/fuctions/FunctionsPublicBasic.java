@@ -662,11 +662,11 @@ public class FunctionsPublicBasic {
             messages.put("online", "离线");
         String set = jsonObject.getJSONObject("note").get("service").toString();
         if (set.contains("30G"))
-            set = set.replace("30G", "300G");
+            set = set.replace("30G", "180G");
         else if (set.contains("20G"))
-            set = set.replace("20G", "200G");
+            set = set.replace("20G", "140G");
         else if (set.contains("10G"))
-            set = set.replace("10G", "100G");
+            set = set.replace("10G", "80G");
         messages.put("set", set);
         messages.put("overdate", jsonObject.getJSONObject("note").get("overdate").toString().replace("到期日期为", "").replace("；", ""));
 
@@ -738,11 +738,11 @@ public class FunctionsPublicBasic {
         Document document = doGet(NetAddress + "nav_servicedefaultbook");
         Elements elements = document.getElementsByTag("div");
         if (document.toString().contains("[本科10元10G]"))
-            return "本科10元100G";
+            return "本科10元80G";
         else if (document.toString().contains("[本科20元20G]"))
-            return "本科20元200G";
+            return "本科20元140G";
         else if (document.toString().contains("[本科30元30G]"))
-            return "本科30元300G";
+            return "本科30元180G";
         else if (document.toString().contains("[]"))
             return "未预约下月套餐，默认与本月相同";
         else

@@ -55,7 +55,7 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
             buttonNetCheck.startLoader()
         }
 
-        buttonNetHelp.setOnClickListener{
+        buttonNetHelp.setOnClickListener {
             hideKeyboard(view)
             AlertDialog.Builder(this.activity)
                     .setTitle("帮助信息")
@@ -64,7 +64,7 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
                             "然后请您能正确通过校园网验证，包括使用手机电脑等设备连接、登录综合信息查询站等\n\n" +
                             "三、如果您已查证VPN已设置成功，且能够正常访问校园网账户，请您联系开发者提供反馈，谢谢")
                     .setPositiveButton("确认", null)
-                    .setNegativeButton("信息门户"){ _, i->
+                    .setNegativeButton("信息门户") { _, i ->
                         run {
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.addCategory(Intent.CATEGORY_BROWSABLE)
@@ -81,31 +81,29 @@ class FragmentNetIntro(var context: ActivityIntro) : Fragment(), SlidePolicy {
     class checkNet : Runnable {
         override fun run() {
             isNetChecked = false
-            if (usernameNet.text.toString()==""||passwordNet.text.toString()==""){
+            if (usernameNet.text.toString() == "" || passwordNet.text.toString() == "") {
                 messageNetHandler.sendMessage(messageNetHandler.obtainMessage())
                 return
             }
 
-            var sharedPreferences= fatherNetContext.getSharedPreferences("user", Context.MODE_PRIVATE)
-            val isSet=sharedPreferences.getBoolean("VPNIsSet",false)
-            if (!isSet){
+            var sharedPreferences = fatherNetContext.getSharedPreferences("user", Context.MODE_PRIVATE)
+            val isSet = sharedPreferences.getBoolean("VPNIsSet", false)
+            if (!isSet) {
                 messageNetHandler.sendMessage(messageNetHandler.obtainMessage())
                 return
             }
-            val VPNName=sharedPreferences.getString("VPNName", "")
-            val VPNPass=sharedPreferences.getString("VPNPass", "")
-            for (i in 1..3) {
-                if (FunctionsPublicBasic().loginNetwork(VPNName, VPNPass, usernameNet.text.toString(), passwordNet.text.toString())) {
-                    sharedPreferences = fatherNetContext.getSharedPreferences("Net", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-                    editor.putString("NetName", usernameNet.text.toString())
-                    editor.putString("NetPass", passwordNet.text.toString())
-                    editor.putBoolean("NetIsSet", true)
-                    editor.apply()
-                    isNetChecked = true
-                    isNetLogin = true
-                    break
-                }
+            val VPNName = sharedPreferences.getString("VPNName", "")
+            val VPNPass = sharedPreferences.getString("VPNPass", "")
+
+            if (FunctionsPublicBasic().loginNetwork(VPNName, VPNPass, usernameNet.text.toString(), passwordNet.text.toString())) {
+                sharedPreferences = fatherNetContext.getSharedPreferences("Net", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("NetName", usernameNet.text.toString())
+                editor.putString("NetPass", passwordNet.text.toString())
+                editor.putBoolean("NetIsSet", true)
+                editor.apply()
+                isNetChecked = true
+                isNetLogin = true
             }
             messageNetHandler.sendMessage(messageNetHandler.obtainMessage())
         }
